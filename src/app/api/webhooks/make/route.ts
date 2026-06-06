@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
 
     const apiKey = request.headers.get('x-api-key')
-    if (apiKey !== process.env.MAKE_WEBHOOK_API_KEY) {
+    if (apiKey !== env.MAKE_WEBHOOK_API_KEY) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 

@@ -49,8 +49,10 @@ export async function newsletterSignup(
     }
 
     return { success: true, data: { message: 'Inscrição realizada com sucesso!' } }
-  } catch {
-    return { success: true, data: { message: 'Inscrição realizada com sucesso!' } }
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Erro desconhecido'
+    console.error('[LeadCapture] Newsletter signup failed:', message)
+    return { success: false, error: 'Não foi possível completar a inscrição. Tente novamente.' }
   }
 }
 
@@ -85,8 +87,10 @@ export async function joinCommunity(
     }
 
     return { success: true, data: { message: 'Bem-vindo à comunidade!' } }
-  } catch {
-    return { success: true, data: { message: 'Bem-vindo à comunidade!' } }
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Erro desconhecido'
+    console.error('[LeadCapture] Community join failed:', message)
+    return { success: false, error: 'Não foi possível registrar. Tente novamente.' }
   }
 }
 
@@ -114,7 +118,9 @@ export async function submitContactForm(
     if (error) throw error
 
     return { success: true, data: { message: 'Mensagem enviada com sucesso!' } }
-  } catch {
-    return { success: true, data: { message: 'Mensagem enviada com sucesso!' } }
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Erro desconhecido'
+    console.error('[LeadCapture] Contact form failed:', message)
+    return { success: false, error: 'Não foi possível enviar a mensagem. Tente novamente.' }
   }
 }

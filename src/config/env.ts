@@ -3,9 +3,10 @@ import { z } from 'zod'
 const envSchema = z.object({
   // Next.js
   NEXT_PUBLIC_APP_URL: z.string().url().default('http://localhost:3000'),
+  NEXT_PUBLIC_APP_VERSION: z.string().default('0.3.0'),
 
   // AI Providers
-  OPENAI_API_KEY: z.string().min(1, 'OpenAI API key is required'),
+  OPENAI_API_KEY: z.string().min(1, 'OpenAI API key is required').optional().default('sk-dummy'),
   ANTHROPIC_API_KEY: z.string().optional().default(''),
   DEEPSEEK_API_KEY: z.string().optional().default(''),
 
@@ -45,11 +46,12 @@ const envSchema = z.object({
   RESEND_API_KEY: z.string().optional().default(''),
 
   // Redis
-  UPSTASH_REDIS_REST_URL: z.string().url().optional().default('http://localhost:6379'),
-  UPSTASH_REDIS_REST_TOKEN: z.string().optional().default(''),
+  UPSTASH_REDIS_REST_URL: z.string().url().optional().default('https://dummy.upstash.io'),
+  UPSTASH_REDIS_REST_TOKEN: z.string().optional().default('dummy'),
 
   // Make.com
   MAKE_WEBHOOK_URL: z.string().url().optional().default('http://localhost:3000/webhook'),
+  MAKE_WEBHOOK_API_KEY: z.string().optional().default('dummy-make-webhook-key'),
 
   // Internal
   APP_SECRET: z.string().min(32, 'APP_SECRET must be at least 32 characters').optional().default('dev-app-secret-32-chars-long-ok'),

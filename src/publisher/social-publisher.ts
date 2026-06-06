@@ -83,7 +83,7 @@ async function publishToInstagram(content: ContentPiece): Promise<ApiResult<Publ
       data: {
         platform: 'instagram',
         postId: publishData.id,
-        url: `https://instagram.com/p/${publishData.id}`,
+        url: `https://instagram.com/p/${publishData.id}/`,
         publishedAt: new Date().toISOString(),
       },
     }

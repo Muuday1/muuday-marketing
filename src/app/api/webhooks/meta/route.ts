@@ -72,7 +72,7 @@ export async function GET(request: NextRequest) {
   const token = searchParams.get('hub.verify_token')
   const challenge = searchParams.get('hub.challenge')
 
-  if (mode === 'subscribe' && token === process.env.META_VERIFY_TOKEN) {
+  if (mode === 'subscribe' && token === env.META_VERIFY_TOKEN) {
     return new NextResponse(challenge)
   }
 

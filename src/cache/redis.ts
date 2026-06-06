@@ -14,12 +14,13 @@ interface CacheEntry<T> {
 const memoryCache = new Map<string, CacheEntry<unknown>>()
 
 function getRedisClient(): Redis | null {
-  if (env.UPSTASH_REDIS_REST_URL?.includes('dummy')) return null
+  const url = env.UPSTASH_REDIS_REST_URL
+  const token = env.UPSTASH_REDIS_REST_TOKEN
+  if (!url || url.includes('dummy') || url.includes('localhost') || !token || token === 'dummy') {
+    return null
+  }
   try {
-    return new Redis({
-      url: env.UPSTASH_REDIS_REST_URL,
-      token: env.UPSTASH_REDIS_REST_TOKEN,
-    })
+    return new Redis({ url, token })
   } catch {
     return null
   }
