@@ -1,21 +1,13 @@
-import { HeroSection } from '@/components/sections/HeroSection'
-import { ContentPillars } from '@/components/sections/ContentPillars'
-import { LatestContent } from '@/components/sections/LatestContent'
-import { CommunityCTA } from '@/components/sections/CommunityCTA'
-import { Footer } from '@/components/layout/Footer'
-import { Header } from '@/components/layout/Header'
+import { redirect } from 'next/navigation'
+import { cookies } from 'next/headers'
 
-export default function HomePage() {
-  return (
-    <div className="min-h-screen">
-      <Header />
-      <main>
-        <HeroSection />
-        <ContentPillars />
-        <LatestContent />
-        <CommunityCTA />
-      </main>
-      <Footer />
-    </div>
-  )
+export default async function RootPage() {
+  const cookieStore = await cookies()
+  const session = cookieStore.get('admin-session')?.value
+
+  if (session === 'authenticated') {
+    redirect('/dashboard')
+  }
+
+  redirect('/login')
 }

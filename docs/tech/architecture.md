@@ -1,4 +1,4 @@
-# Architecture — Brasil Global
+# Architecture — Muuday
 
 ## System Overview
 
@@ -19,7 +19,7 @@
        ▼                  ▼                  ▼
 ┌──────────────┐   ┌──────────────┐   ┌──────────────┐
 │  OpenAI      │   │  Meta API    │   │  Mixpanel    │
-│  Replicate   │   │              │   │  PostHog     │
+│  Replicate   │   │              │   │
 │  ElevenLabs  │   │              │   │  GA4         │
 └──────────────┘   └──────────────┘   └──────────────┘
        │
@@ -34,6 +34,7 @@
 ## Module Architecture
 
 ### Content Engine
+
 ```
 src/content-engine/
 ├── generators/
@@ -55,6 +56,7 @@ src/content-engine/
 ```
 
 ### Meta Ads Monitor
+
 ```
 src/meta-ads/
 ├── client/
@@ -74,6 +76,7 @@ src/meta-ads/
 ```
 
 ### Analytics Dashboard
+
 ```
 src/analytics/
 ├── dashboard/
@@ -90,6 +93,7 @@ src/analytics/
 ```
 
 ### Podcast Pipeline
+
 ```
 src/podcast/
 ├── script/
@@ -111,6 +115,7 @@ src/podcast/
 ## Data Flow
 
 ### Content Creation Flow
+
 ```
 1. Topic Selection (AI + human input)
    → Stored in Supabase
@@ -147,6 +152,7 @@ src/podcast/
 ## API Integration Patterns
 
 ### External API Client
+
 ```typescript
 // src/lib/api/external-client.ts
 export async function fetchWithRetry<T>(
@@ -161,6 +167,7 @@ export async function fetchWithRetry<T>(
 ```
 
 ### Webhook Handler
+
 ```typescript
 // src/app/api/webhooks/[provider]/route.ts
 export async function POST(request: Request) {
@@ -172,6 +179,7 @@ export async function POST(request: Request) {
 ```
 
 ### Background Job
+
 ```typescript
 // src/lib/jobs/content-generation.ts
 export async function generateContentJob(topicId: string) {
@@ -185,21 +193,25 @@ export async function generateContentJob(topicId: string) {
 ## Security
 
 ### API Keys
+
 - Stored in `.env.local` (never committed)
 - Vercel environment variables for production
 - Rotated every 90 days
 
 ### Authentication
+
 - Supabase Auth for admin dashboard
 - Meta OAuth for ad account access
 - API key validation for webhooks
 
 ### Rate Limiting
+
 - Upstash Redis for API rate limits
 - Per-provider limits enforced
 - Queue system for batch operations
 
 ### Data Privacy
+
 - No PII in logs
 - Encrypted at rest (Supabase)
 - GDPR-compliant data retention

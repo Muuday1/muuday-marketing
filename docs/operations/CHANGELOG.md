@@ -1,10 +1,11 @@
 # Changelog
 
-All notable changes to the Brasil Global Marketing Machine project.
+All notable changes to the Muuday Marketing Machine project.
 
 ## [0.3.0] - 2026-06-06
 
 ### Foundation (Items 1–15 of 23 Complete)
+
 This release implements all previously missing foundation infrastructure with **zero shortcuts**.
 
 - **`Makefile`** — Added with 20+ targets (dev, build, test, verify, docker, session start/end)
@@ -28,8 +29,9 @@ This release implements all previously missing foundation infrastructure with **
 - **`.env.local`** — Added missing vars: `INSTAGRAM_BUSINESS_ACCOUNT_ID`, `NEXT_PUBLIC_MIXPANEL_TOKEN`, `REPLICATE_API_TOKEN`, `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`, `MAKE_WEBHOOK_URL`
 
 ### Core Implementations (Resolved TODOs)
+
 - **`src/cache/redis.ts`** — Full Upstash Redis integration with in-memory fallback, `incrementCache`, typed cache keys
-- **`src/analytics/tracking.ts`** — PostHog SDK integration with safe fallback, no PII tracking
+- **`src/analytics/tracking.ts`** — Mixpanel integration, no PII tracking
 - **`src/middleware/auth.ts`** — JWT validation via Web Crypto API + rate limiting (100 req/min per IP)
 - **`src/lead-capture/actions.ts`** — Supabase integration for newsletter, community join, contact form
 - **`src/shared/model-router/index.ts`** — Full Model Router with provider selection (Anthropic/OpenAI/DeepSeek), retry logic, fallback chain, cost tracking
@@ -37,11 +39,13 @@ This release implements all previously missing foundation infrastructure with **
 - **`scripts/sync-meta-ads.ts`** — Meta Graph API campaign sync with insights
 
 ### Fixes
+
 - Removed duplicate `package-lock.json` from parent directory (`/Users/igorpinto/`)
 - Fixed `env.NODE_ENV` → `process.env.NODE_ENV` in analytics tracking
 - Removed unused `isDev` variable from cache/redis.ts
 
 ### Core Implementations — Round 2 (Resolved All TODOs)
+
 - **`scripts/sync-meta-ads.ts`** — Full Supabase upsert for `marketing_meta_campaigns` with insights
 - **`src/app/api/webhooks/make/route.ts`** — Content generation trigger, post scheduling, Meta sync trigger
 - **`src/app/api/webhooks/meta/route.ts`** — HMAC signature verification (`x-hub-signature-256`), message/leadgen event handling, Supabase lead insertion
@@ -49,6 +53,7 @@ This release implements all previously missing foundation infrastructure with **
 - **`src/publisher/social-publisher.ts`** — Instagram Graph API publish flow (media container → publish). LinkedIn/TikTok remain stubs (require OAuth 2.0 flows)
 
 ### Fixes — Post-Review Corrections (13 issues)
+
 - **`next.config.ts`** — Adicionado `output: 'standalone'` (Dockerfile estava quebrado, copiava `.next/standalone` mas não existia)
 - **`src/middleware.ts`** — Criado. Auth e rate limiting nunca executavam porque `src/middleware.ts` não existia (só tinha `src/middleware/auth.ts`)
 - **`src/config/env.ts`** — Adicionado `MAKE_WEBHOOK_API_KEY` e `NEXT_PUBLIC_APP_VERSION`. Fixado `OPENAI_API_KEY` para ser opcional em dev. Fixado default do Redis para `dummy.upstash.io` (era `localhost`, quebrava `redis.ts`)
@@ -63,10 +68,12 @@ This release implements all previously missing foundation infrastructure with **
 - **`.env.local`** — Adicionado `MAKE_WEBHOOK_API_KEY`, versão bumpada para 0.3.0
 
 ### Known Issues
+
 - **npm vulnerabilities**: 15 vulnerabilities em dev dependencies (elliptic, esbuild, postcss, uuid). `npm audit fix --force` causaria breaking changes (Next.js 9, Storybook 7). Será resolvido em sessão dedicada de atualização de dependências.
 - **Sentry integration**: Planejada mas não implementada. Error logging usa structured console output por enquanto.
 
 ### Quality Gates
+
 - **TypeScript**: 0 errors ✅
 - **ESLint**: 0 warnings/errors ✅
 - **Tests**: 6 files, 27 tests, all passing ✅
@@ -75,6 +82,7 @@ This release implements all previously missing foundation infrastructure with **
 ## [0.2.0] - 2026-06-06
 
 ### Foundation
+
 - `npm install` completed with `--legacy-peer-deps`
 - `git init` + first commit on `main` branch
 - `.env.local` created with all required variables
@@ -83,16 +91,18 @@ This release implements all previously missing foundation infrastructure with **
 - All missing dependencies installed:
   - `@anthropic-ai/sdk`, `@fal-ai/client`, `satori`, `sharp`
   - `zustand`, `@tanstack/react-query`, `@supabase/supabase-js`
-  - `resend`, `posthog-js`, `posthog-node`, `dotenv`
+  - `resend`, `dotenv`
   - `class-variance-authority`, `tailwind-merge`, `clsx`, `lucide-react`
 
 ### Quality Gates
+
 - **TypeScript**: 0 errors ✅
 - **ESLint**: 0 warnings/errors ✅
 - **Tests**: 6 files, 27 tests, all passing ✅
 - **Dev server**: Running on localhost:3001 ✅
 
 ### Bug Fixes
+
 - Fixed `env.ts` to be dev-friendly (optional vars with defaults)
 - Fixed `calendar.ts` to use `metadata.platform` and `type`
 - Fixed `social-publisher.ts` to use `title` instead of `headline`
@@ -104,6 +114,7 @@ This release implements all previously missing foundation infrastructure with **
 - Fixed `engagement-rate.test.ts` expected value (0.24 → 0.22)
 
 ### Architecture
+
 - Restructured entire project into 8-layer Marketing Machine architecture:
   - `src/intelligence/` — Trend radar, competitor spy, audience analysis
   - `src/strategy/` — Campaign builder, funnel designer, content briefs
@@ -117,6 +128,7 @@ This release implements all previously missing foundation infrastructure with **
 - Added `src/shared/brand-dna/` — Brand consistency engine
 
 ### Documentation
+
 - Rewrote `AGENTS.md` with new session protocol, automation rules, scaling rules
 - Created `docs/operations/session-protocol.md` — Mandatory start/end routines
 - Created `docs/operations/agent-memory.md` — Long-term agent memory and decisions
@@ -124,10 +136,12 @@ This release implements all previously missing foundation infrastructure with **
 - Created `.kimi/context.md` — Session-to-session agent context and state
 
 ### Automation
+
 - Created `scripts/session-start.js` — Pre-session context loader and environment check
 - Rewrote `scripts/session-end.js` — Post-session quality gates and memory persistence
 
 ### Decisions
+
 - Adopted Model Router pattern (Claude 3.7 + GPT-4.1 + DeepSeek V3)
 - Chose fal.ai over Higgsfield for image/video generation
 - Decided on programmatic templates (Satori) for brand consistency
@@ -136,6 +150,7 @@ This release implements all previously missing foundation infrastructure with **
 ## [0.1.0] - 2026-06-03
 
 ### Added
+
 - Project scaffolding with Next.js 15, TypeScript, Tailwind CSS v4
 - Design system with tokens (colors, typography, spacing)
 - Base UI components: Button, Card, Badge, Input, Textarea
@@ -171,6 +186,7 @@ This release implements all previously missing foundation infrastructure with **
   - Tech stack and architecture docs
 
 ### Infrastructure
+
 - Environment variable validation with Zod
 - Dark mode support
 - Responsive design breakpoints

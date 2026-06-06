@@ -1,4 +1,4 @@
-# Runbook — Brasil Global Marketing Machine
+# Runbook — Muuday Marketing Machine
 
 > What to do when things break. Keep this open during incidents.
 
@@ -6,23 +6,25 @@
 
 ## 🚨 Severity Levels
 
-| Level | Name | Response Time | Examples |
-|-------|------|---------------|----------|
-| P1 | Critical | 15 min | All sites down, data loss, security breach |
-| P2 | High | 1 hour | Core feature broken (publishing, payments) |
-| P3 | Medium | 4 hours | Non-core feature degraded (analytics delay) |
-| P4 | Low | 24 hours | Cosmetic issues, minor bugs |
+| Level | Name     | Response Time | Examples                                    |
+| ----- | -------- | ------------- | ------------------------------------------- |
+| P1    | Critical | 15 min        | All sites down, data loss, security breach  |
+| P2    | High     | 1 hour        | Core feature broken (publishing, payments)  |
+| P3    | Medium   | 4 hours       | Non-core feature degraded (analytics delay) |
+| P4    | Low      | 24 hours      | Cosmetic issues, minor bugs                 |
 
 ---
 
 ## 🔥 P1: Application Completely Down
 
 ### Symptoms
+
 - Vercel dashboard shows deployment failed
 - `curl https://brasilglobal.com` returns 5xx or timeout
 - Uptime monitor alerts firing
 
 ### Response
+
 1. **Check Vercel status**: https://www.vercel-status.com
 2. **Check last deployment**: Vercel dashboard → Deployments → Last deploy
 3. **Roll back**: Click "Promote to Production" on last known good deployment
@@ -31,6 +33,7 @@
 6. **Escalate**: If not resolved in 15 min, page the on-call engineer
 
 ### Commands
+
 ```bash
 # Check deployment status
 vercel --version
@@ -45,11 +48,13 @@ vercel rollback
 ## 💸 P1: Runaway API Cost
 
 ### Symptoms
+
 - OpenAI/Anthropic/Fal dashboard shows 10x normal usage
 - Billing alert triggered
 - Suspicious traffic patterns
 
 ### Response
+
 1. **Rotate API keys immediately**:
    - OpenAI: https://platform.openai.com/api-keys
    - Anthropic: https://console.anthropic.com/settings/keys
@@ -65,11 +70,13 @@ vercel rollback
 ## 🗄️ P2: Database Connection Errors
 
 ### Symptoms
+
 - "connection refused" or "too many connections" errors
 - Supabase dashboard shows high connection count
 - Requests timing out on DB operations
 
 ### Response
+
 1. Check Supabase dashboard → Database → Connections
 2. If maxed out, restart connection pool:
    - Go to Supabase → Settings → Database → Restart
@@ -82,11 +89,13 @@ vercel rollback
 ## 📤 P2: Social Publishing Fails
 
 ### Symptoms
+
 - Content stuck in "scheduled" status
 - Meta/Instagram API errors in logs
 - Posts not appearing on social platforms
 
 ### Response
+
 1. Check Meta token expiry:
    ```bash
    curl "https://graph.facebook.com/v18.0/me?access_token=$META_ACCESS_TOKEN"
@@ -102,11 +111,13 @@ vercel rollback
 ## 🎨 P3: Image/Video Generation Slow or Failing
 
 ### Symptoms
+
 - Fal/Replicate requests timing out
 - Generated media missing or corrupted
 - High queue times
 
 ### Response
+
 1. Check Fal/Replicate status pages
 2. Switch to fallback provider:
    - Fal down → use Replicate
@@ -120,14 +131,16 @@ vercel rollback
 ## 📊 P3: Analytics Data Missing
 
 ### Symptoms
-- PostHog/Mixpanel showing zero events
+
+- Mixpanel showing zero events
 - Dashboards empty
 - Conversion tracking broken
 
 ### Response
-1. Check PostHog status: https://status.posthog.com
+
+1. Check
 2. Verify `NEXT_PUBLIC_POSTHOG_KEY` in deployed env vars
-3. Check browser console for PostHog init errors
+3. Check browser console for
 4. Verify Mixpanel token hasn't been rotated
 5. If using server-side tracking, check API rate limits
 
@@ -136,11 +149,13 @@ vercel rollback
 ## 🔐 P1: Security Incident
 
 ### Symptoms
+
 - Unauthorized API usage
 - Suspicious webhooks
 - Data exfiltration indicators
 
 ### Response
+
 1. **Immediate**: Rotate ALL API keys (OpenAI, Anthropic, Meta, Supabase, etc.)
 2. **Block suspicious IPs** at Vercel firewall or Cloudflare
 3. **Check audit logs**: Supabase → Logs, Vercel → Analytics
@@ -153,6 +168,7 @@ vercel rollback
 ## 🔄 General Recovery Steps
 
 For any incident:
+
 1. **Acknowledge** — Update status page / notify stakeholders
 2. **Contain** — Stop the bleeding (rollback, rotate keys, block traffic)
 3. **Diagnose** — Find root cause via logs, metrics, traces
@@ -164,10 +180,10 @@ For any incident:
 
 ## 📞 Escalation Contacts
 
-| Role | Contact | When to Escalate |
-|------|---------|-----------------|
-| Founder | (private) | P1 not resolved in 15 min |
-| DevOps | (private) | Infrastructure issues |
+| Role         | Contact   | When to Escalate          |
+| ------------ | --------- | ------------------------- |
+| Founder      | (private) | P1 not resolved in 15 min |
+| DevOps       | (private) | Infrastructure issues     |
 | Meta Partner | (private) | API bans or policy issues |
 
 ---
@@ -180,5 +196,5 @@ For any incident:
 - Anthropic Console: https://console.anthropic.com
 - Fal Dashboard: https://fal.ai/dashboard
 - Meta Business: https://business.facebook.com
-- PostHog: https://us.posthog.com
+-
 - Mixpanel: https://mixpanel.com

@@ -1,10 +1,6 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -22,67 +18,26 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@/components/*": [
-        "./src/components/*"
-      ],
-      "@/lib/*": [
-        "./src/lib/*"
-      ],
-      "@/types/*": [
-        "./src/types/*"
-      ],
-      "@/config/*": [
-        "./src/config/*"
-      ],
-      "@/shared/*": [
-        "./src/shared/*"
-      ],
-      "@/canvas/*": [
-        "./src/canvas/*"
-      ],
-      "@/intelligence/*": [
-        "./src/intelligence/*"
-      ],
-      "@/strategy/*": [
-        "./src/strategy/*"
-      ],
-      "@/visual-factory/*": [
-        "./src/visual-factory/*"
-      ],
-      "@/studio/*": [
-        "./src/studio/*"
-      ],
-      "@/ads-manager/*": [
-        "./src/ads-manager/*"
-      ],
-      "@/publisher/*": [
-        "./src/publisher/*"
-      ],
-      "@/content-engine/*": [
-        "./src/content-engine/*"
-      ],
-      "@/community/*": [
-        "./src/community/*"
-      ],
-      "@/analytics/*": [
-        "./src/analytics/*"
-      ]
+      "@/*": ["./src/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/lib/*": ["./src/lib/*"],
+      "@/types/*": ["./src/types/*"],
+      "@/config/*": ["./src/config/*"],
+      "@/shared/*": ["./src/shared/*"],
+      "@/canvas/*": ["./src/canvas/*"],
+      "@/intelligence/*": ["./src/intelligence/*"],
+      "@/strategy/*": ["./src/strategy/*"],
+      "@/visual-factory/*": ["./src/visual-factory/*"],
+      "@/studio/*": ["./src/studio/*"],
+      "@/ads-manager/*": ["./src/ads-manager/*"],
+      "@/publisher/*": ["./src/publisher/*"],
+      "@/content-engine/*": ["./src/content-engine/*"],
+      "@/community/*": ["./src/community/*"],
+      "@/analytics/*": ["./src/analytics/*"]
     },
     "target": "ES2017",
-    "types": [
-      "vitest/globals"
-    ]
+    "types": ["vitest/globals"]
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules", "scripts"]
 }

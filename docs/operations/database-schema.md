@@ -8,6 +8,7 @@
 ## Tables
 
 ### marketing_content_pieces
+
 Core content inventory. Every piece of content lives here.
 
 ```sql
@@ -36,6 +37,7 @@ create index idx_content_created on marketing_content_pieces(created_at desc);
 ```
 
 ### marketing_content_metadata (inline JSONB structure)
+
 Stored in `metadata` column of `marketing_content_pieces`:
 
 ```json
@@ -55,6 +57,7 @@ Stored in `metadata` column of `marketing_content_pieces`:
 ```
 
 ### marketing_social_posts
+
 Published or scheduled social media posts.
 
 ```sql
@@ -78,6 +81,7 @@ create index idx_social_scheduled on marketing_social_posts(scheduled_for);
 ```
 
 ### marketing_meta_campaigns
+
 Meta Ads campaign tracking.
 
 ```sql
@@ -104,6 +108,7 @@ create index idx_meta_status on marketing_meta_campaigns(status);
 ```
 
 ### marketing_community_members
+
 Community and ambassador program.
 
 ```sql
@@ -128,7 +133,8 @@ create index idx_member_country on marketing_community_members(country);
 ```
 
 ### marketing_analytics_events
-Event tracking for custom analytics (supplements PostHog/Mixpanel).
+
+Event tracking for custom analytics (supplements Mixpanel).
 
 ```sql
 create table marketing_analytics_events (
@@ -147,6 +153,7 @@ create index idx_event_user on marketing_analytics_events(user_id);
 ```
 
 ### marketing_cost_log
+
 Track every AI/API call cost for budget monitoring.
 
 ```sql
@@ -168,6 +175,7 @@ create index idx_cost_created on marketing_cost_log(created_at desc);
 ```
 
 ### marketing_templates
+
 Programmatic template registry (Satori/React → SVG → PNG).
 
 ```sql
@@ -185,6 +193,7 @@ create table marketing_templates (
 ```
 
 ### marketing_leads
+
 Lead capture from landing pages, forms, campaigns.
 
 ```sql
@@ -238,6 +247,7 @@ create policy "Service role can manage content"
 ## Migrations
 
 Use Supabase CLI for migrations:
+
 ```bash
 supabase migration new create_marketing_tables
 # Edit supabase/migrations/YYYYMMDDHHMMSS_create_marketing_tables.sql

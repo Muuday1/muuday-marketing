@@ -1,37 +1,15 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import { AnalyticsInit } from '@/components/AnalyticsInit'
 
 export const metadata: Metadata = {
-  title: 'Brasil Global — Comunidade de Brasileiros no Exterior',
-  description:
-    'Conteúdo, dicas e comunidade para brasileiros que vivem fora do Brasil. Podcast, newsletter, eventos e muito mais.',
-  keywords: [
-    'brasileiros no exterior',
-    'imigração',
-    'comunidade brasileira',
-    'vida no UK',
-    'vida na Europa',
-  ],
-  openGraph: {
-    title: 'Brasil Global',
-    description: 'Comunidade de Brasileiros no Exterior',
-    type: 'website',
-    locale: 'pt_BR',
-  },
+  title: 'Muuday Marketing',
+  description: 'Ferramenta interna de marketing da Muuday',
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR">
-      <body className="antialiased">
-        <AnalyticsInit />
-        {children}
-      </body>
+      <body className="antialiased">{children}</body>
     </html>
   )
 }

@@ -1,56 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { env } from '@/config/env'
 import { incrementCache, cacheKeys } from '@/cache/redis'
 
 /**
- * Validate a JWT token using APP_SECRET.
- * In production, integrate with Supabase Auth or NextAuth.
- */
-async function validateToken(token: string): Promise<boolean> {
-  try {
-    const [headerB64, payloadB64, signature] = token.split('.')
-    if (!headerB64 || !payloadB64 || !signature) return false
-
-    const encoder = new TextEncoder()
-    const data = `${headerB64}.${payloadB64}`
-    const key = await crypto.subtle.importKey(
-      'raw',
-      encoder.encode(env.APP_SECRET),
-      { name: 'HMAC', hash: 'SHA-256' },
-      false,
-      ['sign']
-    )
-    const sig = await crypto.subtle.sign('HMAC', key, encoder.encode(data))
-    const sigB64 = btoa(String.fromCharCode(...new Uint8Array(sig)))
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=+$/, '')
-
-    return sigB64 === signature
-  } catch {
-    return false
-  }
-}
-
-/**
- * Simple auth middleware for dashboard routes.
+ * Simple auth middleware: checks for admin-session cookie.
+ * No JWT, no complexity. Physical access is the security boundary.
  */
 export async function authMiddleware(request: NextRequest): Promise<NextResponse | null> {
   const path = request.nextUrl.pathname
 
-  if (path.startsWith('/dashboard')) {
-    const token = request.cookies.get('auth-token')?.value
+  // Public routes
+  if (path === '/login' || path.startsWith('/api/auth/')) {
+    return null
+  }
 
-    if (!token) {
-      const loginUrl = new URL('/login', request.url)
-      return NextResponse.redirect(loginUrl)
-    }
+  const session = request.cookies.get('admin-session')?.value
 
-    const isValid = await validateToken(token)
-    if (!isValid) {
-      const loginUrl = new URL('/login', request.url)
-      return NextResponse.redirect(loginUrl)
-    }
+  if (session !== 'authenticated') {
+    const loginUrl = new URL('/login', request.url)
+    return NextResponse.redirect(loginUrl)
   }
 
   return null

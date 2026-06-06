@@ -1,4 +1,4 @@
-# 🇧🇷 Brasil Global — Marketing Machine
+# 🇧🇷 Muuday — Marketing Machine
 
 > A world-class AI-powered content engine and community platform for Brazilians living abroad.
 
@@ -29,7 +29,7 @@ This is **not** a generic social media scheduler. It's a full-stack marketing ma
 │  canvas            → Programmatic templates (Satori → SVG)   │
 │  studio            → Review, approval, brand voice scoring   │
 │  publisher         → Social scheduling + Meta Ads            │
-│  analytics         → PostHog, Mixpanel, custom events        │
+│  analytics         → Mixpanel, custom events        │
 │  community         → Members, ambassadors, referrals         │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -61,44 +61,44 @@ make verify          # lint + typecheck + test
 
 ## 📋 Available Commands
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start Next.js dev server |
-| `npm run build` | Production build |
-| `npm run test` | Run Vitest suite |
-| `npm run test:coverage` | Tests with coverage |
-| `npm run lint` | ESLint check |
-| `npm run typecheck` | TypeScript check (no emit) |
-| `npm run content:generate` | Generate AI content |
-| `npm run podcast:generate` | Generate podcast episode |
-| `npm run meta:sync` | Sync Meta Ads data |
-| `npm run session:start` | Begin dev session (runs checks) |
-| `npm run session:end` | End dev session (updates changelog) |
-| `make help` | Show all Make targets |
-| `make verify` | Full verification pipeline |
-| `make docker-up` | Start Docker services |
+| Command                    | Description                         |
+| -------------------------- | ----------------------------------- |
+| `npm run dev`              | Start Next.js dev server            |
+| `npm run build`            | Production build                    |
+| `npm run test`             | Run Vitest suite                    |
+| `npm run test:coverage`    | Tests with coverage                 |
+| `npm run lint`             | ESLint check                        |
+| `npm run typecheck`        | TypeScript check (no emit)          |
+| `npm run content:generate` | Generate AI content                 |
+| `npm run podcast:generate` | Generate podcast episode            |
+| `npm run meta:sync`        | Sync Meta Ads data                  |
+| `npm run session:start`    | Begin dev session (runs checks)     |
+| `npm run session:end`      | End dev session (updates changelog) |
+| `make help`                | Show all Make targets               |
+| `make verify`              | Full verification pipeline          |
+| `make docker-up`           | Start Docker services               |
 
 ---
 
 ## 🔧 Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Framework | Next.js 15 (App Router) + React 19 |
-| Language | TypeScript 5.6+ |
-| Styling | Tailwind CSS v4 |
-| Testing | Vitest + React Testing Library |
-| State | Zustand (client), React Query (server) |
-| Database | Supabase (PostgreSQL) — `marketing_` tables |
-| CMS | Sanity |
-| Analytics | PostHog + Mixpanel |
-| Email | Resend |
-| Cache | Upstash Redis |
-| AI Text | Claude 3.7, GPT-4.1, DeepSeek V3 |
-| AI Image | FLUX 2 (fal.ai), Ideogram 3, Recraft V3 |
-| AI Video | Pika, Kling 3.0, Runway Gen-4.5, HeyGen |
-| AI Voice | ElevenLabs |
-| Deployment | Vercel |
+| Layer      | Technology                                  |
+| ---------- | ------------------------------------------- |
+| Framework  | Next.js 15 (App Router) + React 19          |
+| Language   | TypeScript 5.6+                             |
+| Styling    | Tailwind CSS v4                             |
+| Testing    | Vitest + React Testing Library              |
+| State      | Zustand (client), React Query (server)      |
+| Database   | Supabase (PostgreSQL) — `marketing_` tables |
+| CMS        | Sanity                                      |
+| Analytics  | Mixpanel                                    |
+| Email      | Resend                                      |
+| Cache      | Upstash Redis                               |
+| AI Text    | Claude 3.7, GPT-4.1, DeepSeek V3            |
+| AI Image   | FLUX 2 (fal.ai), Ideogram 3, Recraft V3     |
+| AI Video   | Pika, Kling 3.0, Runway Gen-4.5, HeyGen     |
+| AI Voice   | ElevenLabs                                  |
+| Deployment | Vercel                                      |
 
 ---
 
@@ -106,16 +106,16 @@ make verify          # lint + typecheck + test
 
 The Model Router automatically selects the optimal AI model based on task:
 
-| Task Type | Model | Why |
-|-----------|-------|-----|
-| Premium copy | Claude 3.7 | Best creative writing, brand voice |
-| Structured JSON | GPT-4.1 | Reliable schema adherence |
-| Budget/volume | DeepSeek V3 | Cheapest for high volume |
-| Images | FLUX 2 (fal.ai) | Best quality/cost ratio |
-| Typography images | Ideogram 3 | Perfect text rendering |
-| Reels | Pika | Fast, cost-effective |
-| Cinematic B-roll | Kling 3.0 | Best motion quality |
-| Podcast voice | ElevenLabs Multilingual | Natural Brazilian Portuguese |
+| Task Type         | Model                   | Why                                |
+| ----------------- | ----------------------- | ---------------------------------- |
+| Premium copy      | Claude 3.7              | Best creative writing, brand voice |
+| Structured JSON   | GPT-4.1                 | Reliable schema adherence          |
+| Budget/volume     | DeepSeek V3             | Cheapest for high volume           |
+| Images            | FLUX 2 (fal.ai)         | Best quality/cost ratio            |
+| Typography images | Ideogram 3              | Perfect text rendering             |
+| Reels             | Pika                    | Fast, cost-effective               |
+| Cinematic B-roll  | Kling 3.0               | Best motion quality                |
+| Podcast voice     | ElevenLabs Multilingual | Natural Brazilian Portuguese       |
 
 ---
 
@@ -207,17 +207,17 @@ See `docs/operations/cost-budget.md` for detailed breakdown.
 
 ## 📚 Documentation
 
-| Document | Purpose |
-|----------|---------|
-| `AGENTS.md` | Agent guidelines and principles |
-| `docs/operations/agent-memory.md` | Architectural decisions |
-| `docs/operations/daily-plan.md` | Daily routines |
-| `docs/operations/session-protocol.md` | Start/end rituals |
-| `docs/operations/runbook.md` | What to do when X breaks |
-| `docs/operations/cost-budget.md` | Monthly API budget |
-| `docs/operations/incident-response.md` | Incident procedures |
-| `docs/operations/database-schema.md` | Database schema |
-| `docs/operations/seed-data.md` | Development seed data |
+| Document                               | Purpose                         |
+| -------------------------------------- | ------------------------------- |
+| `AGENTS.md`                            | Agent guidelines and principles |
+| `docs/operations/agent-memory.md`      | Architectural decisions         |
+| `docs/operations/daily-plan.md`        | Daily routines                  |
+| `docs/operations/session-protocol.md`  | Start/end rituals               |
+| `docs/operations/runbook.md`           | What to do when X breaks        |
+| `docs/operations/cost-budget.md`       | Monthly API budget              |
+| `docs/operations/incident-response.md` | Incident procedures             |
+| `docs/operations/database-schema.md`   | Database schema                 |
+| `docs/operations/seed-data.md`         | Development seed data           |
 
 ---
 
@@ -237,4 +237,4 @@ MIT — See `LICENSE`
 
 ---
 
-*Built with ❤️ for brasileiros no exterior.*
+_Built with ❤️ for brasileiros no exterior._

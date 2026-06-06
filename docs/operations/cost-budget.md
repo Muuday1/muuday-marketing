@@ -7,38 +7,41 @@
 
 ## 💰 Monthly Budget: $500 USD
 
-| Provider | Service | Budget | Alert At | Used (MTD) | Status |
-|----------|---------|--------|----------|------------|--------|
-| OpenAI | GPT-4.1, GPT-4o-mini | $80 | $64 | $0 | 🟢 |
-| Anthropic | Claude 3.7 | $100 | $80 | $0 | 🟢 |
-| DeepSeek | V3 API | $30 | $24 | $0 | 🟢 |
-| Fal.ai | FLUX 2, image gen | $60 | $48 | $0 | 🟢 |
-| Replicate | Video gen (Pika, Kling) | $80 | $64 | $0 | 🟢 |
-| ElevenLabs | Voice/podcast | $40 | $32 | $0 | 🟢 |
-| Meta Ads | Ad spend | $0* | — | $0 | 🟢 |
-| Supabase | DB + Auth + Storage | $25 | $20 | $0 | 🟢 |
-| Vercel | Hosting | $20 | $16 | $0 | 🟢 |
-| PostHog | Analytics | $0* | — | $0 | 🟢 |
+| Provider   | Service                 | Budget | Alert At | Used (MTD) | Status |
+| ---------- | ----------------------- | ------ | -------- | ---------- | ------ |
+| OpenAI     | GPT-4.1, GPT-4o-mini    | $80    | $64      | $0         | 🟢     |
+| Anthropic  | Claude 3.7              | $100   | $80      | $0         | 🟢     |
+| DeepSeek   | V3 API                  | $30    | $24      | $0         | 🟢     |
+| Fal.ai     | FLUX 2, image gen       | $60    | $48      | $0         | 🟢     |
+| Replicate  | Video gen (Pika, Kling) | $80    | $64      | $0         | 🟢     |
+| ElevenLabs | Voice/podcast           | $40    | $32      | $0         | 🟢     |
+| Meta Ads   | Ad spend                | $0\*   | —        | $0         | 🟢     |
+| Supabase   | DB + Auth + Storage     | $25    | $20      | $0         | 🟢     |
+| Vercel     | Hosting                 | $20    | $16      | $0         | 🟢     |
+
+|
 | Resend | Email | $20 | $16 | $0 | 🟢 |
 | Upstash | Redis | $10 | $8 | $0 | 🟢 |
 | **Total** | | **$465** | | **$0** | 🟢 |
 
-*Meta Ads spend is managed separately via Meta Business Manager.
-*PostHog free tier sufficient for current volume.
+\*Meta Ads spend is managed separately via Meta Business Manager.
 
----
+- ***
 
 ## 🔔 Alert Configuration
 
 ### Slack/Discord Webhook
+
 Set `COST_ALERT_WEBHOOK_URL` in `.env.local` to receive alerts.
 
 ### Alert Triggers
+
 - **80% budget**: Warning — review usage, pause non-essential generation
 - **95% budget**: Critical — halt all AI generation except human-approved
 - **100% budget**: Emergency — hard stop, manual approval required
 
 ### Manual Check Command
+
 ```bash
 npm run cost:check  # TODO: implement this script
 ```
@@ -47,17 +50,17 @@ npm run cost:check  # TODO: implement this script
 
 ## 📊 Cost Per Output Type
 
-| Output | Provider | Model | Avg Cost |
-|--------|----------|-------|----------|
-| Instagram caption | OpenAI | GPT-4o-mini | $0.002 |
-| Premium blog post | Anthropic | Claude 3.7 | $0.15 |
-| Structured JSON | OpenAI | GPT-4.1 | $0.01 |
-| Image (1024x1024) | Fal | FLUX 2 | $0.03 |
-| Image with typography | Ideogram | Ideogram 3 | $0.04 |
-| 5s video (Reel) | Replicate | Pika | $0.50 |
-| 30s B-roll | Replicate | Kling 3.0 | $2.00 |
-| Podcast narration | ElevenLabs | Multilingual v2 | $0.10/min |
-| Email newsletter | Resend | — | $0.001/email |
+| Output                | Provider   | Model           | Avg Cost     |
+| --------------------- | ---------- | --------------- | ------------ |
+| Instagram caption     | OpenAI     | GPT-4o-mini     | $0.002       |
+| Premium blog post     | Anthropic  | Claude 3.7      | $0.15        |
+| Structured JSON       | OpenAI     | GPT-4.1         | $0.01        |
+| Image (1024x1024)     | Fal        | FLUX 2          | $0.03        |
+| Image with typography | Ideogram   | Ideogram 3      | $0.04        |
+| 5s video (Reel)       | Replicate  | Pika            | $0.50        |
+| 30s B-roll            | Replicate  | Kling 3.0       | $2.00        |
+| Podcast narration     | ElevenLabs | Multilingual v2 | $0.10/min    |
+| Email newsletter      | Resend     | —               | $0.001/email |
 
 ---
 
@@ -75,8 +78,8 @@ npm run cost:check  # TODO: implement this script
 ## 🚨 Incident Log
 
 | Date | Provider | Amount | Cause | Action Taken |
-|------|----------|--------|-------|--------------|
-| — | — | — | — | — |
+| ---- | -------- | ------ | ----- | ------------ |
+| —    | —        | —      | —     | —            |
 
 ---
 

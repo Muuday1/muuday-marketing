@@ -40,8 +40,6 @@ const envSchema = z.object({
 
   // Analytics
   NEXT_PUBLIC_MIXPANEL_TOKEN: z.string().optional().default(''),
-  NEXT_PUBLIC_POSTHOG_KEY: z.string().optional().default(''),
-  NEXT_PUBLIC_POSTHOG_HOST: z.string().url().optional().default('https://app.posthog.com'),
 
   // Email
   RESEND_API_KEY: z.string().optional().default(''),
@@ -60,6 +58,9 @@ const envSchema = z.object({
     .min(32, 'APP_SECRET must be at least 32 characters')
     .optional()
     .default('dev-app-secret-32-chars-long-ok-'),
+
+  // Admin auth (local tool — physical security is the boundary)
+  ADMIN_PASSWORD: z.string().min(1, 'ADMIN_PASSWORD is required').default('muuday-admin'),
 })
 
 export type Env = z.infer<typeof envSchema>

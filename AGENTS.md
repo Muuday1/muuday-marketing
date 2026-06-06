@@ -4,14 +4,16 @@ owner: founder
 scope: global
 ---
 
-# Brasil Global — Marketing Machine Agent Guidelines
+# Muuday — Marketing Machine Agent Guidelines
 
 ## Vision
+
 Build a **world-class, AI-powered community and content engine** for the Brazilian diaspora. Not a sales funnel — a **movement**. We build trust first, sell never. Quality over quantity. Authenticity over automation noise. Community over conversion.
 
 This is the **communication layer** of the company. The product (muuday-app) exists separately. This machine builds brand authority, educates the community, and creates genuine connection. Sales happen naturally when trust is earned.
 
-## Brand Identity: "Brasil Global"
+## Brand Identity: "Muuday"
+
 - **Mission**: Connect, inform, and empower Brazilians worldwide through premium AI-generated content
 - **Tone**: Warm, informed, aspirational, deeply Brazilian but globally minded
 - **Languages**: Portuguese (primary), English (secondary for broader reach)
@@ -31,34 +33,37 @@ LAYER 8: ANALYTICS        → Organic, paid, content performance, LLM SEO
 ```
 
 ## Tech Stack (Locked)
-| Layer | Tool | Role |
-|-------|------|------|
-| Framework | Next.js 15 (App Router) | Dashboard + Studio |
-| Styling | Tailwind CSS v4 | Design system |
-| Language | TypeScript 5.6+ | Type safety |
-| Testing | Vitest | Unit tests |
-| DB | Supabase (PostgreSQL) | Data persistence |
-| CMS | Sanity | Content management |
-| Automation | Make.com (fast) + n8n (complex) | Orchestration |
-| Text AI | Kimi (default) + GPT-4.1 + Claude 3.7 + DeepSeek V3 | Model Router pattern |
-| Image AI | FLUX 2 (fal.ai) + Ideogram 3 + Recraft V3 | Visual factory |
-| Video AI | Pika + Kling 3.0 + Runway Gen-4.5 | Video studio |
-| Voice AI | ElevenLabs | Podcast + voice |
-| Analytics | PostHog + Plausible | Event + web analytics |
-| Email | Listmonk (self-hosted) | Newsletter |
-| Scheduling | Postiz (self-hosted) | Social publishing |
-| Deployment | Vercel | Hosting |
+
+| Layer      | Tool                                                | Role                  |
+| ---------- | --------------------------------------------------- | --------------------- |
+| Framework  | Next.js 15 (App Router)                             | Dashboard + Studio    |
+| Styling    | Tailwind CSS v4                                     | Design system         |
+| Language   | TypeScript 5.6+                                     | Type safety           |
+| Testing    | Vitest                                              | Unit tests            |
+| DB         | Supabase (PostgreSQL)                               | Data persistence      |
+| CMS        | Sanity                                              | Content management    |
+| Automation | Make.com (fast) + n8n (complex)                     | Orchestration         |
+| Text AI    | Kimi (default) + GPT-4.1 + Claude 3.7 + DeepSeek V3 | Model Router pattern  |
+| Image AI   | FLUX 2 (fal.ai) + Ideogram 3 + Recraft V3           | Visual factory        |
+| Video AI   | Pika + Kling 3.0 + Runway Gen-4.5                   | Video studio          |
+| Voice AI   | ElevenLabs                                          | Podcast + voice       |
+| Analytics  | Mixpanel                                            | Event + web analytics |
+| Email      | Listmonk (self-hosted)                              | Newsletter            |
+| Scheduling | Postiz (self-hosted)                                | Social publishing     |
+| Deployment | Vercel                                              | Hosting               |
 
 ## Code Quality Rules (Hard Limits)
-| File Type | Max Lines | Rule |
-|-----------|-----------|------|
-| Page/component | 150 | Orchestration only |
-| Utility function | 40 | Single responsibility |
-| Hook | 150 | One concern only |
-| Server action | 100 | Thin controller |
-| Config file | 200 | Centralized only |
+
+| File Type        | Max Lines | Rule                  |
+| ---------------- | --------- | --------------------- |
+| Page/component   | 150       | Orchestration only    |
+| Utility function | 40        | Single responsibility |
+| Hook             | 150       | One concern only      |
+| Server action    | 100       | Thin controller       |
+| Config file      | 200       | Centralized only      |
 
 ### No God Files
+
 - **One file = one job**. If a file has more than 3 imports from different domains, it's too big.
 - **Extract early**: At 80% of max lines, start splitting. Don't wait for the limit.
 - **No "utils.ts" dumping grounds**: Specific names only (`date-formatter.ts`, `slug-generator.ts`).
@@ -66,6 +71,7 @@ LAYER 8: ANALYTICS        → Organic, paid, content performance, LLM SEO
 - **Tests reflect structure**: If a file is hard to test, it's too complex. Split it.
 
 ## Architecture Principles
+
 1. **DRY**: Extract shared logic to `src/shared/`
 2. **Single Responsibility**: One module = one domain
 3. **Config Centralization**: All API keys, limits, timeouts in `src/config/`
@@ -75,6 +81,7 @@ LAYER 8: ANALYTICS        → Organic, paid, content performance, LLM SEO
 7. **Brand Consistency**: Never generate text-on-image with AI. Always use programmatic templates.
 
 ## Content Generation Rules
+
 1. **Human-in-the-loop**: AI generates drafts; human approves before publish
 2. **Cultural accuracy**: Every post about Brazil must be verified by a Brazilian
 3. **Quality gate**: Content must score 8+/10 on brand voice rubric before publish
@@ -82,6 +89,7 @@ LAYER 8: ANALYTICS        → Organic, paid, content performance, LLM SEO
 5. **Brand DNA**: Every visual output must inject `#9FE870`, `Geist` font, warm photography
 
 ## Security
+
 - No API keys in code. Use `.env.local` + Vercel env vars
 - No PII in logs
 - Rate limit all external API calls
@@ -91,6 +99,7 @@ LAYER 8: ANALYTICS        → Organic, paid, content performance, LLM SEO
 ## Session Protocol (MANDATORY)
 
 ### Before Every Session
+
 1. Run `git status` — understand the current state
 2. Read `AGENTS.md` (this file)
 3. Read `.kimi/context.md` — load agent memory
@@ -98,6 +107,7 @@ LAYER 8: ANALYTICS        → Organic, paid, content performance, LLM SEO
 5. Check `docs/operations/CHANGELOG.md` — see what changed last
 
 ### During Every Session
+
 6. Update todo list at start — be explicit about goals
 7. Write code that follows hard limits (max lines per file)
 8. Run `npm run typecheck` after significant changes
@@ -105,6 +115,7 @@ LAYER 8: ANALYTICS        → Organic, paid, content performance, LLM SEO
 10. Update `.kimi/context.md` whenever state changes
 
 ### Before Ending Session
+
 11. Update `docs/operations/CHANGELOG.md`
 12. Run `npm run typecheck && npm run lint`
 13. Run `npm run test`
@@ -112,6 +123,7 @@ LAYER 8: ANALYTICS        → Organic, paid, content performance, LLM SEO
 15. Update `.kimi/context.md` with current state + next steps
 
 ## Automation Rules
+
 - All repetitive tasks must become scripts or workflows
 - Every API client must have retry + exponential backoff
 - Every batch operation must have progress logging
@@ -121,12 +133,14 @@ LAYER 8: ANALYTICS        → Organic, paid, content performance, LLM SEO
 - Prefer composition of small automated steps over one big manual process.
 
 ## Agent Orchestration Rules
+
 - Parallelize by default. If tasks are independent, run them in parallel agents.
 - One agent = one domain (content, infra, testing, docs). Never overload one agent with unrelated work.
 - Use explore agents for research (read-only), coder agents for implementation, plan agents for architecture.
 - Spawn agents proactively. Don't wait until you're stuck — anticipate work and delegate early.
 
 ## Document Organization Rules
+
 - **docs/ is sacred**: Every doc has a clear owner and last-updated date. Stale docs are deleted or updated.
 - **One topic = one file**: No 500-line docs covering 10 subjects. Split into `topic-subtopic.md`.
 - **Cross-references are mandatory**: If you mention something documented elsewhere, link to it.
@@ -137,6 +151,7 @@ LAYER 8: ANALYTICS        → Organic, paid, content performance, LLM SEO
 - **Design docs live in `docs/design/`**: tokens, voice, templates, logo usage.
 
 ## Scaling Rules
+
 - Design for 10x traffic with zero code changes (caching, connection pooling)
 - Queue long operations (video gen, batch publishing)
 - Monitor API costs daily — alert at 80% of budget

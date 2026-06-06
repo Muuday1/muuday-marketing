@@ -1,48 +1,69 @@
 'use client'
 
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 
 export default function LoginPage() {
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      })
+
+      if (!res.ok) {
+        setError('Senha incorreta')
+        setLoading(false)
+        return
+      }
+
+      router.push('/dashboard')
+      router.refresh()
+    } catch {
+      setError('Erro ao fazer login')
+      setLoading(false)
+    }
+  }
+
   return (
-    <div className="min-h-screen bg-brand-light flex items-center justify-center px-4">
+    <div className="bg-brand-light flex min-h-screen items-center justify-center px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Dashboard Brasil Global</CardTitle>
-          <p className="text-sm text-brand-slate mt-1">
-            Faça login para acessar o painel de controle
-          </p>
+          <CardTitle className="text-2xl">Muuday Marketing</CardTitle>
+          <p className="text-brand-slate mt-1 text-sm">Ferramenta interna de marketing</p>
         </CardHeader>
         <CardContent>
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-brand-dark mb-1">
-                Email
-              </label>
-              <input
-                type="email"
-                className="w-full rounded-lg border border-brand-slate/20 bg-white px-4 py-2 text-brand-dark focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
-                placeholder="admin@brasilglobal.com"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-brand-dark mb-1">
-                Senha
-              </label>
+              <label className="text-brand-dark mb-1 block text-sm font-medium">Senha</label>
               <input
                 type="password"
-                className="w-full rounded-lg border border-brand-slate/20 bg-white px-4 py-2 text-brand-dark focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="border-brand-slate/20 text-brand-dark focus:border-brand-primary focus:ring-brand-primary/20 w-full rounded-lg border bg-white px-4 py-2 focus:ring-2"
                 placeholder="••••••••"
                 required
               />
             </div>
-            <Button type="submit" className="w-full">
-              Entrar
+            {error && <p className="text-sm text-red-600">{error}</p>}
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? 'Entrando...' : 'Entrar'}
             </Button>
           </form>
-          <p className="text-xs text-brand-slate text-center mt-4">
-            Acesso restrito à equipe Brasil Global.
+          <p className="text-brand-slate mt-4 text-center text-xs">
+            Acesso restrito. Roda localmente.
           </p>
         </CardContent>
       </Card>
