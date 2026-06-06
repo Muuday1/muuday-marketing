@@ -1,221 +1,240 @@
-# 🇧🇷 Social Media Machine
+# 🇧🇷 Brasil Global — Marketing Machine
 
-> **A world-class AI-powered content engine and community platform for Brazilians living abroad.**
+> A world-class AI-powered content engine and community platform for Brazilians living abroad.
 
-## What We're Building
+---
 
-Not another social media tool. A **content machine** that operates at the quality level of a top-tier creative agency — powered by AI, guided by human strategy, built for the Brazilian diaspora.
+## 🎯 What This Is
 
-### Products
-1. **Content Engine** — Generate Instagram posts, carousels, Reels, stories with AI
-2. **Meta Ads Monitor** — Track ad performance, auto-alerts, budget optimization
-3. **Analytics Dashboard** — Unified view of organic + paid performance
-4. **Podcast Generator** — AI-generated podcast episodes (voice + script)
-5. **Community Platform** — Content hub for Brazilians abroad (articles, guides, forums)
+This is **not** a generic social media scheduler. It's a full-stack marketing machine that:
 
-### Target Audience
-- Brazilians living in UK, USA, Portugal, Ireland, Australia, Canada
-- Ages 25-45
-- Interested in: immigration, careers, finance, culture, community
+- **Generates** premium content (copy, images, video, audio) using the best AI models
+- **Publishes** across Instagram, TikTok, LinkedIn, Twitter, YouTube, Spotify
+- **Manages** Meta Ads campaigns with real-time cost tracking
+- **Builds** a community of ambassadors and engaged members
+- **Tracks** everything — analytics, costs, brand voice scores, cultural accuracy
 
-## Quick Start
+**Philosophy**: Quality over quantity. Authenticity over automation noise. Every piece of content must score 8+/10 on brand voice before publishing.
+
+---
+
+## 🏗️ Architecture — 8 Layers
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  intelligence      → Model Router (Claude/GPT/DeepSeek)     │
+│  strategy          → Content strategy, pillar rotation        │
+│  content-engine    → Copy, blog, podcast scripts             │
+│  visual-factory    → Image/video generation (FLUX, Pika)     │
+│  canvas            → Programmatic templates (Satori → SVG)   │
+│  studio            → Review, approval, brand voice scoring   │
+│  publisher         → Social scheduling + Meta Ads            │
+│  analytics         → PostHog, Mixpanel, custom events        │
+│  community         → Members, ambassadors, referrals         │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🚀 Quick Start
 
 ```bash
-# 1. Clone and install
-git clone <repo>
-cd social-media-machine
-npm install
+# 1. Use correct Node version
+nvm use  # Reads .nvmrc
 
-# 2. Configure environment
+# 2. Install dependencies
+npm install --legacy-peer-deps
+
+# 3. Set up environment
 cp .env.example .env.local
-# Fill in your API keys (see Environment Variables below)
+# Edit .env.local with your real API keys
 
-# 3. Run development
-npm run dev
+# 4. Start development
+npm run dev          # Next.js dev server
+npm run storybook    # Component library
 
-# 4. Run Storybook
-npm run storybook
-
-# 5. Run tests
-npm run test
-
-# 6. Run type check
-npm run typecheck
+# 5. Verify everything
+make verify          # lint + typecheck + test
 ```
 
-## Available Scripts
+---
 
-| Script | Description |
-|--------|-------------|
-| `npm run dev` | Start development server (localhost:3000) |
+## 📋 Available Commands
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start Next.js dev server |
 | `npm run build` | Production build |
-| `npm run lint` | Run ESLint |
-| `npm run typecheck` | Run TypeScript compiler (no emit) |
-| `npm run test` | Run Vitest test suite |
-| `npm run test:watch` | Run tests in watch mode |
-| `npm run test:coverage` | Run tests with coverage report |
-| `npm run storybook` | Start Storybook (localhost:6006) |
-| `npm run storybook:build` | Build Storybook for deployment |
-| `npm run content:generate` | Generate content batch via CLI |
-| `npm run podcast:generate` | Generate podcast episode via CLI |
-| `npm run meta:sync` | Sync Meta Ads data via CLI |
+| `npm run test` | Run Vitest suite |
+| `npm run test:coverage` | Tests with coverage |
+| `npm run lint` | ESLint check |
+| `npm run typecheck` | TypeScript check (no emit) |
+| `npm run content:generate` | Generate AI content |
+| `npm run podcast:generate` | Generate podcast episode |
+| `npm run meta:sync` | Sync Meta Ads data |
+| `npm run session:start` | Begin dev session (runs checks) |
+| `npm run session:end` | End dev session (updates changelog) |
+| `make help` | Show all Make targets |
+| `make verify` | Full verification pipeline |
+| `make docker-up` | Start Docker services |
 
-## Project Structure
+---
 
-```
-social-media-machine/
-├── AGENTS.md                 # Agent rules and conventions
-├── README.md                 # This file
-├── docs/                     # All documentation
-│   ├── strategy/             # Content, community, marketing strategy
-│   ├── design/               # Design tokens, palette, typography
-│   ├── tech/                 # Architecture, API docs
-│   └── operations/           # Workflows, changelog
-├── src/
-│   ├── app/                  # Next.js App Router
-│   │   ├── (pages)/          # Public pages
-│   │   ├── dashboard/        # Admin dashboard
-│   │   ├── api/              # API routes & webhooks
-│   │   └── middleware.ts     # Auth & rate limiting
-│   ├── components/           # React components
-│   │   ├── ui/               # Base UI (Button, Card, Badge)
-│   │   ├── layout/           # Header, Footer
-│   │   └── sections/         # Landing page sections
-│   ├── content-engine/       # AI content generation
-│   │   ├── generators/       # Copy, image, video generators
-│   │   └── validators/       # Brand voice, quality checks
-│   ├── meta-ads/             # Meta Marketing API integration
-│   │   ├── client/           # Auth, insights
-│   │   └── monitor/          # Alerts, optimization
-│   ├── analytics/            # Performance tracking
-│   │   ├── metrics/          # Engagement rate, benchmarks
-│   │   └── tracking.ts       # Event tracking (PostHog stub)
-│   ├── podcast/              # Podcast generation pipeline
-│   │   ├── script/           # Script writer (OpenAI)
-│   │   └── voice/            # Voice synthesis (ElevenLabs)
-│   ├── community/            # Community content management
-│   ├── lead-capture/         # Forms, server actions
-│   ├── scheduler/            # Content calendar, scheduling
-│   ├── publisher/            # Social media publishing
-│   ├── newsletter/           # Newsletter generation
-│   ├── integrations/         # Make.com, external APIs
-│   ├── ab-testing/           # A/B testing framework
-│   ├── cache/                # Redis caching utilities
-│   ├── middleware/           # Auth, rate limiting logic
-│   ├── config/               # Centralized configuration
-│   ├── lib/                  # Shared utilities
-│   └── types/                # Global TypeScript types
-├── scripts/                  # Automation scripts
-├── tests/                    # Test suites (Vitest)
-├── .storybook/               # Storybook configuration
-└── .github/workflows/        # CI/CD (GitHub Actions)
-```
+## 🔧 Tech Stack
 
-## Environment Variables
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 15 (App Router) + React 19 |
+| Language | TypeScript 5.6+ |
+| Styling | Tailwind CSS v4 |
+| Testing | Vitest + React Testing Library |
+| State | Zustand (client), React Query (server) |
+| Database | Supabase (PostgreSQL) — `marketing_` tables |
+| CMS | Sanity |
+| Analytics | PostHog + Mixpanel |
+| Email | Resend |
+| Cache | Upstash Redis |
+| AI Text | Claude 3.7, GPT-4.1, DeepSeek V3 |
+| AI Image | FLUX 2 (fal.ai), Ideogram 3, Recraft V3 |
+| AI Video | Pika, Kling 3.0, Runway Gen-4.5, HeyGen |
+| AI Voice | ElevenLabs |
+| Deployment | Vercel |
 
-See `.env.example` for full list. Key ones:
+---
 
-| Variable | Source | Purpose |
-|----------|--------|---------|
-| `OPENAI_API_KEY` | OpenAI | Content generation, podcast scripts |
-| `ELEVENLABS_API_KEY` | ElevenLabs | Podcast voice synthesis |
-| `META_APP_ID` | Meta Developers | Meta Marketing API |
-| `META_APP_SECRET` | Meta Developers | Meta Marketing API auth |
-| `META_ACCESS_TOKEN` | Meta Business | Ad account access |
-| `META_AD_ACCOUNT_ID` | Meta Business | Ad account ID |
-| `MAKE_WEBHOOK_API_KEY` | Make.com | Webhook authentication |
-| `MAKE_CONTENT_WEBHOOK_URL` | Make.com | Content generation trigger |
-| `MAKE_META_SYNC_WEBHOOK_URL` | Make.com | Meta sync trigger |
-| `SUPABASE_URL` | Supabase | Database |
-| `SUPABASE_SERVICE_ROLE_KEY` | Supabase | Server-side DB access |
+## 🧠 AI Model Routing
 
-## Content Strategy (High Level)
+The Model Router automatically selects the optimal AI model based on task:
 
-### Pillars
-1. **Immigration & Legal** — Visas, citizenship, paperwork
-2. **Career Abroad** — Jobs, networking, career growth
-3. **Finance** — Banking, taxes, investments, remittances
-4. **Culture & Identity** — Being Brazilian abroad, saudade, food, traditions
-5. **Community** — Events, connections, support networks
-6. **Lifestyle** — Travel, food, wellness, relationships
+| Task Type | Model | Why |
+|-----------|-------|-----|
+| Premium copy | Claude 3.7 | Best creative writing, brand voice |
+| Structured JSON | GPT-4.1 | Reliable schema adherence |
+| Budget/volume | DeepSeek V3 | Cheapest for high volume |
+| Images | FLUX 2 (fal.ai) | Best quality/cost ratio |
+| Typography images | Ideogram 3 | Perfect text rendering |
+| Reels | Pika | Fast, cost-effective |
+| Cinematic B-roll | Kling 3.0 | Best motion quality |
+| Podcast voice | ElevenLabs Multilingual | Natural Brazilian Portuguese |
 
-### Content Mix
-| Format | Frequency | Platform |
-|--------|-----------|----------|
-| Carousel posts | 3x/week | Instagram |
-| Reels | 2x/week | Instagram/TikTok |
-| Stories | Daily | Instagram |
-| Blog articles | 2x/week | Website |
-| Podcast episodes | 1x/week | Spotify, Apple |
-| Newsletter | 1x/week | Email |
+---
 
-## Design System
+## 🎨 Brand Consistency Strategy
 
-See Storybook: `npm run storybook`
+AI generates **only visual elements** (backgrounds, scenes, objects). All text, logos, colors, fonts, and layouts are applied via **programmatic templates** using Satori (React → SVG → PNG). This guarantees:
 
-Design tokens are centralized in `src/config/design-tokens.ts`.
+- 100% brand consistency
+- Perfect typography every time
+- Fast iteration (change template, regenerate all)
+- No "AI slop" text artifacts
 
-### Brand Colors
-| Token | Hex | Usage |
-|-------|-----|-------|
-| `--brand-primary` | `#9FE870` | CTAs, accents, highlights |
-| `--brand-dark` | `#0F172A` | Headers, text, dark mode bg |
-| `--brand-light` | `#F8FAFC` | Page backgrounds |
-| `--accent-warm` | `#F97316` | Warm accents, alerts |
-| `--accent-cool` | `#3B82F6` | Links, info |
+---
 
-## Testing
+## 🗄️ Database
 
-Tests are written with **Vitest** and **@testing-library/react**.
+Same Supabase instance as the main app, with `marketing_` prefixed tables:
+
+- `marketing_content_pieces` — All content
+- `marketing_social_posts` — Published/scheduled posts
+- `marketing_meta_campaigns` — Ad campaigns
+- `marketing_community_members` — Community & ambassadors
+- `marketing_analytics_events` — Custom events
+- `marketing_cost_log` — AI cost tracking
+- `marketing_templates` — Template registry
+- `marketing_leads` — Lead capture
+
+See `docs/operations/database-schema.md` for full schema.
+
+---
+
+## 🧪 Testing
 
 ```bash
-# Run all tests
-npm run test
-
-# Watch mode
-npm run test:watch
-
-# With coverage
-npm run test:coverage
+npm run test          # Unit tests
+npm run test:coverage # With coverage report
+npm run test:watch    # Watch mode
 ```
 
-### Test Structure
-- `tests/*.test.ts` — Unit tests for utilities and pure functions
-- Co-located `*.test.tsx` — Component tests (add next to component)
+Every pure function gets a test. Every API client gets a mock.
 
-## CI/CD
+---
 
-GitHub Actions workflow in `.github/workflows/ci.yml`:
-- Type check
-- Lint
-- Run tests
-- Build
+## 📁 Project Structure
 
-## Roadmap
+```
+src/
+  ab-testing/        → A/B test framework
+  analytics/         → Event tracking, dashboards
+  app/               → Next.js App Router pages
+  cache/             → Redis caching utilities
+  community/         → Members, ambassadors, referrals
+  components/        → Shared React components
+  config/            → Environment, constants
+  content-engine/    → Copy, blog, podcast generators
+  integrations/      → Third-party API clients
+  lead-capture/      → Forms, landing pages
+  publisher/         → Social scheduling, Meta Ads
+  scheduler/         → Content calendar
+  seo/               → SEO utilities
+  shared/            → Shared utilities, model router
+  strategy/          → Content pillars, rotation
+  studio/            → Review, approval workflows
+  types/             → Global TypeScript types
+  visual-factory/    → Image/video generation
+```
 
-### Phase 1: MVP (Weeks 1-4)
-- [x] Project scaffolding and design system
-- [x] Content generation engine (text + image stubs)
-- [x] Basic landing pages
-- [x] Dashboard layout
-- [ ] Connect OpenAI API keys
-- [ ] First generated content batch
+---
 
-### Phase 2: Automation (Weeks 5-8)
-- [ ] Meta Ads monitoring integration
-- [ ] Auto-alerts and reports
-- [ ] Podcast generation pipeline
-- [ ] Make.com automation flows
+## 🔐 Security
 
-### Phase 3: Community (Weeks 9-12)
-- [ ] Community platform launch
-- [ ] Newsletter automation
-- [ ] User-generated content workflow
+- No API keys in code — `.env.local` + Vercel env vars
+- No PII in logs
+- Rate limiting on all external APIs (Upstash Redis)
+- Webhook signature validation
+- Row Level Security on all Supabase tables
 
-### Phase 4: Scale (Months 4-6)
-- [ ] Multi-language support
-- [ ] Advanced analytics + AI insights
-- [ ] Monetization (ads, partnerships, premium)
+---
 
-## License
-Proprietary — All rights reserved.
+## 💰 Cost Monitoring
+
+Monthly budget: **$500 USD**
+
+Tracked providers: OpenAI, Anthropic, DeepSeek, Fal, Replicate, ElevenLabs, Supabase, Vercel, Resend, Upstash.
+
+See `docs/operations/cost-budget.md` for detailed breakdown.
+
+---
+
+## 📚 Documentation
+
+| Document | Purpose |
+|----------|---------|
+| `AGENTS.md` | Agent guidelines and principles |
+| `docs/operations/agent-memory.md` | Architectural decisions |
+| `docs/operations/daily-plan.md` | Daily routines |
+| `docs/operations/session-protocol.md` | Start/end rituals |
+| `docs/operations/runbook.md` | What to do when X breaks |
+| `docs/operations/cost-budget.md` | Monthly API budget |
+| `docs/operations/incident-response.md` | Incident procedures |
+| `docs/operations/database-schema.md` | Database schema |
+| `docs/operations/seed-data.md` | Development seed data |
+
+---
+
+## 🤝 Contributing
+
+1. Run `git status` first
+2. Read `AGENTS.md` before every session
+3. Update `docs/operations/CHANGELOG.md` after changes
+4. Run `npm run typecheck && npm run lint` before done
+5. End session with `npm run session:end "description"`
+
+---
+
+## 📜 License
+
+MIT — See `LICENSE`
+
+---
+
+*Built with ❤️ for brasileiros no exterior.*

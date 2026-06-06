@@ -1,29 +1,51 @@
 /**
  * Redis cache utilities.
- * Stub implementation — integrate with Upstash Redis in production.
+ * Uses Upstash Redis in production, in-memory fallback for local dev.
  */
+
+import { Redis } from '@upstash/redis'
+import { env } from '@/config/env'
 
 interface CacheEntry<T> {
   value: T
   expiresAt: number
 }
 
-// In-memory fallback for development
 const memoryCache = new Map<string, CacheEntry<unknown>>()
+
+function getRedisClient(): Redis | null {
+  if (env.UPSTASH_REDIS_REST_URL?.includes('dummy')) return null
+  try {
+    return new Redis({
+      url: env.UPSTASH_REDIS_REST_URL,
+      token: env.UPSTASH_REDIS_REST_TOKEN,
+    })
+  } catch {
+    return null
+  }
+}
+
+const redis = getRedisClient()
 
 /**
  * Get a value from cache.
  */
 export async function getCache<T>(key: string): Promise<T | null> {
-  // TODO: Replace with Upstash Redis
-  const entry = memoryCache.get(key) as CacheEntry<T> | undefined
+  if (redis) {
+    try {
+      const value = await redis.get<T>(key)
+      return value ?? null
+    } catch {
+      // Fallback to memory cache on Redis error
+    }
+  }
 
+  const entry = memoryCache.get(key) as CacheEntry<T> | undefined
   if (!entry) return null
   if (Date.now() > entry.expiresAt) {
     memoryCache.delete(key)
     return null
   }
-
   return entry.value
 }
 
@@ -31,7 +53,15 @@ export async function getCache<T>(key: string): Promise<T | null> {
  * Set a value in cache with TTL.
  */
 export async function setCache<T>(key: string, value: T, ttlSeconds: number): Promise<void> {
-  // TODO: Replace with Upstash Redis
+  if (redis) {
+    try {
+      await redis.set(key, value, { ex: ttlSeconds })
+      return
+    } catch {
+      // Fallback to memory cache on Redis error
+    }
+  }
+
   memoryCache.set(key, {
     value,
     expiresAt: Date.now() + ttlSeconds * 1000,
@@ -42,7 +72,38 @@ export async function setCache<T>(key: string, value: T, ttlSeconds: number): Pr
  * Delete a value from cache.
  */
 export async function deleteCache(key: string): Promise<void> {
+  if (redis) {
+    try {
+      await redis.del(key)
+      return
+    } catch {
+      // Fallback
+    }
+  }
   memoryCache.delete(key)
+}
+
+/**
+ * Increment a counter in cache.
+ */
+export async function incrementCache(key: string, ttlSeconds: number): Promise<number> {
+  if (redis) {
+    try {
+      const value = await redis.incr(key)
+      await redis.expire(key, ttlSeconds)
+      return value
+    } catch {
+      // Fallback
+    }
+  }
+
+  const current = (memoryCache.get(key)?.value as number) ?? 0
+  const next = current + 1
+  memoryCache.set(key, {
+    value: next,
+    expiresAt: Date.now() + ttlSeconds * 1000,
+  })
+  return next
 }
 
 /**
@@ -53,4 +114,5 @@ export const cacheKeys = {
   contentPiece: (id: string) => `content:piece:${id}`,
   memberList: (page: number) => `community:members:${page}`,
   newsletterIssue: (id: string) => `newsletter:issue:${id}`,
+  rateLimit: (ip: string, path: string) => `ratelimit:${ip}:${path}`,
 } as const

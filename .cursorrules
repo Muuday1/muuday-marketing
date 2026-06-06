@@ -1,0 +1,39 @@
+# Cursor Rules for Brasil Global Marketing Machine
+
+## Project Context
+- Next.js 15 App Router + React 19 + TypeScript 5.6+ + Tailwind CSS v4
+- Marketing machine for "Brasil Global" — content engine for Brazilians abroad
+- 8-layer architecture: intelligence, strategy, content-engine, visual-factory, canvas, studio, publisher, ads-manager, analytics, community
+
+## Code Style
+- Max 150 lines per page/component, 40 per utility, 150 per hook, 100 per server action
+- Zero `any`. Use `unknown` + narrowing.
+- Prefer composition over inheritance
+- Extract shared logic to `src/shared/`
+- Config centralization in `src/config/`
+
+## AI Provider Usage
+- **Premium copy**: Claude 3.7
+- **Structured/JSON**: GPT-4.1
+- **Budget/volume**: DeepSeek V3
+- **Images**: FLUX 2 (fal.ai), Ideogram 3 (typography), Recraft V3 (vectors)
+- **Video**: Pika (Reels), Kling 3.0 (B-roll), Runway Gen-4.5 (ads), HeyGen (avatar)
+- **Voice**: ElevenLabs (podcast), OpenAI TTS (prototypes)
+
+## Brand Voice
+- Warm, informed, aspirational, deeply Brazilian but globally minded
+- Portuguese (primary), English (secondary)
+- Never "imigrante" — always "brasileiro no exterior"
+- Never generic AI slop, clickbait, toxic positivity, cultural stereotypes
+
+## Testing
+- Every pure function gets a test
+- Every API client gets a mock
+- Vitest for unit tests
+- Run `npm run test` before committing
+
+## Security
+- No API keys in code — `.env.local` only
+- No PII in logs
+- Rate limit all external API calls
+- Validate webhooks with signatures

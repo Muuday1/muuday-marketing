@@ -16,6 +16,9 @@
 8. **No secrets in code** — Ever. Not even "just for now."
 9. **Test what you build** — If it's not tested, it doesn't exist.
 10. **Respect the user's time** — Be concise, be accurate, be helpful.
+11. **NEVER leave things behind** — If it's in the plan, it gets done. No "we'll do it later." Later never comes. Finish what you start. Do not move to the next task until the current one is 100% complete.
+12. **The user has no rush** — They want it RIGHT, not fast. Take the time needed. Quality over speed. Every. Single. Time.
+13. **No repeated mistakes** — If you made a mistake, document it in the brain so you never make it again. Learn once, remember forever.
 
 ---
 

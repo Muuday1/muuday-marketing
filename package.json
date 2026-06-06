@@ -2,6 +2,19 @@
   "name": "social-media-machine",
   "version": "0.1.0",
   "private": true,
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -15,13 +28,23 @@
     "storybook:build": "storybook build",
     "content:generate": "tsx scripts/generate-content.ts",
     "podcast:generate": "tsx scripts/generate-podcast.ts",
-    "meta:sync": "tsx scripts/sync-meta-ads.ts"
+    "meta:sync": "tsx scripts/sync-meta-ads.ts",
+    "session:start": "node scripts/session-start.js",
+    "session:end": "node scripts/session-end.js",
+    "db:generate": "supabase gen types --lang=typescript --project-id $SUPABASE_PROJECT_REF --schema public > src/types/database.ts",
+    "docker:build": "docker compose build",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "prepare": "husky"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.101.0",
     "@fal-ai/client": "^1.10.1",
+    "@sanity/client": "^7.22.1",
+    "@sanity/image-url": "^2.1.1",
     "@supabase/supabase-js": "^2.107.0",
     "@tanstack/react-query": "^5.101.0",
+    "@upstash/redis": "^1.38.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv": "^17.4.2",
@@ -54,7 +77,11 @@
     "@vitejs/plugin-react": "^4.3.0",
     "eslint": "^9.0.0",
     "eslint-config-next": "^15.0.0",
+    "husky": "^9.1.7",
     "jsdom": "^24.0.0",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.8.3",
+    "prettier-plugin-tailwindcss": "^0.8.0",
     "storybook": "^8.0.0",
     "tailwindcss": "^4.0.0",
     "tsx": "^4.0.0",

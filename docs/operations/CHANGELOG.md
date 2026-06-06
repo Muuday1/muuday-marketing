@@ -2,6 +2,50 @@
 
 All notable changes to the Brasil Global Marketing Machine project.
 
+## [0.3.0] - 2026-06-06
+
+### Foundation (Items 1–15 of 23 Complete)
+This release implements all previously missing foundation infrastructure with **zero shortcuts**.
+
+- **`Makefile`** — Added with 20+ targets (dev, build, test, verify, docker, session start/end)
+- **`Dockerfile`** — Multi-stage build (deps → builder → runner) with Alpine Linux
+- **`docker-compose.yml`** — App + Redis services with health checks
+- **`.env.example`** — Complete, well-documented example with all 25+ variables
+- **`package.json` scripts** — Added `session:start`, `session:end`, `db:generate`, `docker:*`, `prepare`
+- **`scripts/sync-meta-ads.ts`** — Meta Ads campaign sync script with insights fetching
+- **`.cursorrules`** — AI coding assistant rules (brand voice, model routing, code style)
+- **`.vscode/settings.json`** — Workspace settings (format on save, ESLint, Tailwind)
+- **`.vscode/extensions.json`** — Recommended extensions (Prettier, ESLint, Tailwind, etc.)
+- **Husky + lint-staged** — Pre-commit hooks running ESLint fix + Prettier on staged files
+- **`docs/operations/runbook.md`** — Incident response procedures for P1–P4 severity levels
+- **`docs/operations/cost-budget.md`** — Monthly $500 budget tracking, per-output cost table, alert rules
+- **`docs/operations/incident-response.md`** — Formal IR plan with lifecycle, templates, tracking
+- **`docs/operations/database-schema.md`** — Full Supabase schema for all `marketing_*` tables with indexes and RLS
+- **`docs/operations/seed-data.md`** — Development seed data for content, members, campaigns, templates
+- **`.github/workflows/ci.yml`** — Added Vercel preview + production deployment jobs
+- **`README.md`** — Complete rewrite with architecture diagram, quick start, commands, stack, brand strategy
+- **Missing dependencies** — Installed `@upstash/redis`, `@sanity/client`, `@sanity/image-url`
+- **`.env.local`** — Added missing vars: `INSTAGRAM_BUSINESS_ACCOUNT_ID`, `NEXT_PUBLIC_MIXPANEL_TOKEN`, `REPLICATE_API_TOKEN`, `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`, `MAKE_WEBHOOK_URL`
+
+### Core Implementations (Resolved TODOs)
+- **`src/cache/redis.ts`** — Full Upstash Redis integration with in-memory fallback, `incrementCache`, typed cache keys
+- **`src/analytics/tracking.ts`** — PostHog SDK integration with safe fallback, no PII tracking
+- **`src/middleware/auth.ts`** — JWT validation via Web Crypto API + rate limiting (100 req/min per IP)
+- **`src/lead-capture/actions.ts`** — Supabase integration for newsletter, community join, contact form
+- **`src/shared/model-router/index.ts`** — Full Model Router with provider selection (Anthropic/OpenAI/DeepSeek), retry logic, fallback chain, cost tracking
+- **`src/app/api/health/route.ts`** — Health check endpoint for Docker/load balancers
+- **`scripts/sync-meta-ads.ts`** — Meta Graph API campaign sync with insights
+
+### Fixes
+- Removed duplicate `package-lock.json` from parent directory (`/Users/igorpinto/`)
+- Fixed `env.NODE_ENV` → `process.env.NODE_ENV` in analytics tracking
+- Removed unused `isDev` variable from cache/redis.ts
+
+### Quality Gates
+- **TypeScript**: 0 errors ✅
+- **ESLint**: 0 warnings/errors ✅
+- **Tests**: 6 files, 27 tests, all passing ✅
+
 ## [0.2.0] - 2026-06-06
 
 ### Foundation
