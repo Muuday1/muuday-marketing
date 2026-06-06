@@ -3,6 +3,23 @@
 import { Button } from '@/components/ui/Button'
 import { useEffect } from 'react'
 
+function logError(error: Error & { digest?: string }) {
+  const payload = {
+    message: error.message,
+    stack: error.stack,
+    digest: error.digest,
+    timestamp: new Date().toISOString(),
+    url: typeof window !== 'undefined' ? window.location.href : undefined,
+    userAgent: typeof window !== 'undefined' ? navigator.userAgent : undefined,
+  }
+
+  // Log to console in structured format for log aggregation
+  console.error('[ERROR_BOUNDARY]', JSON.stringify(payload))
+
+  // TODO: Send to Sentry when integrated
+  // Sentry.captureException(error, { extra: { digest: error.digest } })
+}
+
 export default function ErrorBoundary({
   error,
   reset,
@@ -11,8 +28,7 @@ export default function ErrorBoundary({
   reset: () => void
 }) {
   useEffect(() => {
-    // TODO: Log to Sentry
-    console.error('Application error:', error)
+    logError(error)
   }, [error])
 
   return (

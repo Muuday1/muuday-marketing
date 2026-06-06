@@ -5,7 +5,14 @@
  * Run via: npm run meta:sync
  */
 
+import { createClient } from '@supabase/supabase-js'
 import { env } from '@/config/env'
+
+const supabase = createClient(
+  env.NEXT_PUBLIC_SUPABASE_URL ?? '',
+  env.SUPABASE_SERVICE_ROLE_KEY ?? '',
+  { auth: { persistSession: false } }
+)
 
 interface MetaCampaignSummary {
   id: string
@@ -81,8 +88,26 @@ async function syncCampaigns() {
     )
   }
 
-  // TODO: Upsert into Supabase marketing_meta_campaigns table
-  console.log('✅ Sync complete. (Database upsert not yet implemented)')
+  const { error } = await supabase.from('marketing_meta_campaigns').upsert(
+    campaigns.map((c) => ({
+      id: c.id,
+      name: c.name,
+      objective: c.objective.toUpperCase(),
+      status: c.status,
+      spend: c.spend,
+      impressions: c.impressions,
+      clicks: c.clicks,
+      conversions: c.conversions,
+      synced_at: new Date().toISOString(),
+    })),
+    { onConflict: 'id' }
+  )
+
+  if (error) {
+    throw new Error(`Supabase upsert failed: ${error.message}`)
+  }
+
+  console.log('✅ Sync complete. Campaigns upserted to marketing_meta_campaigns.')
 }
 
 syncCampaigns().catch((err) => {
