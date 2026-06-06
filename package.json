@@ -49,6 +49,7 @@
     "clsx": "^2.1.1",
     "dotenv": "^17.4.2",
     "lucide-react": "^1.17.0",
+    "mixpanel-browser": "^2.80.0",
     "next": "^15.0.0",
     "posthog-js": "^1.381.0",
     "posthog-node": "^5.36.3",

@@ -1,9 +1,23 @@
 /**
  * Analytics tracking utilities.
- * Uses PostHog for product analytics with safe fallback.
+ * Uses Mixpanel as primary analytics provider.
+ * PostHog kept as fallback for product analytics.
  */
 
 import { env } from '@/config/env'
+import {
+  initMixpanel,
+  trackEvent as trackMixpanel,
+  identifyUser as identifyMixpanel,
+  setUserProfile,
+  resetIdentity,
+  trackPageView as trackMixpanelPageView,
+  trackContentGenerated as trackMixpanelContentGenerated,
+  trackAdSpendChange as trackMixpanelAdSpendChange,
+  trackSignupCompleted,
+  trackNewsletterSubscribed,
+  trackCommunityJoined,
+} from './mixpanel'
 
 interface EventProperties {
   [key: string]: string | number | boolean | null
@@ -38,16 +52,21 @@ function initPostHog() {
     })
 }
 
-// Initialize on module load (client-side only)
 if (typeof window !== 'undefined') {
+  initMixpanel()
   initPostHog()
 }
 
 /**
  * Track a user action.
- * Never send PII (emails, names, phone numbers).
+ * Sends to Mixpanel (primary) + PostHog (fallback).
+ * Never send PII.
  */
 export function trackEvent(event: string, properties?: EventProperties): void {
+  // Primary: Mixpanel
+  trackMixpanel(event, properties)
+
+  // Fallback: PostHog
   if (posthogInstance) {
     posthogInstance.capture(event, properties ?? {})
   } else if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
@@ -57,13 +76,30 @@ export function trackEvent(event: string, properties?: EventProperties): void {
 
 /**
  * Identify a user by their hashed ID.
- * Never use raw email or personal info.
  */
 export function identifyUser(userId: string): void {
+  identifyMixpanel(userId)
+
   if (posthogInstance) {
     posthogInstance.identify(userId)
-  } else if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
-    console.log(`[Analytics] Identify: ${userId}`)
+  }
+}
+
+/**
+ * Set user profile properties.
+ */
+export function setProfile(properties: Record<string, unknown>): void {
+  setUserProfile(properties)
+}
+
+/**
+ * Reset identity on logout.
+ */
+export function resetUser(): void {
+  resetIdentity()
+
+  if (posthogInstance) {
+    posthogInstance.reset()
   }
 }
 
@@ -71,19 +107,22 @@ export function identifyUser(userId: string): void {
  * Track page views.
  */
 export function trackPageView(path: string): void {
-  trackEvent('page_view', { path })
+  trackMixpanelPageView(path)
 }
 
 /**
  * Track content generation events.
  */
 export function trackContentGenerated(format: string, platform: string): void {
-  trackEvent('content_generated', { format, platform })
+  trackMixpanelContentGenerated(format, platform)
 }
 
 /**
  * Track Meta Ads spend changes.
  */
 export function trackAdSpendChange(campaignId: string, newSpend: number): void {
-  trackEvent('ad_spend_changed', { campaign_id: campaignId, new_spend: newSpend })
+  trackMixpanelAdSpendChange(campaignId, newSpend)
 }
+
+// Re-export for convenience
+export { trackSignupCompleted, trackNewsletterSubscribed, trackCommunityJoined }
