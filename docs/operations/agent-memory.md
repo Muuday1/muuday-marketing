@@ -22,6 +22,8 @@
 14. **Tests for everything** — Every feature, every fix, every refactor gets tests. Unit, integration, edge cases, error paths. If it doesn't have tests, it doesn't ship.
 15. **No God files** — No file does everything. Split by responsibility. If a file is getting fat, extract. Max lines are hard limits, not suggestions.
 16. **Documents stay organized** — docs/ must be clean, current, and navigable. Outdated docs are worse than no docs. Update as you go.
+17. **Maximize parallel agents** — Whenever possible, use multiple agents/subagents working in parallel. Do not serialize work that can be parallelized. Each agent handles one focused domain.
+18. **Automate everything** — Every manual step must become a script, a workflow, or a command. If you do it twice, script it. If a human has to remember it, automate it.
 
 ---
 

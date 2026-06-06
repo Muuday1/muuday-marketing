@@ -117,6 +117,14 @@ LAYER 8: ANALYTICS        → Organic, paid, content performance, LLM SEO
 - Every batch operation must have progress logging
 - Every expensive operation (video, image gen) must have cost tracking
 - All content must be versioned in Supabase before publish
+- If a human does it twice, write a script. If a script runs twice, make it a scheduled job.
+- Prefer composition of small automated steps over one big manual process.
+
+## Agent Orchestration Rules
+- Parallelize by default. If tasks are independent, run them in parallel agents.
+- One agent = one domain (content, infra, testing, docs). Never overload one agent with unrelated work.
+- Use explore agents for research (read-only), coder agents for implementation, plan agents for architecture.
+- Spawn agents proactively. Don't wait until you're stuck — anticipate work and delegate early.
 
 ## Document Organization Rules
 - **docs/ is sacred**: Every doc has a clear owner and last-updated date. Stale docs are deleted or updated.
