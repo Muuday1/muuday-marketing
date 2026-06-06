@@ -9,6 +9,7 @@ const envSchema = z.object({
   OPENAI_API_KEY: z.string().min(1, 'OpenAI API key is required').optional().default('sk-dummy'),
   ANTHROPIC_API_KEY: z.string().optional().default(''),
   DEEPSEEK_API_KEY: z.string().optional().default(''),
+  KIMI_API_KEY: z.string().optional().default(''),
 
   // Image/Video
   FAL_KEY: z.string().optional().default(''),

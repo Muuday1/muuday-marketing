@@ -17,14 +17,15 @@ interface ProviderConfig {
   baseUrl: string
   model: string
   maxRetries: number
+  headers?: Record<string, string>
 }
 
 const PROVIDERS: Record<QualityTier, ProviderConfig> = {
   premium: {
-    name: 'anthropic',
-    apiKey: env.ANTHROPIC_API_KEY,
-    baseUrl: 'https://api.anthropic.com/v1/messages',
-    model: 'claude-3-7-sonnet-20250219',
+    name: 'kimi',
+    apiKey: env.KIMI_API_KEY,
+    baseUrl: 'https://api.moonshot.cn/v1/chat/completions',
+    model: 'kimi-k2-0711',
     maxRetries: 3,
   },
   standard: {
@@ -51,20 +52,20 @@ const PROVIDERS: Record<QualityTier, ProviderConfig> = {
 }
 
 const TASK_MODEL_MAP: Record<TaskType, QualityTier> = {
-  copy: 'premium',
-  structured: 'standard',
-  code: 'standard',
-  summary: 'budget',
-  image: 'premium',
-  video: 'premium',
+  copy: 'premium',      // Kimi for brand voice
+  structured: 'standard', // GPT-4.1 for JSON
+  code: 'standard',     // GPT-4.1 for code
+  summary: 'budget',    // DeepSeek for cheap summaries
+  image: 'premium',     // Kimi for image prompts
+  video: 'premium',     // Kimi for video scripts
 }
 
 const costTracker: Record<string, number> = {}
 
 function trackCost(provider: string, tokensIn: number, tokensOut: number): void {
   const rate =
-    provider === 'anthropic'
-      ? { in: 3.0, out: 15.0 }
+    provider === 'kimi'
+      ? { in: 1.0, out: 3.0 }
       : provider === 'openai'
         ? { in: 2.0, out: 8.0 }
         : provider === 'deepseek'
@@ -86,30 +87,18 @@ async function callProvider(
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${config.apiKey || ''}`,
+    ...config.headers,
   }
 
-  if (config.name === 'anthropic') {
-    headers['anthropic-version'] = '2023-06-01'
+  const body = {
+    model: config.model,
+    max_tokens: options.maxTokens ?? 1024,
+    temperature: options.temperature ?? 0.7,
+    messages: [
+      ...(options.system ? [{ role: 'system' as const, content: options.system }] : []),
+      { role: 'user' as const, content: options.prompt },
+    ],
   }
-
-  const body =
-    config.name === 'anthropic'
-      ? {
-          model: config.model,
-          max_tokens: options.maxTokens ?? 1024,
-          temperature: options.temperature ?? 0.7,
-          system: options.system,
-          messages: [{ role: 'user', content: options.prompt }],
-        }
-      : {
-          model: config.model,
-          max_tokens: options.maxTokens ?? 1024,
-          temperature: options.temperature ?? 0.7,
-          messages: [
-            ...(options.system ? [{ role: 'system' as const, content: options.system }] : []),
-            { role: 'user' as const, content: options.prompt },
-          ],
-        }
 
   try {
     const response = await fetch(config.baseUrl, {
@@ -125,10 +114,7 @@ async function callProvider(
 
     const data = await response.json()
 
-    const content =
-      config.name === 'anthropic'
-        ? data.content?.[0]?.text
-        : data.choices?.[0]?.message?.content
+    const content = data.choices?.[0]?.message?.content
 
     if (!content) {
       return { success: false, error: `${config.name} returned empty content` }

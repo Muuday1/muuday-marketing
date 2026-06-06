@@ -7,9 +7,9 @@ scope: global
 # Brasil Global — Marketing Machine Agent Guidelines
 
 ## Vision
-Build a **world-class, AI-powered Marketing Machine** that operates at the quality level of a top-tier creative agency — for the Brazilian diaspora. Not just posts — a **movement**. Quality over quantity. Authenticity over automation noise. Distribution as important as creation.
+Build a **world-class, AI-powered community and content engine** for the Brazilian diaspora. Not a sales funnel — a **movement**. We build trust first, sell never. Quality over quantity. Authenticity over automation noise. Community over conversion.
 
-This is the **marketing engine** of the company. The product/site/app exists separately. This machine feeds it with traffic, leads, community, and brand authority.
+This is the **communication layer** of the company. The product (muuday-app) exists separately. This machine builds brand authority, educates the community, and creates genuine connection. Sales happen naturally when trust is earned.
 
 ## Brand Identity: "Brasil Global"
 - **Mission**: Connect, inform, and empower Brazilians worldwide through premium AI-generated content

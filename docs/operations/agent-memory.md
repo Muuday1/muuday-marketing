@@ -34,7 +34,8 @@
 **Status**: Approved
 **Rationale**: Never depend on a single AI provider. Route tasks to the best model for the job with automatic fallback.
 **Implementation**: `src/shared/model-router/`
-**Providers**: Claude 3.7 (premium copy), GPT-4.1 (structured output), DeepSeek V3 (budget/volume)
+**Providers**: Kimi (default for copy/branding), GPT-4.1 (structured output), DeepSeek V3 (budget/volume), Claude 3.7 (fallback)
+**Update 2026-06-06**: Default copy model switched from Claude to Kimi per user request.
 
 ### Decision: Programmatic Templates for Brand Consistency
 **Date**: 2026-06-06
@@ -54,6 +55,15 @@
 **Status**: Planned
 **Rationale**: Postiz is open source, has AI content gen, and replaces Buffer/Hootsuite. Will integrate when social publishing layer is built.
 **Note**: For MVP, may use Meta Business Suite + LinkedIn native + Make.com
+
+### Decision: Vercel Project Setup
+**Date**: 2026-06-06
+**Status**: Approved
+**Rationale**: Marketing machine is a separate Vercel project from muuday-app. Same team/account, different project. This allows independent deploys, isolated rollbacks, and clean env var separation.
+**Project name**: `muuday-marketing`
+**Domain**: `brasilglobal.com` (or `marketing.muuday.com`)
+**Shared**: Supabase, Redis, PostHog, Sanity, Resend, Sentry (same DSN for now)
+**Separate**: App URL, APP_SECRET, Kimi key, Meta app credentials
 
 ### Decision: n8n + Make.com Hybrid
 **Date**: 2026-06-06

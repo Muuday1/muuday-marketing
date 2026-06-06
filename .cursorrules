@@ -13,8 +13,9 @@
 - Config centralization in `src/config/`
 
 ## AI Provider Usage
-- **Premium copy**: Claude 3.7
+- **DEFAULT copy/branding**: Kimi (Moonshot)
 - **Structured/JSON**: GPT-4.1
+- **Fallback premium**: Claude 3.7
 - **Budget/volume**: DeepSeek V3
 - **Images**: FLUX 2 (fal.ai), Ideogram 3 (typography), Recraft V3 (vectors)
 - **Video**: Pika (Reels), Kling 3.0 (B-roll), Runway Gen-4.5 (ads), HeyGen (avatar)
