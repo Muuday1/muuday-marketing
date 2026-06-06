@@ -55,7 +55,11 @@ const envSchema = z.object({
   MAKE_WEBHOOK_API_KEY: z.string().optional().default('dummy-make-webhook-key'),
 
   // Internal
-  APP_SECRET: z.string().min(32, 'APP_SECRET must be at least 32 characters').optional().default('dev-app-secret-32-chars-long-ok'),
+  APP_SECRET: z
+    .string()
+    .min(32, 'APP_SECRET must be at least 32 characters')
+    .optional()
+    .default('dev-app-secret-32-chars-long-ok-'),
 })
 
 export type Env = z.infer<typeof envSchema>
