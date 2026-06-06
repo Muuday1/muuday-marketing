@@ -38,8 +38,8 @@ describe('calculateWeightedEngagementRate', () => {
       saves: 5,
       impressions: 1000,
     })
-    // (100*1 + 20*3 + 10*5 + 5*2) / 1000 = 0.24
-    expect(result).toBe(0.24)
+    // (100*1 + 20*3 + 10*5 + 5*2) / 1000 = 0.22
+    expect(result).toBe(0.22)
   })
 })
 

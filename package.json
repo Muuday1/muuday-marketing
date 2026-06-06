@@ -18,10 +18,25 @@
     "meta:sync": "tsx scripts/sync-meta-ads.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.101.0",
+    "@fal-ai/client": "^1.10.1",
+    "@supabase/supabase-js": "^2.107.0",
+    "@tanstack/react-query": "^5.101.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "dotenv": "^17.4.2",
+    "lucide-react": "^1.17.0",
     "next": "^15.0.0",
+    "posthog-js": "^1.381.0",
+    "posthog-node": "^5.36.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "zod": "^3.23.0"
+    "resend": "^6.12.4",
+    "satori": "^0.26.0",
+    "sharp": "^0.34.5",
+    "tailwind-merge": "^3.6.0",
+    "zod": "^3.23.0",
+    "zustand": "^5.0.14"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.0.0",

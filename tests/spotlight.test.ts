@@ -4,9 +4,9 @@ import { selectSpotlightMember, generateSpotlightContent } from '@/community/con
 describe('selectSpotlightMember', () => {
   it('selects a member with high engagement', () => {
     const members = [
-      { id: '1', name: 'Alice', city: 'Londres', country: 'UK', engagementScore: 80 },
-      { id: '2', name: 'Bob', city: 'Dublin', country: 'Irlanda', engagementScore: 40 },
-      { id: '3', name: 'Carol', city: 'Lisboa', country: 'Portugal', engagementScore: 95 },
+      { id: '1', name: 'Alice', email: 'alice@example.com', city: 'Londres', country: 'UK', joinDate: new Date(), interests: [], engagementScore: 80, isAmbassador: false, referralCount: 0 },
+      { id: '2', name: 'Bob', email: 'bob@example.com', city: 'Dublin', country: 'Irlanda', joinDate: new Date(), interests: [], engagementScore: 40, isAmbassador: false, referralCount: 0 },
+      { id: '3', name: 'Carol', email: 'carol@example.com', city: 'Lisboa', country: 'Portugal', joinDate: new Date(), interests: [], engagementScore: 95, isAmbassador: false, referralCount: 0 },
     ]
 
     const result = selectSpotlightMember(members, [])
@@ -16,8 +16,8 @@ describe('selectSpotlightMember', () => {
 
   it('excludes previously featured members', () => {
     const members = [
-      { id: '1', name: 'Alice', city: 'Londres', country: 'UK', engagementScore: 80 },
-      { id: '2', name: 'Bob', city: 'Dublin', country: 'Irlanda', engagementScore: 60 },
+      { id: '1', name: 'Alice', email: 'alice@example.com', city: 'Londres', country: 'UK', joinDate: new Date(), interests: [], engagementScore: 80, isAmbassador: false, referralCount: 0 },
+      { id: '2', name: 'Bob', email: 'bob@example.com', city: 'Dublin', country: 'Irlanda', joinDate: new Date(), interests: [], engagementScore: 60, isAmbassador: false, referralCount: 0 },
     ]
 
     const result = selectSpotlightMember(members, ['1'])
@@ -27,7 +27,7 @@ describe('selectSpotlightMember', () => {
 
   it('returns null when no eligible members', () => {
     const members = [
-      { id: '1', name: 'Alice', city: 'Londres', country: 'UK', engagementScore: 30 },
+      { id: '1', name: 'Alice', email: 'alice@example.com', city: 'Londres', country: 'UK', joinDate: new Date(), interests: [], engagementScore: 30, isAmbassador: false, referralCount: 0 },
     ]
 
     const result = selectSpotlightMember(members, [])
@@ -40,9 +40,14 @@ describe('generateSpotlightContent', () => {
     const member = {
       id: '1',
       name: 'Maria',
+      email: 'maria@example.com',
       city: 'Londres',
       country: 'UK',
+      joinDate: new Date(),
+      interests: [],
       engagementScore: 85,
+      isAmbassador: false,
+      referralCount: 0,
     }
 
     const content = generateSpotlightContent(member)

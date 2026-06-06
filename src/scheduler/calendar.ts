@@ -30,8 +30,8 @@ export function generateWeeklySchedule(content: ContentPiece[]): ScheduleSlot[] 
     slots.push({
       date: date.toISOString().split('T')[0],
       time: bestTimes[timeIndex],
-      platform: piece.platform,
-      contentType: piece.format,
+      platform: piece.metadata.platform,
+      contentType: piece.type,
     })
   })
 

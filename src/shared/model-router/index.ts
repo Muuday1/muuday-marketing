@@ -1,4 +1,3 @@
-import { env } from '@/config/env'
 import { ApiResult } from '@/types'
 
 export type QualityTier = 'premium' | 'standard' | 'budget' | 'local'
@@ -31,7 +30,7 @@ export const modelRouter = {
    * Generate text by quality tier.
    * Automatically selects the best model for the tier.
    */
-  async generate(tier: QualityTier, options: GenerateOptions): Promise<ApiResult<string>> {
+  async generate(_tier: QualityTier, _options: GenerateOptions): Promise<ApiResult<string>> {
     // TODO: Implement provider selection, retry, fallback, cost tracking
     return { success: false, error: 'Not implemented yet' }
   },
@@ -40,7 +39,7 @@ export const modelRouter = {
    * Generate text by task type.
    * Auto-selects model based on task requirements.
    */
-  async generateByTask(task: TaskType, options: GenerateOptions): Promise<ApiResult<string>> {
+  async generateByTask(_task: TaskType, _options: GenerateOptions): Promise<ApiResult<string>> {
     // TODO: Map task type to optimal model
     return { success: false, error: 'Not implemented yet' }
   },
@@ -48,7 +47,7 @@ export const modelRouter = {
   /**
    * Generate image using specified model.
    */
-  async generateImage(model: 'flux-2' | 'dall-e-3' | 'ideogram-3', options: GenerateImageOptions): Promise<ApiResult<{ url: string }>> {
+  async generateImage(_model: 'flux-2' | 'dall-e-3' | 'ideogram-3', _options: GenerateImageOptions): Promise<ApiResult<{ url: string }>> {
     // TODO: Route to fal.ai, OpenAI, or Ideogram
     return { success: false, error: 'Not implemented yet' }
   },
@@ -57,8 +56,8 @@ export const modelRouter = {
    * Try multiple providers in order until one succeeds.
    */
   async withFallback<T>(
-    chain: FallbackOption[],
-    options: GenerateOptions
+    _chain: FallbackOption[],
+    _options: GenerateOptions
   ): Promise<ApiResult<T>> {
     // TODO: Try each provider, track failures, return first success
     return { success: false, error: 'Not implemented yet' }

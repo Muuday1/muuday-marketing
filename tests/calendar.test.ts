@@ -4,9 +4,9 @@ import { generateWeeklySchedule, isDueForPublishing } from '@/scheduler/calendar
 describe('generateWeeklySchedule', () => {
   it('generates slots for all content pieces', () => {
     const content = [
-      { id: '1', headline: 'Post 1', platform: 'instagram', format: 'carousel' },
-      { id: '2', headline: 'Post 2', platform: 'linkedin', format: 'article' },
-      { id: '3', headline: 'Post 3', platform: 'tiktok', format: 'video' },
+      { id: '1', type: 'carousel' as const, status: 'draft' as const, title: 'Post 1', content: '', metadata: { platform: 'instagram' as const, pillar: 'culture' as const, hashtags: [], mentions: [], mediaUrls: [] }, createdAt: new Date(), updatedAt: new Date(), authorId: '1' },
+      { id: '2', type: 'blog' as const, status: 'draft' as const, title: 'Post 2', content: '', metadata: { platform: 'linkedin' as const, pillar: 'career' as const, hashtags: [], mentions: [], mediaUrls: [] }, createdAt: new Date(), updatedAt: new Date(), authorId: '1' },
+      { id: '3', type: 'reel' as const, status: 'draft' as const, title: 'Post 3', content: '', metadata: { platform: 'tiktok' as const, pillar: 'lifestyle' as const, hashtags: [], mentions: [], mediaUrls: [] }, createdAt: new Date(), updatedAt: new Date(), authorId: '1' },
     ]
 
     const schedule = generateWeeklySchedule(content)
@@ -19,9 +19,14 @@ describe('generateWeeklySchedule', () => {
   it('distributes across multiple days when content exceeds slots per day', () => {
     const content = Array.from({ length: 5 }, (_, i) => ({
       id: String(i),
-      headline: `Post ${i}`,
-      platform: 'instagram',
-      format: 'carousel',
+      type: 'carousel' as const,
+      status: 'draft' as const,
+      title: `Post ${i}`,
+      content: '',
+      metadata: { platform: 'instagram' as const, pillar: 'culture' as const, hashtags: [], mentions: [], mediaUrls: [] },
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      authorId: '1',
     }))
 
     const schedule = generateWeeklySchedule(content)

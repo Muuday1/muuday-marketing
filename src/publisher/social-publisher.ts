@@ -1,4 +1,3 @@
-import { env } from '@/config/env'
 import { ApiResult, ContentPiece } from '@/types'
 
 interface PublishResult {
@@ -36,7 +35,7 @@ export async function publishContent(
 async function publishToInstagram(content: ContentPiece): Promise<ApiResult<PublishResult>> {
   // TODO: Use Instagram Graph API
   // https://developers.facebook.com/docs/instagram-api/guides/content-publishing
-  console.log('Publishing to Instagram:', content.headline)
+  console.log('Publishing to Instagram:', content.title)
   return {
     success: true,
     data: {
@@ -50,7 +49,7 @@ async function publishToInstagram(content: ContentPiece): Promise<ApiResult<Publ
 
 async function publishToLinkedIn(content: ContentPiece): Promise<ApiResult<PublishResult>> {
   // TODO: Use LinkedIn API
-  console.log('Publishing to LinkedIn:', content.headline)
+  console.log('Publishing to LinkedIn:', content.title)
   return {
     success: true,
     data: {
@@ -64,7 +63,7 @@ async function publishToLinkedIn(content: ContentPiece): Promise<ApiResult<Publi
 
 async function publishToTikTok(content: ContentPiece): Promise<ApiResult<PublishResult>> {
   // TODO: Use TikTok API
-  console.log('Publishing to TikTok:', content.headline)
+  console.log('Publishing to TikTok:', content.title)
   return {
     success: true,
     data: {

@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/Button'
 import { cn } from '@/lib/utils/cn'
 import { useState } from 'react'
+import Link from 'next/link'
 
 const navLinks = [
   { label: 'Início', href: '/' },
@@ -19,22 +20,22 @@ export function Header() {
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-brand-slate/10">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          <a href="/" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <div className="h-8 w-8 rounded-lg bg-brand-lime flex items-center justify-center">
               <span className="text-brand-dark font-bold text-sm">BG</span>
             </div>
             <span className="font-display text-xl text-brand-dark">Brasil Global</span>
-          </a>
+          </Link>
 
           <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.href}
                 href={link.href}
                 className="text-sm font-medium text-brand-slate hover:text-brand-dark transition-colors"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </nav>
 
@@ -62,13 +63,13 @@ export function Header() {
       <div className={cn('md:hidden', mobileOpen ? 'block' : 'hidden')}>
         <div className="px-4 pb-4 space-y-2">
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               className="block py-2 text-sm font-medium text-brand-slate hover:text-brand-dark"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
           <div className="pt-2 flex gap-2">
             <Button variant="ghost" size="sm" className="flex-1">Entrar</Button>

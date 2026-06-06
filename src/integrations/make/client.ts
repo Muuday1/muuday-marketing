@@ -40,7 +40,7 @@ export async function triggerMakeWebhook(
  * Trigger content generation via Make.com.
  */
 export async function triggerContentGeneration(topic: string): Promise<ApiResult<unknown>> {
-  const webhookUrl = env.MAKE_CONTENT_WEBHOOK_URL
+  const webhookUrl = env.MAKE_WEBHOOK_URL
   if (!webhookUrl) {
     return { success: false, error: 'MAKE_CONTENT_WEBHOOK_URL not configured' }
   }
@@ -56,7 +56,7 @@ export async function triggerContentGeneration(topic: string): Promise<ApiResult
  * Trigger Meta Ads sync via Make.com.
  */
 export async function triggerMetaSync(): Promise<ApiResult<unknown>> {
-  const webhookUrl = env.MAKE_META_SYNC_WEBHOOK_URL
+  const webhookUrl = env.MAKE_WEBHOOK_URL
   if (!webhookUrl) {
     return { success: false, error: 'MAKE_META_SYNC_WEBHOOK_URL not configured' }
   }

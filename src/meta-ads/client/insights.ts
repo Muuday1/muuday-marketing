@@ -59,8 +59,9 @@ export async function fetchCampaignInsights(
       spend: parseFloat(item.spend) || 0,
       impressions: parseInt(item.impressions) || 0,
       clicks: parseInt(item.clicks) || 0,
-      conversions:
-        item.actions?.find((a) => a.action_type === 'purchase')?.value || '0',
+      conversions: parseInt(
+        item.actions?.find((a) => a.action_type === 'purchase')?.value || '0'
+      ) || 0,
       ctr: parseFloat(item.ctr) || 0,
       cpc: parseFloat(item.cpc) || 0,
       cpm: parseFloat(item.cpm) || 0,

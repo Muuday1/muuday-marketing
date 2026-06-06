@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/Button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
+import { Card, CardContent } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 
 export default function PodcastPage() {
@@ -80,7 +80,7 @@ export default function PodcastPage() {
                     </div>
                     <div className="flex gap-2 mt-2">
                       {ep.tags.map((tag) => (
-                        <Badge key={tag} variant="secondary" size="sm">
+                        <Badge key={tag} variant="secondary">
                           {tag}
                         </Badge>
                       ))}

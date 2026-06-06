@@ -67,7 +67,7 @@ export default function BlogPage() {
                 <div className="flex items-center justify-between">
                   <div className="flex gap-1 flex-wrap">
                     {article.tags.map((tag) => (
-                      <Badge key={tag} variant="secondary" size="sm">
+                      <Badge key={tag} variant="secondary">
                         {tag}
                       </Badge>
                     ))}

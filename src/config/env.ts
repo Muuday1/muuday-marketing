@@ -4,51 +4,55 @@ const envSchema = z.object({
   // Next.js
   NEXT_PUBLIC_APP_URL: z.string().url().default('http://localhost:3000'),
 
-  // OpenAI
+  // AI Providers
   OPENAI_API_KEY: z.string().min(1, 'OpenAI API key is required'),
+  ANTHROPIC_API_KEY: z.string().optional().default(''),
+  DEEPSEEK_API_KEY: z.string().optional().default(''),
 
-  // Replicate
-  REPLICATE_API_TOKEN: z.string().optional(),
+  // Image/Video
+  FAL_KEY: z.string().optional().default(''),
+  REPLICATE_API_TOKEN: z.string().optional().default(''),
 
-  // ElevenLabs
-  ELEVENLABS_API_KEY: z.string().optional(),
+  // Voice
+  ELEVENLABS_API_KEY: z.string().optional().default(''),
 
   // Meta
-  META_APP_ID: z.string().optional(),
-  META_APP_SECRET: z.string().optional(),
-  META_ACCESS_TOKEN: z.string().optional(),
-  META_AD_ACCOUNT_ID: z.string().optional(),
+  META_APP_ID: z.string().optional().default(''),
+  META_APP_SECRET: z.string().optional().default(''),
+  META_ACCESS_TOKEN: z.string().optional().default(''),
+  META_VERIFY_TOKEN: z.string().optional().default(''),
+  META_AD_ACCOUNT_ID: z.string().optional().default(''),
 
   // Instagram
-  INSTAGRAM_BUSINESS_ACCOUNT_ID: z.string().optional(),
+  INSTAGRAM_BUSINESS_ACCOUNT_ID: z.string().optional().default(''),
 
   // Supabase
-  NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
-  SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
+  NEXT_PUBLIC_SUPABASE_URL: z.string().url().optional().default('http://localhost:54321'),
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().optional().default(''),
+  SUPABASE_SERVICE_ROLE_KEY: z.string().optional().default(''),
 
   // Sanity
-  NEXT_PUBLIC_SANITY_PROJECT_ID: z.string().min(1),
+  NEXT_PUBLIC_SANITY_PROJECT_ID: z.string().optional().default(''),
   NEXT_PUBLIC_SANITY_DATASET: z.string().default('production'),
-  SANITY_API_TOKEN: z.string().optional(),
+  SANITY_API_TOKEN: z.string().optional().default(''),
 
   // Analytics
-  NEXT_PUBLIC_MIXPANEL_TOKEN: z.string().optional(),
-  NEXT_PUBLIC_POSTHOG_KEY: z.string().optional(),
-  NEXT_PUBLIC_POSTHOG_HOST: z.string().url().optional(),
+  NEXT_PUBLIC_MIXPANEL_TOKEN: z.string().optional().default(''),
+  NEXT_PUBLIC_POSTHOG_KEY: z.string().optional().default(''),
+  NEXT_PUBLIC_POSTHOG_HOST: z.string().url().optional().default('https://app.posthog.com'),
 
   // Email
-  RESEND_API_KEY: z.string().optional(),
+  RESEND_API_KEY: z.string().optional().default(''),
 
   // Redis
-  UPSTASH_REDIS_REST_URL: z.string().url().optional(),
-  UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
+  UPSTASH_REDIS_REST_URL: z.string().url().optional().default('http://localhost:6379'),
+  UPSTASH_REDIS_REST_TOKEN: z.string().optional().default(''),
 
   // Make.com
-  MAKE_WEBHOOK_URL: z.string().url().optional(),
+  MAKE_WEBHOOK_URL: z.string().url().optional().default('http://localhost:3000/webhook'),
 
   // Internal
-  APP_SECRET: z.string().min(32, 'APP_SECRET must be at least 32 characters'),
+  APP_SECRET: z.string().min(32, 'APP_SECRET must be at least 32 characters').optional().default('dev-app-secret-32-chars-long-ok'),
 })
 
 export type Env = z.infer<typeof envSchema>
