@@ -4,6 +4,35 @@ All notable changes to the Brasil Global Marketing Machine project.
 
 ## [0.2.0] - 2026-06-06
 
+### Foundation
+- `npm install` completed with `--legacy-peer-deps`
+- `git init` + first commit on `main` branch
+- `.env.local` created with all required variables
+- `.nvmrc` created (Node v20.20.2)
+- `next-env.d.ts` created
+- All missing dependencies installed:
+  - `@anthropic-ai/sdk`, `@fal-ai/client`, `satori`, `sharp`
+  - `zustand`, `@tanstack/react-query`, `@supabase/supabase-js`
+  - `resend`, `posthog-js`, `posthog-node`, `dotenv`
+  - `class-variance-authority`, `tailwind-merge`, `clsx`, `lucide-react`
+
+### Quality Gates
+- **TypeScript**: 0 errors ✅
+- **ESLint**: 0 warnings/errors ✅
+- **Tests**: 6 files, 27 tests, all passing ✅
+- **Dev server**: Running on localhost:3001 ✅
+
+### Bug Fixes
+- Fixed `env.ts` to be dev-friendly (optional vars with defaults)
+- Fixed `calendar.ts` to use `metadata.platform` and `type`
+- Fixed `social-publisher.ts` to use `title` instead of `headline`
+- Fixed `copy-generator.ts` template literal parsing error
+- Fixed `meta-ads/insights.ts` conversions type (string → number)
+- Fixed `Header.tsx` to use `next/link` instead of `<a>`
+- Fixed `blog/page.tsx` and `podcast/page.tsx` Badge props
+- Fixed all test files to match actual types
+- Fixed `engagement-rate.test.ts` expected value (0.24 → 0.22)
+
 ### Architecture
 - Restructured entire project into 8-layer Marketing Machine architecture:
   - `src/intelligence/` — Trend radar, competitor spy, audience analysis

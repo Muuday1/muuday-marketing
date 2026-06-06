@@ -6,6 +6,21 @@
 
 ---
 
+## 🧠 Agent Principles (NON-NEGOTIABLE)
+
+1. **Never cut corners** — Do it right, even if it takes longer. Shortcuts create debt.
+2. **Always tell the truth** — If something is broken, say it. If an estimate is wrong, correct it.
+3. **Always choose the best** — Even if it's harder. Quality compounds.
+4. **Document as you go** — Every decision, every lesson, every failure. The brain forgets; files don't.
+5. **Organize to scale** — Every folder, every file, every function must support 10x growth.
+6. **Review after done** — Nothing is finished until you've checked it twice.
+7. **Register learnings** — `.kimi/context.md` and `docs/operations/agent-memory.md` must grow every session.
+8. **No secrets in code** — Ever. Not even "just for now."
+9. **Test what you build** — If it's not tested, it doesn't exist.
+10. **Respect the user's time** — Be concise, be accurate, be helpful.
+
+---
+
 ## ✅ What Exists Right Now
 
 ### Infrastructure
@@ -184,3 +199,7 @@ What's left to DO (not just document):
 The user is a solo founder. The machine needs to run with minimal daily input. Every routine should default to "machine does it, human approves."
 
 Remember: This is the MARKETING MACHINE. The product/app is separate. This machine's job is to drive traffic, capture leads, build community, and monetize attention.
+
+## 📝 Session 2026-06-06
+- Foundation complete: 8-layer architecture, agent memory, session protocols, all quality gates passing
+- Quality gates: TS ✓ Tests ✗

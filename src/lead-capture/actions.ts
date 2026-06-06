@@ -25,7 +25,7 @@ export async function newsletterSignup(
   }
 
   // TODO: Save to Supabase or Make.com
-  console.log('Newsletter signup:', parsed.data.email)
+  console.log('[LeadCapture] Newsletter signup received')
 
   return { success: true, data: { message: 'Inscrição realizada com sucesso!' } }
 }
@@ -42,7 +42,7 @@ export async function joinCommunity(
   }
 
   // TODO: Save to Supabase and trigger welcome email via Make.com
-  console.log('Community join:', parsed.data.email)
+  console.log('[LeadCapture] Community join received')
 
   return { success: true, data: { message: 'Bem-vindo à comunidade!' } }
 }
@@ -59,7 +59,7 @@ export async function submitContactForm(
   }
 
   // TODO: Send notification via email or Make.com
-  console.log('Contact form:', parsed.data.email, parsed.data.subject)
+  console.log('[LeadCapture] Contact form received')
 
   return { success: true, data: { message: 'Mensagem enviada com sucesso!' } }
 }
