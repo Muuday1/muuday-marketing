@@ -41,10 +41,22 @@ This release implements all previously missing foundation infrastructure with **
 - Fixed `env.NODE_ENV` → `process.env.NODE_ENV` in analytics tracking
 - Removed unused `isDev` variable from cache/redis.ts
 
+### Core Implementations — Round 2 (Resolved All TODOs)
+- **`scripts/sync-meta-ads.ts`** — Full Supabase upsert for `marketing_meta_campaigns` with insights
+- **`src/app/api/webhooks/make/route.ts`** — Content generation trigger, post scheduling, Meta sync trigger
+- **`src/app/api/webhooks/meta/route.ts`** — HMAC signature verification (`x-hub-signature-256`), message/leadgen event handling, Supabase lead insertion
+- **`src/app/error.tsx`** — Structured error logging (message, stack, digest, URL, userAgent)
+- **`src/publisher/social-publisher.ts`** — Instagram Graph API publish flow (media container → publish). LinkedIn/TikTok remain stubs (require OAuth 2.0 flows)
+
+### Known Issues
+- **npm vulnerabilities**: 15 vulnerabilities in dev dependencies (elliptic, esbuild, postcss, uuid). `npm audit fix --force` would cause breaking changes (Next.js 9, Storybook 7). Will resolve in dedicated dependency update session.
+- **Sentry integration**: Planned but not yet implemented. Error logging currently uses structured console output.
+
 ### Quality Gates
 - **TypeScript**: 0 errors ✅
 - **ESLint**: 0 warnings/errors ✅
 - **Tests**: 6 files, 27 tests, all passing ✅
+- **TODOs**: Reduced from 20 to 1 (Sentry future integration) ✅
 
 ## [0.2.0] - 2026-06-06
 
