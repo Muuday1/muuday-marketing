@@ -40,7 +40,7 @@ LAYER 8: ANALYTICS        → Organic, paid, content performance, LLM SEO
 | DB | Supabase (PostgreSQL) | Data persistence |
 | CMS | Sanity | Content management |
 | Automation | Make.com (fast) + n8n (complex) | Orchestration |
-| Text AI | Claude 3.7 + GPT-4.1 + DeepSeek V3 | Model Router pattern |
+| Text AI | Kimi (default) + GPT-4.1 + Claude 3.7 + DeepSeek V3 | Model Router pattern |
 | Image AI | FLUX 2 (fal.ai) + Ideogram 3 + Recraft V3 | Visual factory |
 | Video AI | Pika + Kling 3.0 + Runway Gen-4.5 | Video studio |
 | Voice AI | ElevenLabs | Podcast + voice |

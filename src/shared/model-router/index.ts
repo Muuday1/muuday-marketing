@@ -53,9 +53,9 @@ const PROVIDERS: Record<QualityTier, ProviderConfig> = {
 
 const TASK_MODEL_MAP: Record<TaskType, QualityTier> = {
   copy: 'premium',      // Kimi for brand voice
-  structured: 'standard', // GPT-4.1 for JSON
-  code: 'standard',     // GPT-4.1 for code
-  summary: 'budget',    // DeepSeek for cheap summaries
+  structured: 'premium', // Kimi for structured output/JSON
+  code: 'premium',      // Kimi for code generation
+  summary: 'premium',   // Kimi for summaries
   image: 'premium',     // Kimi for image prompts
   video: 'premium',     // Kimi for video scripts
 }
@@ -158,12 +158,13 @@ export async function generate(
 
 /**
  * Generate text using the optimal model for a task type.
+ * Kimi is the default for all tasks. Others are fallback.
  */
 export async function generateWithModel(
   task: TaskType,
   options: GenerateOptions
 ): Promise<ApiResult<string>> {
-  const tier = TASK_MODEL_MAP[task] || 'standard'
+  const tier = TASK_MODEL_MAP[task] || 'premium'
   return generate(tier, options)
 }
 

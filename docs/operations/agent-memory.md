@@ -34,8 +34,8 @@
 **Status**: Approved
 **Rationale**: Never depend on a single AI provider. Route tasks to the best model for the job with automatic fallback.
 **Implementation**: `src/shared/model-router/`
-**Providers**: Kimi (default for copy/branding), GPT-4.1 (structured output), DeepSeek V3 (budget/volume), Claude 3.7 (fallback)
-**Update 2026-06-06**: Default copy model switched from Claude to Kimi per user request.
+**Providers**: Kimi (default for ALL tasks — copy, structured, code, summaries, image/video prompts), OpenAI (fallback), Anthropic (fallback), DeepSeek (fallback)
+**Update 2026-06-06**: Switched from multi-provider default to Kimi-only default. All tasks route to Kimi first. Others are pure fallback chain.
 
 ### Decision: Programmatic Templates for Brand Consistency
 **Date**: 2026-06-06
