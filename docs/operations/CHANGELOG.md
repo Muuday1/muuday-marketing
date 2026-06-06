@@ -48,15 +48,29 @@ This release implements all previously missing foundation infrastructure with **
 - **`src/app/error.tsx`** — Structured error logging (message, stack, digest, URL, userAgent)
 - **`src/publisher/social-publisher.ts`** — Instagram Graph API publish flow (media container → publish). LinkedIn/TikTok remain stubs (require OAuth 2.0 flows)
 
+### Fixes — Post-Review Corrections (13 issues)
+- **`next.config.ts`** — Adicionado `output: 'standalone'` (Dockerfile estava quebrado, copiava `.next/standalone` mas não existia)
+- **`src/middleware.ts`** — Criado. Auth e rate limiting nunca executavam porque `src/middleware.ts` não existia (só tinha `src/middleware/auth.ts`)
+- **`src/config/env.ts`** — Adicionado `MAKE_WEBHOOK_API_KEY` e `NEXT_PUBLIC_APP_VERSION`. Fixado `OPENAI_API_KEY` para ser opcional em dev. Fixado default do Redis para `dummy.upstash.io` (era `localhost`, quebrava `redis.ts`)
+- **`src/cache/redis.ts`** — Fixada detecção de ambiente de dev (agora detecta `dummy`, `localhost`, e token vazio)
+- **`src/lead-capture/actions.ts`** — Não retorna mais `success: true` em catch vazio. Agora loga erro e retorna mensagem de erro ao usuário
+- **`src/app/api/webhooks/make/route.ts`** — Usa `env.MAKE_WEBHOOK_API_KEY` (não `process.env`)
+- **`src/app/api/webhooks/meta/route.ts`** — Usa `env.META_VERIFY_TOKEN` (não `process.env`)
+- **`src/analytics/tracking.ts`** — API síncrona (não async), sem `require()`, null-safety no callback `loaded`
+- **`src/publisher/social-publisher.ts`** — URL do Instagram corrigida (`/p/{id}/`)
+- **`docker-compose.yml`** — Adicionado `depends_on` para o app esperar o Redis ficar healthy
+- **`.env.example`** — Adicionado `MAKE_WEBHOOK_API_KEY`
+- **`.env.local`** — Adicionado `MAKE_WEBHOOK_API_KEY`, versão bumpada para 0.3.0
+
 ### Known Issues
-- **npm vulnerabilities**: 15 vulnerabilities in dev dependencies (elliptic, esbuild, postcss, uuid). `npm audit fix --force` would cause breaking changes (Next.js 9, Storybook 7). Will resolve in dedicated dependency update session.
-- **Sentry integration**: Planned but not yet implemented. Error logging currently uses structured console output.
+- **npm vulnerabilities**: 15 vulnerabilities em dev dependencies (elliptic, esbuild, postcss, uuid). `npm audit fix --force` causaria breaking changes (Next.js 9, Storybook 7). Será resolvido em sessão dedicada de atualização de dependências.
+- **Sentry integration**: Planejada mas não implementada. Error logging usa structured console output por enquanto.
 
 ### Quality Gates
 - **TypeScript**: 0 errors ✅
 - **ESLint**: 0 warnings/errors ✅
 - **Tests**: 6 files, 27 tests, all passing ✅
-- **TODOs**: Reduced from 20 to 1 (Sentry future integration) ✅
+- **TODOs**: Reduzidos de 20 para 1 (Sentry — decisão futura) ✅
 
 ## [0.2.0] - 2026-06-06
 
