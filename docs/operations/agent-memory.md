@@ -19,6 +19,9 @@
 11. **NEVER leave things behind** — If it's in the plan, it gets done. No "we'll do it later." Later never comes. Finish what you start. Do not move to the next task until the current one is 100% complete.
 12. **The user has no rush** — They want it RIGHT, not fast. Take the time needed. Quality over speed. Every. Single. Time.
 13. **No repeated mistakes** — If you made a mistake, document it in the brain so you never make it again. Learn once, remember forever.
+14. **Tests for everything** — Every feature, every fix, every refactor gets tests. Unit, integration, edge cases, error paths. If it doesn't have tests, it doesn't ship.
+15. **No God files** — No file does everything. Split by responsibility. If a file is getting fat, extract. Max lines are hard limits, not suggestions.
+16. **Documents stay organized** — docs/ must be clean, current, and navigable. Outdated docs are worse than no docs. Update as you go.
 
 ---
 

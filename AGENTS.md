@@ -58,12 +58,19 @@ LAYER 8: ANALYTICS        → Organic, paid, content performance, LLM SEO
 | Server action | 100 | Thin controller |
 | Config file | 200 | Centralized only |
 
+### No God Files
+- **One file = one job**. If a file has more than 3 imports from different domains, it's too big.
+- **Extract early**: At 80% of max lines, start splitting. Don't wait for the limit.
+- **No "utils.ts" dumping grounds**: Specific names only (`date-formatter.ts`, `slug-generator.ts`).
+- **No catch-all handlers**: Each webhook gets its own file. Each API route handles one action.
+- **Tests reflect structure**: If a file is hard to test, it's too complex. Split it.
+
 ## Architecture Principles
 1. **DRY**: Extract shared logic to `src/shared/`
 2. **Single Responsibility**: One module = one domain
 3. **Config Centralization**: All API keys, limits, timeouts in `src/config/`
 4. **Type Safety**: Zero `any`. Use `unknown` + narrowing.
-5. **Test Coverage**: Every pure function gets a test. Every API client gets a mock.
+5. **Test Coverage**: Every pure function gets a test. Every API client gets a mock. Every feature gets integration tests. Every bug fix gets a regression test. No exceptions.
 6. **Model Router**: Never call AI provider directly. Always route through `src/shared/model-router/`
 7. **Brand Consistency**: Never generate text-on-image with AI. Always use programmatic templates.
 
@@ -110,6 +117,16 @@ LAYER 8: ANALYTICS        → Organic, paid, content performance, LLM SEO
 - Every batch operation must have progress logging
 - Every expensive operation (video, image gen) must have cost tracking
 - All content must be versioned in Supabase before publish
+
+## Document Organization Rules
+- **docs/ is sacred**: Every doc has a clear owner and last-updated date. Stale docs are deleted or updated.
+- **One topic = one file**: No 500-line docs covering 10 subjects. Split into `topic-subtopic.md`.
+- **Cross-references are mandatory**: If you mention something documented elsewhere, link to it.
+- **No orphaned docs**: Every doc must be reachable from README.md or AGENTS.md.
+- **Code and docs move together**: Rename a module? Update all docs that reference it. Same PR.
+- **Operations docs live in `docs/operations/`**: runbook, incident-response, cost-budget, schema, seed-data.
+- **Strategy docs live in `docs/strategy/`**: content pillars, funnel, community playbook.
+- **Design docs live in `docs/design/`**: tokens, voice, templates, logo usage.
 
 ## Scaling Rules
 - Design for 10x traffic with zero code changes (caching, connection pooling)
