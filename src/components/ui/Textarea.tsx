@@ -1,3 +1,5 @@
+'use client'
+
 import { cn } from '@/lib/utils/cn'
 
 interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
