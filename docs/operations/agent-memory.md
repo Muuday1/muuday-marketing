@@ -1,0 +1,126 @@
+# Agent Memory — Brasil Global Marketing Machine
+
+> This is the long-term memory for the AI agent. Decisions, blockers, architectural choices, and learnings live here. Read this at the start of every session.
+
+---
+
+## 🏗️ Architectural Decisions
+
+### Decision: Model Router Pattern
+**Date**: 2026-06-06
+**Status**: Approved
+**Rationale**: Never depend on a single AI provider. Route tasks to the best model for the job with automatic fallback.
+**Implementation**: `src/shared/model-router/`
+**Providers**: Claude 3.7 (premium copy), GPT-4.1 (structured output), DeepSeek V3 (budget/volume)
+
+### Decision: Programmatic Templates for Brand Consistency
+**Date**: 2026-06-06
+**Status**: Approved
+**Rationale**: AI cannot reliably place text on images with brand fonts/colors. Generate backgrounds with AI, composite with code.
+**Implementation**: `src/canvas/brand-templates/` using Satori + Puppeteer
+**Tools**: html-to-image, Satori, Tailwind
+
+### Decision: fal.ai over Higgsfield
+**Date**: 2026-06-06
+**Status**: Approved
+**Rationale**: Higgsfield has credit traps, billing complaints, and is being discontinued. fal.ai is transparent, API-first, no subscription games.
+**Models**: FLUX 2 for images, Kling 3.0 for video
+
+### Decision: Postiz for Social Scheduling (Future)
+**Date**: 2026-06-06
+**Status**: Planned
+**Rationale**: Postiz is open source, has AI content gen, and replaces Buffer/Hootsuite. Will integrate when social publishing layer is built.
+**Note**: For MVP, may use Meta Business Suite + LinkedIn native + Make.com
+
+### Decision: n8n + Make.com Hybrid
+**Date**: 2026-06-06
+**Status**: Approved
+**Rationale**: Make.com for fast integrations (Meta, Instagram). n8n for complex orchestration (content pipeline). Activepieces evaluated but ecosystem is smaller.
+
+### Decision: Sanity CMS (Keep)
+**Date**: 2026-06-06
+**Status**: Approved
+**Rationale**: Already configured. Better for structured content than Ghost for this use case. Ghost may be added later for blog-only content.
+
+---
+
+## 🚧 Current Blockers
+
+| # | Blocker | Impact | Workaround | Owner |
+|---|---------|--------|------------|-------|
+| 1 | `node_modules` missing | Cannot run app | Run `npm install` | FOUNDER |
+| 2 | `.env.local` missing | App crashes on start | Create with dummy values | FOUNDER |
+| 3 | `env.ts` too strict for dev | Cannot run without Supabase/Sanity keys | Make optional in dev mode | AGENT |
+| 4 | Not a git repo | No version control | Run `git init` | FOUNDER |
+| 5 | Missing dependencies | Supabase, Sanity clients not installed | Add to package.json | AGENT |
+
+---
+
+## 📊 Tech Stack Evolution Log
+
+| Date | Change | Reason |
+|------|--------|--------|
+| 2026-06-03 | Project scaffolded | Initial setup |
+| 2026-06-06 | Added Model Router layer | Avoid vendor lock-in |
+| 2026-06-06 | Added Visual Factory layer | Separate AI gen from composition |
+| 2026-06-06 | Added Canvas layer | Brand-consistent output |
+| 2026-06-06 | Added Ads Manager layer | Paid acquisition |
+| 2026-06-06 | Added Intelligence layer | Competitive advantage |
+
+---
+
+## 🎯 Business Context
+
+### Target Audience
+- Brazilians living in UK, USA, Portugal, Ireland, Australia, Canada
+- Ages 25-45
+- Interests: immigration, careers, finance, culture, community
+
+### Content Mix (Target)
+| Format | Frequency | Platform |
+|--------|-----------|----------|
+| Carousel posts | 3x/week | Instagram |
+| Reels | 2x/week | Instagram/TikTok |
+| LinkedIn posts | 5x/week | LinkedIn |
+| Stories | Daily | Instagram |
+| Blog articles | 2x/week | Website |
+| Podcast episodes | 1x/week | Spotify, Apple |
+| Newsletter | 1x/week | Email |
+
+### Funnel Stages
+1. **Awareness**: Instagram, Reels, TikTok, SEO
+2. **Consideration**: Blog, podcast, LinkedIn
+3. **Conversion**: Newsletter signup, lead magnet download
+4. **Retention**: Community, email nurture, events
+
+---
+
+## 💡 Learnings & Notes
+
+### What Worked
+- Copy generator with Claude 3.7 produces excellent Portuguese copy
+- Brand voice validator catches 80% of issues automatically
+- Dashboard layout with stats cards works well for overview
+
+### What Didn't Work
+- DALL-E 3 for carousel slides (text is unreadable)
+- `env.ts` requiring all env vars on startup blocks development
+- Generating full carousel images with AI = inconsistent branding
+
+### Patterns to Reuse
+- `ApiResult<T>` pattern for all API calls
+- Zod schema validation for all external data
+- Retry with exponential backoff for all AI APIs
+- Cost tracking wrapper for all paid API calls
+
+---
+
+## 🔮 Future Decisions Pending
+
+| Decision | Options | When to Decide |
+|----------|---------|----------------|
+| Self-host Postiz? | Yes / Use API only / Skip | After MVP |
+| Add Ghost for blog? | Yes / Keep Sanity only / Hybrid | After content engine |
+| LinkedIn Ads API? | Direct / via Make.com / Manual | After organic works |
+| Affiliate program? | Wise, Revolut, Nubank, others | After 1000 newsletter subs |
+| Premium subscription? | Community access / Courses / Coaching | After 5000 followers |
