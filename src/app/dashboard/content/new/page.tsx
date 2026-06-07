@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Header } from '@/components/layout/Header'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
-import { CAROUSEL_THEMES } from '@/content-engine/templates'
+import { CAROUSEL_THEMES } from '@/content-engine/templates/themes/const'
 
 export default function NewContentPage() {
   const [title, setTitle] = useState('')
