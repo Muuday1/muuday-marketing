@@ -121,8 +121,11 @@ async function callProvider(
 
     if (!response.ok) {
       const errorText = await response.text()
-      console.error(`[MODEL_ROUTER] ${config.name} API error:`, response.status, errorText)
-      return { success: false, error: `${config.name} API error: ${response.status} ${errorText}` }
+      console.error(
+        `[MODEL_ROUTER] ${config.name} API error status=${response.status} body=`,
+        errorText.slice(0, 500)
+      )
+      return { success: false, error: `${config.name} API error: ${response.status}` }
     }
 
     const data = await response.json()
