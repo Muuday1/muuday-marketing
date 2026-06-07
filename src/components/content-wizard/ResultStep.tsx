@@ -117,6 +117,7 @@ export function ResultStep({
       cta: content.cta,
       hashtags: content.hashtags,
       imageUrls,
+      format,
     }
 
     switch (platform) {

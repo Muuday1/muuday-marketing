@@ -10,6 +10,7 @@ interface InstagramPreviewProps {
   imageUrls: string[]
   username?: string
   avatarUrl?: string
+  format?: string
 }
 
 export function InstagramPreview({
@@ -20,11 +21,14 @@ export function InstagramPreview({
   imageUrls,
   username = 'usemuuday',
   avatarUrl,
+  format,
 }: InstagramPreviewProps) {
   const [expanded, setExpanded] = useState(false)
   const [activeSlide, setActiveSlide] = useState(0)
+  const [playing, setPlaying] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
 
+  const isReels = format === 'reels' || format === 'short_video'
   const fullCaption = `${headline}\n\n${body}\n\n${cta}\n\n${hashtags.join(' ')}`
   const hasMultipleImages = imageUrls.length > 1
 
@@ -57,7 +61,7 @@ export function InstagramPreview({
           <span className="text-brand-slate text-xl">⋯</span>
         </div>
 
-        {/* Image / Carousel */}
+        {/* Image / Carousel / Reels */}
         <div className="relative bg-gray-100">
           {imageUrls.length > 0 ? (
             <>
@@ -68,14 +72,42 @@ export function InstagramPreview({
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
                 {imageUrls.map((url, i) => (
-                  <div key={i} className="aspect-square w-full shrink-0 snap-center">
+                  <div
+                    key={i}
+                    className={`w-full shrink-0 snap-center ${isReels ? 'aspect-[9/16]' : 'aspect-square'}`}
+                  >
                     <img src={url} alt={`slide ${i + 1}`} className="h-full w-full object-cover" />
                   </div>
                 ))}
               </div>
 
+              {/* Play button for Reels */}
+              {isReels && !playing && (
+                <button
+                  onClick={() => setPlaying(true)}
+                  className="absolute inset-0 flex items-center justify-center bg-black/20"
+                >
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
+                    <svg
+                      className="ml-1 h-8 w-8 text-white"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                </button>
+              )}
+
+              {/* Progress bar for Reels */}
+              {isReels && playing && (
+                <div className="absolute right-0 bottom-0 left-0 h-1 bg-white/20">
+                  <div className="h-full w-1/3 animate-pulse bg-white" />
+                </div>
+              )}
+
               {/* Slide indicators */}
-              {hasMultipleImages && (
+              {!isReels && hasMultipleImages && (
                 <div className="absolute top-2 right-2 flex gap-1">
                   {imageUrls.map((_, i) => (
                     <div
@@ -89,14 +121,16 @@ export function InstagramPreview({
               )}
 
               {/* Slide counter */}
-              {hasMultipleImages && (
+              {!isReels && hasMultipleImages && (
                 <div className="absolute top-2 left-2 rounded-full bg-black/50 px-2 py-0.5 text-[10px] font-medium text-white">
                   {activeSlide + 1} / {imageUrls.length}
                 </div>
               )}
             </>
           ) : (
-            <div className="flex aspect-square w-full items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+            <div
+              className={`flex w-full items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 ${isReels ? 'aspect-[9/16]' : 'aspect-square'}`}
+            >
               <span className="text-brand-slate text-sm">Sem imagem</span>
             </div>
           )}
