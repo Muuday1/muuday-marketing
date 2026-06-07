@@ -16,6 +16,8 @@ const PLATFORM_ICONS: Record<ContentPlatform, string> = {
   facebook: '📘',
   whatsapp: '💬',
   newsletter: '📧',
+  blog: '📝',
+  podcast: '🎙️',
 }
 
 export function PlatformStep({ selected, onSelect }: PlatformStepProps) {

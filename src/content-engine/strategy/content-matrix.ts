@@ -10,6 +10,8 @@ export type ContentPlatform =
   | 'facebook'
   | 'whatsapp'
   | 'newsletter'
+  | 'blog'
+  | 'podcast'
 
 export type ContentFormat =
   // Instagram
@@ -65,6 +67,16 @@ export type ContentFormat =
   | 'digest'
   | 'sequence'
   | 'welcome'
+  // Blog
+  | 'article'
+  | 'tutorial'
+  | 'listicle'
+  | 'guide'
+  | 'story'
+  // Podcast
+  | 'episode'
+  | 'interview'
+  | 'story_audio'
 
 export type ContentPurpose =
   | 'educate'
@@ -291,6 +303,50 @@ export const PLATFORMS: Record<ContentPlatform, PlatformConfig> = {
       authority: 5,
       community: 5,
       culture: 0,
+    },
+  },
+  blog: {
+    id: 'blog',
+    label: 'Blog',
+    icon: 'file-text',
+    description: 'SEO e conteúdo evergreen. Artigos longos e tutoriais.',
+    audience: 'Buscadores e leitores de nicho.',
+    formats: ['article', 'tutorial', 'listicle', 'guide', 'story'],
+    bestDays: ['Mon', 'Wed', 'Fri'],
+    bestTimes: ['09:00'],
+    primaryPurpose: ['educate', 'authority', 'inspire', 'convert'],
+    contentRatio: {
+      educate: 50,
+      entertain: 5,
+      inspire: 10,
+      sell: 10,
+      engage: 10,
+      convert: 10,
+      authority: 5,
+      community: 0,
+      culture: 0,
+    },
+  },
+  podcast: {
+    id: 'podcast',
+    label: 'Podcast',
+    icon: 'mic',
+    description: 'Áudio longo. Histórias e entrevistas profundas.',
+    audience: 'Ouvintes engajados. Commute e atividades.',
+    formats: ['episode', 'interview', 'story'],
+    bestDays: ['Fri'],
+    bestTimes: ['06:00'],
+    primaryPurpose: ['educate', 'inspire', 'community', 'culture'],
+    contentRatio: {
+      educate: 20,
+      entertain: 10,
+      inspire: 25,
+      sell: 0,
+      engage: 15,
+      convert: 5,
+      authority: 10,
+      community: 10,
+      culture: 5,
     },
   },
 }
@@ -1020,6 +1076,102 @@ export const FORMATS: Record<ContentFormat, FormatConfig> = {
     bestTimeToPost: 'automático',
     engagementLevel: 'medium',
     productionEffort: 'low',
+  },
+  tutorial: {
+    id: 'tutorial',
+    label: 'Tutorial',
+    description: 'Passo a passo detalhado.',
+    icon: 'book-open',
+    visualType: 'image',
+    aspectRatio: '16:9',
+    maxLength: '5000 chars',
+    requiresVisual: true,
+    aiGeneratesVisual: true,
+    aiGeneratesCopy: true,
+    suggestedCadence: '1x/semana',
+    bestTimeToPost: '09:00',
+    engagementLevel: 'high',
+    productionEffort: 'high',
+  },
+  listicle: {
+    id: 'listicle',
+    label: 'Listicle',
+    description: 'Lista numerada ou bullet points.',
+    icon: 'list',
+    visualType: 'image',
+    aspectRatio: '16:9',
+    maxLength: '3000 chars',
+    requiresVisual: true,
+    aiGeneratesVisual: true,
+    aiGeneratesCopy: true,
+    suggestedCadence: '2x/semana',
+    bestTimeToPost: '09:00',
+    engagementLevel: 'medium',
+    productionEffort: 'medium',
+  },
+  guide: {
+    id: 'guide',
+    label: 'Guia',
+    description: 'Guia completo e aprofundado.',
+    icon: 'compass',
+    visualType: 'image',
+    aspectRatio: '16:9',
+    maxLength: '8000 chars',
+    requiresVisual: true,
+    aiGeneratesVisual: true,
+    aiGeneratesCopy: true,
+    suggestedCadence: '1x/semana',
+    bestTimeToPost: '09:00',
+    engagementLevel: 'high',
+    productionEffort: 'high',
+  },
+  episode: {
+    id: 'episode',
+    label: 'Episódio',
+    description: 'Episódio de podcast.',
+    icon: 'mic',
+    visualType: 'audio',
+    aspectRatio: '1:1',
+    maxLength: '60 min',
+    requiresVisual: false,
+    aiGeneratesVisual: false,
+    aiGeneratesCopy: true,
+    suggestedCadence: '1x/semana',
+    bestTimeToPost: '06:00',
+    engagementLevel: 'high',
+    productionEffort: 'high',
+  },
+  interview: {
+    id: 'interview',
+    label: 'Entrevista',
+    description: 'Entrevista com convidado.',
+    icon: 'users',
+    visualType: 'audio',
+    aspectRatio: '1:1',
+    maxLength: '45 min',
+    requiresVisual: false,
+    aiGeneratesVisual: false,
+    aiGeneratesCopy: true,
+    suggestedCadence: '2x/mês',
+    bestTimeToPost: '06:00',
+    engagementLevel: 'high',
+    productionEffort: 'high',
+  },
+  story_audio: {
+    id: 'story_audio',
+    label: 'História',
+    description: 'Narração de história.',
+    icon: 'book',
+    visualType: 'audio',
+    aspectRatio: '1:1',
+    maxLength: '15 min',
+    requiresVisual: false,
+    aiGeneratesVisual: false,
+    aiGeneratesCopy: true,
+    suggestedCadence: '1x/semana',
+    bestTimeToPost: '06:00',
+    engagementLevel: 'medium',
+    productionEffort: 'medium',
   },
 }
 
