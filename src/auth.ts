@@ -1,17 +1,32 @@
-import GoogleProvider from 'next-auth/providers/google'
-import CredentialsProvider from 'next-auth/providers/credentials'
+import NextAuth from 'next-auth'
+import Google from 'next-auth/providers/google'
+import Credentials from 'next-auth/providers/credentials'
 import bcrypt from 'bcryptjs'
 import { env } from '@/config/env'
-import type { NextAuthOptions } from 'next-auth'
 
-export const authOptions: NextAuthOptions = {
+const authorizedEmails = new Set(['igorpinto.lds@gmail.com'])
+
+export const {
+  handlers: { GET, POST },
+  auth,
+  signIn,
+  signOut,
+} = NextAuth({
   secret: env.NEXTAUTH_SECRET,
+  trustHost: true,
   providers: [
-    GoogleProvider({
+    Google({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
+      authorization: {
+        params: {
+          prompt: 'consent',
+          access_type: 'offline',
+          response_type: 'code',
+        },
+      },
     }),
-    CredentialsProvider({
+    Credentials({
       name: 'password',
       credentials: {
         password: { label: 'Password', type: 'password' },
@@ -47,12 +62,8 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async signIn({ user, account }) {
-      // Only allow Google OAuth from authorized email
       if (account?.provider === 'google') {
-        const allowedEmails = ['igorpinto.lds@gmail.com']
-        if (!allowedEmails.includes(user.email ?? '')) {
-          return false
-        }
+        return authorizedEmails.has(user.email ?? '') ? true : false
       }
       return true
     },
@@ -67,4 +78,4 @@ export const authOptions: NextAuthOptions = {
       return session
     },
   },
-}
+})

@@ -1,13 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { authMiddleware, rateLimitMiddleware } from '@/middleware/auth'
+import { NextResponse } from 'next/server'
+import { auth } from '@/auth'
 
-/**
- * Next.js middleware — runs before every request.
- * Handles authentication for dashboard routes and rate limiting for API routes.
- */
-export async function middleware(request: NextRequest) {
+export default auth((req) => {
+  const { nextUrl } = req
+  const path = nextUrl.pathname
+
   // Skip auth for NextAuth routes, cron endpoints, and health check
-  const path = request.nextUrl.pathname
   if (
     path.startsWith('/api/auth/') ||
     path.startsWith('/api/cron/') ||
@@ -17,21 +15,15 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // Rate limiting first (cheapest check)
-  const rateLimitResponse = await rateLimitMiddleware(request)
-  if (rateLimitResponse) return rateLimitResponse
-
-  // Then auth check
-  const authResponse = await authMiddleware(request)
-  if (authResponse) return authResponse
+  // Check if user is authenticated
+  if (!req.auth) {
+    const loginUrl = new URL('/login', nextUrl)
+    return NextResponse.redirect(loginUrl)
+  }
 
   return NextResponse.next()
-}
+})
 
-/**
- * Middleware matcher — only run on routes that need it.
- * Avoids running on static files, images, favicon, etc.
- */
 export const config = {
   matcher: ['/dashboard/:path*', '/api/:path*'],
 }
