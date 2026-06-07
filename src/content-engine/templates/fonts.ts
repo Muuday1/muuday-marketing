@@ -1,6 +1,5 @@
 import { promises as fs } from 'fs'
 import path from 'path'
-import { fileURLToPath } from 'url'
 
 let regularFont: ArrayBuffer | null = null
 let boldFont: ArrayBuffer | null = null
@@ -18,19 +17,13 @@ async function dirExists(dir: string): Promise<boolean> {
   }
 }
 
-async function getFontDir(): Promise<string> {
-  // ESM-compatible way to get __dirname
-  const __filename = fileURLToPath(import.meta.url)
-  const __dirname = path.dirname(__filename)
-
-  // Try fonts next to this file first (works in Vercel serverless)
-  const localDir = path.join(__dirname, 'fonts')
-  if (await dirExists(localDir)) {
-    return localDir
+async function fileExists(file: string): Promise<boolean> {
+  try {
+    await fs.access(file)
+    return true
+  } catch {
+    return false
   }
-
-  // Fallback to public/fonts (works locally)
-  return path.join(process.cwd(), 'public', 'fonts')
 }
 
 export async function loadFonts(): Promise<{ regular: ArrayBuffer; bold: ArrayBuffer }> {
@@ -38,14 +31,35 @@ export async function loadFonts(): Promise<{ regular: ArrayBuffer; bold: ArrayBu
     return { regular: regularFont, bold: boldFont }
   }
 
-  const fontDir = await getFontDir()
-  const regularPath = path.join(fontDir, 'Inter-Regular.ttf')
-  const boldPath = path.join(fontDir, 'Inter-Bold.ttf')
+  // Debug: log cwd and candidates
+  console.log('[fonts] process.cwd():', process.cwd())
+  console.log('[fonts] __dirname:', typeof __dirname !== 'undefined' ? __dirname : 'undefined')
 
-  const [regularBuf, boldBuf] = await Promise.all([fs.readFile(regularPath), fs.readFile(boldPath)])
+  const candidates = [
+    path.join(process.cwd(), 'public', 'fonts'),
+    path.join(process.cwd(), 'fonts'),
+    path.join('/var/task', 'public', 'fonts'),
+    path.join('/var/task', 'fonts'),
+  ]
 
-  regularFont = bufferToArrayBuffer(regularBuf)
-  boldFont = bufferToArrayBuffer(boldBuf)
+  for (const dir of candidates) {
+    const exists = await dirExists(dir)
+    const regularFile = path.join(dir, 'Inter-Regular.ttf')
+    const regularExists = await fileExists(regularFile)
+    console.log(`[fonts] Checking: ${dir} | dirExists=${exists} | regularExists=${regularExists}`)
+    if (regularExists) {
+      const boldFile = path.join(dir, 'Inter-Bold.ttf')
+      const [regularBuf, boldBuf] = await Promise.all([
+        fs.readFile(regularFile),
+        fs.readFile(boldFile),
+      ])
+      regularFont = bufferToArrayBuffer(regularBuf)
+      boldFont = bufferToArrayBuffer(boldBuf)
+      console.log('[fonts] Loaded fonts from:', dir)
+      return { regular: regularFont, bold: boldFont }
+    }
+  }
 
-  return { regular: regularFont, bold: boldFont }
+  console.error('[fonts] FAILED to find fonts in any candidate:', candidates)
+  throw new Error('Font files not found. Searched: ' + candidates.join(', '))
 }
