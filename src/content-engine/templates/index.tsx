@@ -1,10 +1,9 @@
 import React from 'react'
 import { renderToPng } from './render'
 import { StoryTemplate } from './story'
-import { getTheme, type CarouselTheme } from './themes'
+import { getCarouselTheme, LinkedInCover, type CarouselTheme } from './themes'
 
-export { getTheme, type CarouselTheme }
-export { CAROUSEL_THEMES } from './themes'
+export { getCarouselTheme, LinkedInCover, CAROUSEL_THEMES, type CarouselTheme } from './themes'
 export { StoryTemplate, renderToPng }
 
 export interface GeneratedSlide {
@@ -21,14 +20,18 @@ export interface CarouselInput {
   theme?: CarouselTheme
 }
 
+export interface LinkedInCardInput {
+  headline: string
+  insight: string
+}
+
 /**
- * Generate a complete Instagram carousel (5 PNGs) from copy data.
+ * Generate Instagram carousel (5 PNGs).
  */
 export async function generateCarousel(input: CarouselInput): Promise<GeneratedSlide[]> {
-  const theme = getTheme(input.theme || 'classic')
+  const theme = getCarouselTheme(input.theme || 'classic')
   const slides: GeneratedSlide[] = []
 
-  // Slide 1: Cover
   const coverPng = await renderToPng(
     <theme.Cover title={input.title} subtitle={input.subtitle} />,
     {
@@ -38,7 +41,6 @@ export async function generateCarousel(input: CarouselInput): Promise<GeneratedS
   )
   slides.push({ buffer: coverPng, filename: '01-cover.png' })
 
-  // Slides 2-4: Tips (up to 3)
   for (let i = 0; i < Math.min(input.tips.length, 3); i++) {
     const tip = input.tips[i]
     const tipPng = await renderToPng(
@@ -48,7 +50,6 @@ export async function generateCarousel(input: CarouselInput): Promise<GeneratedS
     slides.push({ buffer: tipPng, filename: `${String(i + 2).padStart(2, '0')}-tip-${i + 1}.png` })
   }
 
-  // Final slide: CTA
   const ctaPng = await renderToPng(<theme.CTA cta={input.cta} hashtags={input.hashtags} />, {
     width: 1080,
     height: 1080,
@@ -59,7 +60,17 @@ export async function generateCarousel(input: CarouselInput): Promise<GeneratedS
 }
 
 /**
- * Generate an Instagram Story (1 PNG) from copy data.
+ * Generate LinkedIn Insight Card (1200x627).
+ */
+export async function generateLinkedInCard(input: LinkedInCardInput): Promise<Buffer> {
+  return renderToPng(<LinkedInCover headline={input.headline} insight={input.insight} />, {
+    width: 1200,
+    height: 627,
+  })
+}
+
+/**
+ * Generate Instagram Story (1 PNG).
  */
 export async function generateStory(input: { title: string; subtitle?: string }): Promise<Buffer> {
   return renderToPng(<StoryTemplate title={input.title} subtitle={input.subtitle} />, {

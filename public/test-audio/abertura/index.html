@@ -1,59 +1,120 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<title>Muuday Podcast — Abertura v7 (NOVO)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Muuday Podcast — Abertura Oficial v7</title>
 <style>
-  body { font-family: system-ui, -apple-system, sans-serif; max-width: 700px; margin: 40px auto; padding: 20px; background: #0a0a0a; color: #eee; }
-  h1 { font-size: 1.3em; margin-bottom: 0.2em; }
-  .meta { color: #888; font-size: 0.9em; margin-bottom: 20px; }
-  .file { background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 16px; margin: 16px 0; }
-  .file h3 { margin: 0 0 8px 0; color: #9FE870; font-size: 0.95em; }
-  .file audio { width: 100%; margin-top: 8px; }
-  .desc { color: #aaa; font-size: 0.85em; margin: 4px 0 8px 0; }
-  .badge { display: inline-block; background: #9FE870; color: #000; padding: 2px 8px; border-radius: 4px; font-size: 0.75em; font-weight: 600; }
-  .badge-old { display: inline-block; background: #555; color: #ccc; padding: 2px 8px; border-radius: 4px; font-size: 0.75em; }
-  .params { font-family: monospace; font-size: 0.8em; color: #888; margin-top: 6px; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    background: #0a0a0a;
+    color: #eee;
+    line-height: 1.6;
+  }
+  h1 { font-size: 1.4em; margin-bottom: 0.3em; }
+  .subtitle { color: #888; font-size: 0.9em; margin-bottom: 28px; }
+  .badge {
+    display: inline-block;
+    background: #9FE870;
+    color: #000;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 0.75em;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .player-box {
+    background: #141414;
+    border: 1px solid #222;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 20px 0;
+  }
+  .player-box h2 {
+    margin: 0 0 6px 0;
+    font-size: 1em;
+    color: #fff;
+  }
+  .player-box .meta {
+    color: #666;
+    font-size: 0.8em;
+    margin-bottom: 14px;
+  }
+  audio { width: 100%; }
+  .specs {
+    margin-top: 28px;
+    background: #141414;
+    border: 1px solid #222;
+    border-radius: 12px;
+    padding: 20px 24px;
+  }
+  .specs h3 {
+    margin: 0 0 12px 0;
+    font-size: 0.9em;
+    color: #9FE870;
+  }
+  .spec-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 20px;
+    font-size: 0.82em;
+  }
+  .spec-grid dt { color: #888; }
+  .spec-grid dd { color: #ccc; margin: 0; }
+  .texto {
+    margin-top: 24px;
+    background: #141414;
+    border: 1px solid #222;
+    border-radius: 12px;
+    padding: 20px 24px;
+    font-size: 0.9em;
+  }
+  .texto h3 {
+    margin: 0 0 10px 0;
+    font-size: 0.9em;
+    color: #9FE870;
+  }
+  .tag { color: #9FE870; font-weight: 600; }
+  .arrow { color: #555; margin: 0 6px; }
 </style>
 </head>
 <body>
-<h1>🎙️ Muuday Podcast — Abertura</h1>
-<p class="meta">Comparativo v6 (anterior) vs v7 (novo: mais ágil, menos arrastado)</p>
 
-<div class="file">
-  <span class="badge">NOVO v7</span>
-  <h3>abertura-muuday-v7-final.mp3</h3>
-  <p class="desc">3 segmentos + tags variadas + atempo=1.01 + stability=0.45</p>
-  <div class="params">tags: [smiling] → [excited] → [narrating] | 17.4s</div>
-  <audio controls preload="none">
+<h1>🎙️ Muuday Podcast</h1>
+<p class="subtitle">Abertura Oficial — Aprovada para todos os episódios</p>
+
+<div class="player-box">
+  <span class="badge">v7 OFICIAL</span>
+  <h2>abertura-muuday-v7-final.mp3</h2>
+  <p class="meta">17.4s · 192kbps · Mono · 44.1kHz</p>
+  <audio controls preload="metadata">
     <source src="abertura-muuday-v7-final.mp3" type="audio/mpeg">
   </audio>
 </div>
 
-<div class="file">
-  <span class="badge-old">v6</span>
-  <h3>abertura-muuday-v6-final.mp3</h3>
-  <p class="desc">4 segmentos + [excited] em tudo + atempo=0.99 + stability=0.35</p>
-  <div class="params">tags: [smiling] → [excited] → [excited] → [smiling] | 20.3s</div>
-  <audio controls preload="none">
-    <source src="abertura-muuday-v6-final.mp3" type="audio/mpeg">
-  </audio>
+<div class="texto">
+  <h3>Roteiro</h3>
+  <p><span class="tag">[smiling]</span> Se tem uma coisa que eu aprendi com milhares de brazucas pelo mundo... é que a gente nunca desiste.</p>
+  <p><span class="tag">[excited]</span> Eu sou a Jessica, e esse é o Muuday!</p>
+  <p><span class="tag">[narrating]</span> Hoje a gente vai falar sobre a história de quem deu o passo de deixar o Brasil pra trás... e descobriu que "mudar" pode ser mais que um verbo.</p>
 </div>
 
-<div class="file">
-  <h3>voz-v7-final.mp3 (sem música)</h3>
-  <p class="desc">Apenas voz processada v7</p>
-  <audio controls preload="none">
-    <source src="voz-v7-final.mp3" type="audio/mpeg">
-  </audio>
-</div>
-
-<div class="file">
-  <h3>musica-15s-fade.mp3</h3>
-  <p class="desc">Música sozinha</p>
-  <audio controls preload="none">
-    <source src="musica-15s-fade.mp3" type="audio/mpeg">
-  </audio>
+<div class="specs">
+  <h3>Especificações Técnicas</h3>
+  <dl class="spec-grid">
+    <dt>Voz</dt><dd>Jessica (ElevenLabs)</dd>
+    <dt>Modelo</dt><dd>eleven_flash_v2_5</dd>
+    <dt>Stability</dt><dd>0.45</dd>
+    <dt>Style</dt><dd>0.80</dd>
+    <dt>Velocidade</dt><dd>atempo=1.01</dd>
+    <dt>Música</dt><dd>Mixkit Track 34</dd>
+    <dt>Mix</dt><dd>Delay 2s, gain 0.8</dd>
+    <dt>Loudness</dt><dd>-16 LUFS</dd>
+  </dl>
 </div>
 
 </body>

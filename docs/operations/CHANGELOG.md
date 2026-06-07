@@ -4,37 +4,51 @@ All notable changes to the Muuday Marketing Machine project.
 
 ## [0.5.0] - 2026-06-07
 
-### Podcast Abertura v6 — Produção Final
+### Podcast de Histórias — Abertura Oficial v7 Aprovada
 
-- **Arquivo final**: `public/test-audio/abertura/abertura-muuday-v6-final.mp3` (20.34s, 192kbps)
-- **Voz**: ElevenLabs Jessica + `eleven_flash_v2_5`, stability 0.35, style 0.85
-- **Música**: Mixkit Track 34 (royalty-free), 15s clip com fade in/out
-- **Estrutura**: 0-2s música → 2-17s voz+música → 17-20s só voz
-- **Mix**: Delay 2s, gain música 0.8, mix manual Python (workaround ffmpeg 8.1.1 bug)
+**Status:** ✅ Pipeline congelado · Playbook escrito · Pronto para produção
 
-#### Pipeline v6 (Segmentado com Tags)
+#### Abertura Oficial
 
-1. **Geração em 4 segmentos** (1 tag expressiva por segmento):
-   - `[smiling]` → "Se tem uma coisa que eu aprendi..."
-   - `[excited]` → "Eu sou a Jessica, e esse é o Muuday!"
-   - `[excited]` → "Hoje a gente vai falar sobre a história..."
-   - `[smiling]` → "Fica comigo. Vai ser bom demais."
-2. **Corte de tags** via `silencedetect` (detecta e remove tags faladas)
-3. **Vari-speed** (`atempo=0.99`) + **pitch drift** (`asetrate=43700`)
-4. **Room tone** + **loudnorm** (`I=-16`, `TP=-1.5`, `LRA=11`)
-5. **Mix manual Python** (sample-by-sample com clamping)
+- **Arquivo:** `public/audio/podcast/abertura/abertura-oficial.mp3` (17.4s, 192kbps)
+- **Texto:** 3 frases com tags `[smiling]` → `[excited]` → `[narrating]`
+- **Tom:** Mais ágil, menos arrastado, mais natural que a v6
 
-#### Documentação Atualizada
+#### Mudanças v6 → v7
 
-- `docs/operations/podcast-tts-pipeline.md` — Adicionada seção "Mix com Música de Fundo" e workaround do bug ffmpeg
-- `docs/operations/elevenlabs-tags-guide.md` — Guia completo com 35+ tags em 6 categorias
-- `.kimi/context.md` — Atualizado com estado da abertura v6
+| Parâmetro   | v6                                | v7                               |
+| ----------- | --------------------------------- | -------------------------------- |
+| `atempo`    | 0.99                              | **1.01** (mais ágil)             |
+| `stability` | 0.35                              | **0.45** (menos teatral)         |
+| `style`     | 0.85                              | **0.80** (entonação equilibrada) |
+| Tags        | 4 segmentos, `[excited]` repetido | **3 segmentos, variados**        |
+| Texto       | 4 frases                          | **3 frases** (mais direto)       |
+| Duração     | 20.3s                             | **17.4s**                        |
 
-#### Bugs Descobertos (ffmpeg 8.1.1)
+#### Estrutura de Arquivos
 
-- `afade=t=out` → cria silêncio total após ~2s
-- `amix` → trunca quando o input mais curto termina
-- **Workaround**: Mix manual em Python com `array.array('h')` e clamping
+```
+public/audio/podcast/
+├── abertura/
+│   ├── abertura-oficial.mp3
+│   ├── musica-bed-oficial.mp3
+│   ├── voz-oficial.mp3
+│   └── README.md
+└── estudos/          ← Testes e versões antigas
+```
+
+#### Documentação Criada
+
+- `docs/strategy/podcast-historias-playbook.md` — **Playbook completo** com decisões, pipeline, checklist por episódio, próximos passos
+- `docs/operations/podcast-tts-pipeline.md` — Atualizado com mix de música e workaround ffmpeg
+- `docs/operations/elevenlabs-tags-guide.md` — Guia com 35+ tags em 6 categorias
+
+#### Aprendizados Críticos
+
+1. **ElevenLabs:** Só `eleven_flash_v2_5` interpreta tags. Turbo/multilingual falam as tags.
+2. **ffmpeg 8.1.1:** `afade` cria silêncio; `amix` trunca. Mix manual em Python.
+3. **Sweet spot:** stability=0.45, atempo=1.01, uma tag por segmento.
+4. **~30% das gerações** pronunciam a tag. Cortar via `silencedetect`.
 
 ---
 

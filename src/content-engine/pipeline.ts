@@ -1,6 +1,6 @@
 import { generateCopy } from './generators/copy-generator'
 import { checkBrandVoice } from './validators/brand-voice-check'
-import { generateCarousel } from './templates'
+import { generateCarousel, generateLinkedInCard } from './templates'
 import { generateImage } from '@/shared/model-router'
 import { supabaseServer } from '@/lib/supabase/server'
 import { uploadAsset } from './storage'
@@ -59,7 +59,7 @@ function extractTips(body: string): { title: string; description: string }[] {
   return tips.length > 0 ? tips : [{ title: 'Dica importante', description: body.slice(0, 200) }]
 }
 
-async function saveCarouselImages(
+async function generateInstagramCarousel(
   contentPieceId: string,
   headline: string,
   tips: { title: string; description: string }[],
@@ -79,40 +79,43 @@ async function saveCarouselImages(
   const urls: string[] = []
   for (let i = 0; i < slides.length; i++) {
     const path = `${contentPieceId}/slide-${i}.png`
-    const url = await uploadAsset(path, slides[i].buffer, 'image/png')
-    urls.push(url)
+    urls.push(await uploadAsset(path, slides[i].buffer, 'image/png'))
   }
-
   return urls
 }
 
-async function generateCoverImage(
+async function generateLinkedInVisual(
+  contentPieceId: string,
+  headline: string,
+  body: string
+): Promise<string[]> {
+  const insight = body.slice(0, 200)
+  const buffer = await generateLinkedInCard({ headline, insight })
+  const path = `${contentPieceId}/linkedin-card.png`
+  const url = await uploadAsset(path, buffer, 'image/png')
+  return [url]
+}
+
+async function generateFLUXCover(
   contentPieceId: string,
   headline: string,
   topic: string
 ): Promise<string | null> {
-  const prompt = `Professional marketing image for Instagram post about: ${topic}. Headline: "${headline}". Style: modern, warm, inviting, Brazilian culture. Brand colors: lime green accents on dark background.`
-
+  const prompt = `Professional image for social media about: ${topic}. "${headline}". Modern, warm, Brazilian culture. Brand: lime green accents on dark.`
   const result = await generateImage({ prompt, size: 'square' })
 
   if (!result.success || !result.data?.url) {
-    console.warn(
-      'Cover image generation failed:',
-      'success' in result && !result.success ? 'Unknown error' : 'No URL'
-    )
+    console.warn('FLUX cover failed: no url')
     return null
   }
 
-  // Download the generated image and upload to Supabase
   try {
-    const imageRes = await fetch(result.data.url)
-    if (!imageRes.ok) return null
-
-    const buffer = Buffer.from(await imageRes.arrayBuffer())
-    const path = `${contentPieceId}/cover-image.png`
-    return await uploadAsset(path, buffer, 'image/png')
+    const res = await fetch(result.data.url)
+    if (!res.ok) return null
+    const buffer = Buffer.from(await res.arrayBuffer())
+    return await uploadAsset(`${contentPieceId}/cover-flux.png`, buffer, 'image/png')
   } catch (err) {
-    console.warn('Failed to download/upload cover image:', err)
+    console.warn('FLUX download failed:', err)
     return null
   }
 }
@@ -120,7 +123,6 @@ async function generateCoverImage(
 export async function runContentPipeline(input: PipelineInput): Promise<ApiResult<PipelineOutput>> {
   const theme = input.theme || 'classic'
 
-  // Step 1: Generate copy
   const copyResult = await generateCopy({
     platform: input.platform,
     pillar: input.pillar,
@@ -129,12 +131,11 @@ export async function runContentPipeline(input: PipelineInput): Promise<ApiResul
   })
 
   if (!copyResult.success) {
-    return { success: false, error: `Copy generation failed: ${copyResult.error}` }
+    return { success: false, error: `Copy failed: ${copyResult.error}` }
   }
 
   const copy = copyResult.data
 
-  // Step 2: Brand voice validation
   const voiceResult = checkBrandVoice({
     headline: copy.headline,
     body: copy.body,
@@ -142,20 +143,20 @@ export async function runContentPipeline(input: PipelineInput): Promise<ApiResul
   })
 
   if (!voiceResult.success) {
-    return { success: false, error: `Brand voice check failed: ${voiceResult.error}` }
+    return { success: false, error: `Brand voice: ${voiceResult.error}` }
   }
 
   const voice = voiceResult.data
 
-  // Step 3: Generate carousel visuals
+  // Generate platform-specific visuals
   let imageUrls: string[] = []
   let coverImageUrl: string | null = null
+  const tempId = `temp-${Date.now()}`
 
-  if (input.platform === 'instagram' || input.platform === 'linkedin') {
+  if (input.platform === 'instagram') {
     try {
       const tips = extractTips(copy.body)
-      const tempId = `temp-${Date.now()}`
-      imageUrls = await saveCarouselImages(
+      imageUrls = await generateInstagramCarousel(
         tempId,
         copy.headline,
         tips,
@@ -163,17 +164,21 @@ export async function runContentPipeline(input: PipelineInput): Promise<ApiResul
         copy.hashtags,
         theme
       )
-
-      // Optional: Generate AI cover image with FLUX
-      if (input.generateCoverImage) {
-        coverImageUrl = await generateCoverImage(tempId, copy.headline, input.topic)
-      }
     } catch (err) {
-      console.warn('Carousel generation failed:', err)
+      console.warn('Carousel failed:', err)
+    }
+  } else if (input.platform === 'linkedin') {
+    try {
+      imageUrls = await generateLinkedInVisual(tempId, copy.headline, copy.body)
+    } catch (err) {
+      console.warn('LinkedIn card failed:', err)
     }
   }
 
-  // Step 4: Save to Supabase
+  if (input.generateCoverImage) {
+    coverImageUrl = await generateFLUXCover(tempId, copy.headline, input.topic)
+  }
+
   const { data: contentPiece, error: dbError } = await supabase
     .from('marketing_content_pieces')
     .insert({
@@ -201,10 +206,10 @@ export async function runContentPipeline(input: PipelineInput): Promise<ApiResul
     .single()
 
   if (dbError) {
-    return { success: false, error: `Database error: ${dbError.message}` }
+    return { success: false, error: `DB: ${dbError.message}` }
   }
 
-  if (imageUrls.length > 0) {
+  if (imageUrls.length > 0 || coverImageUrl) {
     await supabase
       .from('marketing_content_pieces')
       .update({
@@ -241,10 +246,10 @@ export async function runContentPipeline(input: PipelineInput): Promise<ApiResul
 function mapPlatformToType(platform: Platform): string {
   const map: Record<string, string> = {
     instagram: 'carousel',
+    linkedin: 'linkedin-post',
     tiktok: 'reel',
     youtube: 'reel',
-    linkedin: 'carousel',
-    twitter: 'story',
+    twitter: 'text',
     blog: 'blog',
     newsletter: 'newsletter',
     podcast: 'podcast',
