@@ -14,6 +14,7 @@ export const {
 } = NextAuth({
   secret: env.NEXTAUTH_SECRET,
   trustHost: true,
+  debug: true,
   providers: [
     Google({
       clientId: env.GOOGLE_CLIENT_ID,
