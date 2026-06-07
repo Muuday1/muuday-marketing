@@ -338,3 +338,13 @@ This release implements all previously missing foundation infrastructure with **
 - **Documented folder structure** in `AGENTS.md` with enforced rules for file placement
 - **NextAuth robust auth** — bcrypt password + Google OAuth restricted to igorpinto.lds@gmail.com
 - **TypeScript**: 0 errors after reorganization
+
+## [0.5.1] - 2026-06-07
+
+### Google OAuth Fix
+
+- **Root cause**: Vercel alias `marketing.muuday.com` was pointing to a 3-hour-old deployment
+- **Migrated to Auth.js v5** (next-auth 5.0.0-beta.31) for better Next.js 15 App Router compatibility
+- **Updated env vars** with correct Google OAuth credentials from Google Cloud Console
+- **Fixed alias** to point to latest deployment
+- Google OAuth login now works on `https://marketing.muuday.com`
