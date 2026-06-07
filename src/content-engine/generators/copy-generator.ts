@@ -181,7 +181,7 @@ export async function generateCopy(
   const result = await generateWithModel('copy', {
     system: buildSystemPrompt(input),
     prompt: `Escreva um post para ${input.platform} sobre: ${input.topic}\n\nPilar: ${input.pillar}\n\nEscreva como uma pessoa real, não como AI. Use detalhes específicos. Seja honesto sobre as dificuldades.`,
-    maxTokens: 1024,
+    maxTokens: 4096,
   })
 
   if (!result.success) {

@@ -52,12 +52,12 @@ const PROVIDERS: Record<QualityTier, ProviderConfig> = {
 }
 
 const TASK_MODEL_MAP: Record<TaskType, QualityTier> = {
-  copy: 'premium', // Kimi k2.6 — default for all copy generation
-  structured: 'premium', // Kimi for structured output/JSON
+  copy: 'standard', // GPT-4.1 — reliable, fast, no reasoning
+  structured: 'standard', // GPT-4.1 for structured output
   code: 'premium', // Kimi for code generation
-  summary: 'premium', // Kimi for summaries
-  image: 'premium', // Kimi for image prompts
-  video: 'premium', // Kimi for video scripts
+  summary: 'standard', // GPT-4.1 for summaries
+  image: 'standard', // GPT-4.1 for image prompts
+  video: 'standard', // GPT-4.1 for video scripts
 }
 
 const costTracker: Record<string, number> = {}
