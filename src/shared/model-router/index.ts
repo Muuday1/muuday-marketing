@@ -105,7 +105,7 @@ async function callProvider(
   } else {
     body.temperature = 1
     // Disable thinking mode to get direct answers without reasoning chain
-    body.thinking = { type: 'disabled' }
+    body.enable_thinking = false
   }
   // Force JSON output for structured tasks when using Kimi
   if (isKimi && options.system?.includes('JSON')) {
