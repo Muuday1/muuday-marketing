@@ -94,27 +94,43 @@ function cleanJsonContent(content: string): string {
 function parseGeneratedCopy(content: string): CopyGenerationOutput {
   const cleaned = cleanJsonContent(content)
 
-  // Try to find JSON at the end of the content (Kimi may return reasoning before JSON)
-  const jsonMatches = cleaned.match(/\{[\s\S]*?\}/g)
-  if (jsonMatches) {
-    // Try the last match first (JSON usually comes after reasoning)
-    for (const match of [...jsonMatches].reverse()) {
-      try {
-        const p = JSON.parse(match)
-        if (p.headline || p.body) {
-          return {
-            headline: String(p.headline || '').slice(0, 100),
-            body: String(p.body || ''),
-            cta: String(p.cta || 'Saiba mais').slice(0, 80),
-            hashtags: Array.isArray(p.hashtags)
-              ? p.hashtags.slice(0, 5).map(String)
-              : ['#BrasilGlobal'],
-            altText: String(p.altText || ''),
-          }
-        }
-      } catch {
-        continue
+  // Strategy 1: Look for JSON after a clear marker (Kimi often puts JSON at the very end)
+  // Try to find the last valid JSON object with our expected keys
+  const possibleJsons: string[] = []
+
+  // Find all potential JSON objects by tracking brace depth
+  let depth = 0
+  let start = -1
+  for (let i = 0; i < cleaned.length; i++) {
+    if (cleaned[i] === '{') {
+      if (depth === 0) start = i
+      depth++
+    } else if (cleaned[i] === '}') {
+      depth--
+      if (depth === 0 && start !== -1) {
+        possibleJsons.push(cleaned.slice(start, i + 1))
+        start = -1
       }
+    }
+  }
+
+  // Try each potential JSON from last to first (JSON usually at end)
+  for (const jsonStr of [...possibleJsons].reverse()) {
+    try {
+      const p = JSON.parse(jsonStr)
+      if (p.headline && typeof p.headline === 'string') {
+        return {
+          headline: String(p.headline || '').slice(0, 100),
+          body: String(p.body || ''),
+          cta: String(p.cta || 'Saiba mais').slice(0, 80),
+          hashtags: Array.isArray(p.hashtags)
+            ? p.hashtags.slice(0, 5).map(String)
+            : ['#BrasilGlobal'],
+          altText: String(p.altText || ''),
+        }
+      }
+    } catch {
+      continue
     }
   }
 
