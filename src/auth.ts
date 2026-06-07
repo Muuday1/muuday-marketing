@@ -4,6 +4,12 @@ import bcrypt from 'bcryptjs'
 import { env } from '@/config/env'
 import type { NextAuthOptions } from 'next-auth'
 
+// Debug: verify env vars are loaded
+console.log('[AUTH DEBUG] NEXTAUTH_URL:', env.NEXTAUTH_URL)
+console.log('[AUTH DEBUG] GOOGLE_CLIENT_ID exists:', env.GOOGLE_CLIENT_ID.length > 0)
+console.log('[AUTH DEBUG] GOOGLE_CLIENT_SECRET exists:', env.GOOGLE_CLIENT_SECRET.length > 0)
+console.log('[AUTH DEBUG] NEXTAUTH_SECRET exists:', env.NEXTAUTH_SECRET.length > 0)
+
 export const authOptions: NextAuthOptions = {
   secret: env.NEXTAUTH_SECRET,
   providers: [
