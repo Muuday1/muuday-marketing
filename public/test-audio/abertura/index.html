@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Abertura Muuday — v3 ANIMAL</title>
+  <title>Abertura Muuday — v4</title>
   <style>
     body { font-family: system-ui, sans-serif; max-width: 700px; margin: 60px auto; padding: 20px; }
     h1 { font-size: 24px; margin-bottom: 8px; }
@@ -10,51 +10,61 @@
     .player { margin-bottom: 20px; }
     .player label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
     audio { width: 100%; height: 36px; }
-    .config { background: #f5f5f5; padding: 15px; border-radius: 8px; font-size: 13px; line-height: 1.6; }
+    .config { background: #f5f5f5; padding: 15px; border-radius: 8px; font-size: 13px; line-height: 1.6; margin-bottom: 20px; }
     .config code { background: #e0e0e0; padding: 2px 6px; border-radius: 3px; }
     .version { color: #e76f51; font-weight: 600; }
     .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 3px; }
+    .warning { background: #ffebee; border-left: 4px solid #e57373; padding: 15px; border-radius: 4px; font-size: 13px; }
   </style>
 </head>
 <body>
-  <h1>🎵 Abertura Muuday — <span class="version">v3 ANIMAL 🔥</span></h1>
-  <p class="subtitle">Muita energia! style=1.0, speed=1.1, música 140bpm + bass</p>
+  <h1>🎵 Abertura Muuday — <span class="version">v4</span></h1>
+  <p class="subtitle">Pronuncia corrigida: "Mudei" | Música 80% | Mais elaborada</p>
 
   <div class="player">
-    <label>🔥 Abertura v3 (MUITO animada)</label>
+    <label>🔥 Abertura v4 (atual)</label>
+    <audio controls src="./abertura-muuday-v4.mp3"></audio>
+  </div>
+
+  <div class="player">
+    <label>v3 (comparar)</label>
     <audio controls src="./abertura-muuday-v3.mp3"></audio>
   </div>
 
   <div class="player">
-    <label>Abertura v2 (sem tag, música 45%)</label>
-    <audio controls src="./abertura-muuday-v2.mp3"></audio>
+    <label>Só a Voz v4</label>
+    <audio controls src="./voz-abertura-v4-final.mp3"></audio>
   </div>
 
   <div class="player">
-    <label>Abertura v1 (tag, música baixa)</label>
-    <audio controls src="./abertura-muuday-v1.mp3"></audio>
-  </div>
-
-  <div class="player">
-    <label>Só a Voz v3 (sem música)</label>
-    <audio controls src="./voz-abertura-v3-final.mp3"></audio>
+    <label>Só a Música v4</label>
+    <audio controls src="./musica-bed-v4.mp3"></audio>
   </div>
 
   <div class="config">
     <strong>Texto:</strong><br>
-    Bem-vindo ao Muuday! Eu sou a Jessica, e hoje a gente vai falar sobre a historia de quem deixou o Brasil para tras!<br><br>
-    <strong>O que mudou na v3:</strong><br>
-    • <span class="highlight">style=1.0</span> (máximo de entonação!)<br>
-    • <span class="highlight">stability=0.20</span> (mais variabilidade, menos robô)<br>
-    • <span class="highlight">speed=1.1</span> (10% mais rápido, mais energia)<br>
-    • Texto com <span class="highlight">exclamações</span> para forçar entonação<br>
-    • Música: <span class="highlight">140bpm</span> + kick + hi-hat + <span class="highlight">bass line</span><br>
-    • Música: <span class="highlight">50%</span> volume (bem presente!)<br>
-    • Pad com oitava acima para mais brilho<br><br>
-    <strong>Ainda ajustável:</strong><br>
-    • Speed: 1.15 ou 1.2 para mais agilidade<br>
-    • Música: mais elementos (synth lead, arpeggio)<br>
-    • Duração: estender para 15s com buildup
+    Bem-vindo ao <span class="highlight">Mudei</span>! Eu sou a Jessica, e hoje a gente vai falar sobre a historia de quem deixou o Brasil para tras!<br><br>
+    <strong>O que mudou na v4:</strong><br>
+    • ✅ Pronuncia corrigida: <span class="highlight">"Mudei"</span> (antes "Muuday" pronunciava errado)<br>
+    • ✅ Música: <span class="highlight">80% volume</span> (muito mais presente!)<br>
+    • ✅ Música mais elaborada: melodia + arpeggio + snare + hi-hat + bass + pad + kick<br>
+    • ✅ Mesma voz animada: style=1.0, speed=1.1, stability=0.20<br><br>
+    <strong>Elementos musicais (10 camadas):</strong><br>
+    • Pad C-major (C-E-G + oitava)<br>
+    • Melodia: frase C-G-E-G-C<br>
+    • Arpeggio: C-E-G-C-E-G...<br>
+    • Bass line pulsando<br>
+    • Kick 140bpm + Snare + Hi-hat
+  </div>
+
+  <div class="warning">
+    <strong>⚠️ Limitação importante:</strong><br>
+    A música foi gerada com ondas senoidais e ruído (sintetizador puro). Soa como "video game" dos anos 80 — <strong>não é uma música de verdade</strong> com instrumentos reais.<br><br>
+    <strong>Para uma abertura profissional, recomendo substituir por:</strong><br>
+    1. <strong>Track royalty-free</strong> de sites como Epidemic Sound, Artlist, ou Pixabay<br>
+    2. <strong>Música gerada por IA</strong> (Suno, Udio) — posso integrar via API<br>
+    3. <strong>Loop/sample profissional</strong> que você já tenha<br><br>
+    O pipeline está pronto — é só trocar o arquivo <code>musica-bed.mp3</code> por uma música real!
   </div>
 </body>
 </html>
