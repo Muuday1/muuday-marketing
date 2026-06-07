@@ -45,7 +45,7 @@ OVERALL TONE: ${input.tone || 'warm'}
 ${input.purpose ? `PURPOSE: ${input.purpose}` : ''}
 ${getLengthLimit(input.platform)}
 
-OUTPUT FORMAT - RESPONDA APENAS COM JSON, SEM TEXTO ANTES OU DEPOIS:
+OUTPUT FORMAT - JSON APENAS, ZERO TEXTO EXTRA:
 {
   "headline": "Hook de até 80 caracteres. Nada genérico.",
   "body": "Copy para ${input.platform}. Respeite o limite de caracteres acima.",
@@ -54,8 +54,10 @@ OUTPUT FORMAT - RESPONDA APENAS COM JSON, SEM TEXTO ANTES OU DEPOIS:
   "altText": "Descrição acessível"
 }
 
+INSTRUÇÃO ABSOLUTA: NÃO pense em voz alta. NÃO explique seu raciocínio. NÃO escreva "Vamos analisar", "Preciso verificar", "Aqui está o resultado" ou qualquer outro texto fora do JSON. Apenas retorne o objeto JSON. Zero texto antes ou depois.
+
 REGRAS CRÍTICAS:
-1. Responda APENAS com o objeto JSON acima. Nenhum texto antes ou depois.
+1. Responda APENAS com o objeto JSON acima. Nenhum texto antes ou depois. Nenhuma explicação.
 2. STRICT length limit. Do NOT exceed the character count above.
 3. Max 15% sentences start with "Você/Quando/Se/Para"
 4. Use fragments. Imperfect grammar = okay if human.

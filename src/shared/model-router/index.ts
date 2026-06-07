@@ -105,6 +105,10 @@ async function callProvider(
   } else {
     body.temperature = 1
   }
+  // Force JSON output for structured tasks when using Kimi
+  if (isKimi && options.system?.includes('JSON')) {
+    body.response_format = { type: 'json_object' }
+  }
 
   try {
     const response = await fetch(config.baseUrl, {
