@@ -32,7 +32,7 @@ const PROVIDERS: Record<QualityTier, ProviderConfig> = {
     name: 'openai',
     apiKey: env.OPENAI_API_KEY,
     baseUrl: 'https://api.openai.com/v1/chat/completions',
-    model: 'gpt-4.1',
+    model: 'gpt-4o',
     maxRetries: 2,
   },
   budget: {
