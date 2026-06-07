@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getToken } from 'next-auth/jwt'
 import { incrementCache, cacheKeys } from '@/cache/redis'
+import { env } from '@/config/env'
+
+const secret = env.NEXTAUTH_SECRET
 
 /**
- * Simple auth middleware: checks for admin-session cookie.
- * No JWT, no complexity. Physical access is the security boundary.
+ * Auth middleware: checks NextAuth JWT session.
  */
 export async function authMiddleware(request: NextRequest): Promise<NextResponse | null> {
   const path = request.nextUrl.pathname
@@ -13,9 +16,9 @@ export async function authMiddleware(request: NextRequest): Promise<NextResponse
     return null
   }
 
-  const session = request.cookies.get('admin-session')?.value
+  const token = await getToken({ req: request, secret })
 
-  if (session !== 'authenticated') {
+  if (!token) {
     const loginUrl = new URL('/login', request.url)
     return NextResponse.redirect(loginUrl)
   }
