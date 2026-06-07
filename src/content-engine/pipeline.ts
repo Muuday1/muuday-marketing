@@ -157,7 +157,9 @@ export async function runContentPipeline(input: PipelineInput): Promise<ApiResul
 
   if (input.platform === 'instagram') {
     try {
+      console.log('[PIPELINE] Generating Instagram carousel...')
       const tips = extractTips(copy.body)
+      console.log('[PIPELINE] Tips extracted:', tips.length)
       imageUrls = await generateInstagramCarousel(
         tempId,
         copy.headline,
@@ -166,8 +168,9 @@ export async function runContentPipeline(input: PipelineInput): Promise<ApiResul
         copy.hashtags,
         theme
       )
+      console.log('[PIPELINE] Carousel generated:', imageUrls.length, 'images')
     } catch (err) {
-      console.warn('Carousel failed:', err)
+      console.error('[PIPELINE] Carousel failed:', err)
     }
   } else if (input.platform === 'linkedin') {
     try {

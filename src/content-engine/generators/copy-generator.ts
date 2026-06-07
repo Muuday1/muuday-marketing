@@ -45,7 +45,7 @@ OVERALL TONE: ${input.tone || 'warm'}
 ${input.purpose ? `PURPOSE: ${input.purpose}` : ''}
 ${getLengthLimit(input.platform)}
 
-OUTPUT (JSON only):
+OUTPUT FORMAT - RESPONDA APENAS COM JSON, SEM TEXTO ANTES OU DEPOIS:
 {
   "headline": "Hook de até 80 caracteres. Nada genérico.",
   "body": "Copy para ${input.platform}. Respeite o limite de caracteres acima.",
@@ -54,13 +54,14 @@ OUTPUT (JSON only):
   "altText": "Descrição acessível"
 }
 
-RULES:
-1. STRICT length limit. Do NOT exceed the character count above.
-2. Max 15% sentences start with "Você/Quando/Se/Para"
-3. Use fragments. Imperfect grammar = okay if human.
-4. Include ONE specific detail (number, place, brand, time).
-5. Body should NOT read like a listicle unless platform demands it.
-6. Hashtags in Portuguese.`
+REGRAS CRÍTICAS:
+1. Responda APENAS com o objeto JSON acima. Nenhum texto antes ou depois.
+2. STRICT length limit. Do NOT exceed the character count above.
+3. Max 15% sentences start with "Você/Quando/Se/Para"
+4. Use fragments. Imperfect grammar = okay if human.
+5. Include ONE specific detail (number, place, brand, time).
+6. Body should NOT read like a listicle unless platform demands it.
+7. Hashtags in Portuguese.`
 
   // If format is provided, append format-specific strategy guide
   if (input.format) {
@@ -93,22 +94,28 @@ function cleanJsonContent(content: string): string {
 function parseGeneratedCopy(content: string): CopyGenerationOutput {
   const cleaned = cleanJsonContent(content)
 
-  try {
-    const jsonMatch = cleaned.match(/\{[\s\S]*\}/)
-    if (jsonMatch) {
-      const p = JSON.parse(jsonMatch[0])
-      return {
-        headline: String(p.headline || '').slice(0, 100),
-        body: String(p.body || ''),
-        cta: String(p.cta || 'Saiba mais').slice(0, 80),
-        hashtags: Array.isArray(p.hashtags)
-          ? p.hashtags.slice(0, 5).map(String)
-          : ['#BrasilGlobal'],
-        altText: String(p.altText || ''),
+  // Try to find JSON at the end of the content (Kimi may return reasoning before JSON)
+  const jsonMatches = cleaned.match(/\{[\s\S]*?\}/g)
+  if (jsonMatches) {
+    // Try the last match first (JSON usually comes after reasoning)
+    for (const match of [...jsonMatches].reverse()) {
+      try {
+        const p = JSON.parse(match)
+        if (p.headline || p.body) {
+          return {
+            headline: String(p.headline || '').slice(0, 100),
+            body: String(p.body || ''),
+            cta: String(p.cta || 'Saiba mais').slice(0, 80),
+            hashtags: Array.isArray(p.hashtags)
+              ? p.hashtags.slice(0, 5).map(String)
+              : ['#BrasilGlobal'],
+            altText: String(p.altText || ''),
+          }
+        }
+      } catch {
+        continue
       }
     }
-  } catch {
-    /* fallback */
   }
 
   return {
