@@ -52,12 +52,12 @@ const PROVIDERS: Record<QualityTier, ProviderConfig> = {
 }
 
 const TASK_MODEL_MAP: Record<TaskType, QualityTier> = {
-  copy: 'budget', // DeepSeek — cheap, no reasoning
-  structured: 'budget', // DeepSeek for structured output
+  copy: 'premium', // Kimi k2.5 — fast, high quality
+  structured: 'premium', // Kimi for structured output
   code: 'premium', // Kimi for code generation
-  summary: 'budget', // DeepSeek for summaries
-  image: 'budget', // DeepSeek for image prompts
-  video: 'budget', // DeepSeek for video scripts
+  summary: 'premium', // Kimi for summaries
+  image: 'premium', // Kimi for image prompts
+  video: 'premium', // Kimi for video scripts
 }
 
 const costTracker: Record<string, number> = {}
