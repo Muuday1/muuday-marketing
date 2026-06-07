@@ -25,7 +25,7 @@ const PROVIDERS: Record<QualityTier, ProviderConfig> = {
     name: 'kimi',
     apiKey: env.KIMI_API_KEY,
     baseUrl: 'https://api.moonshot.ai/v1/chat/completions',
-    model: 'kimi-k2.6',
+    model: 'kimi-latest',
     maxRetries: 3,
   },
   standard: {
