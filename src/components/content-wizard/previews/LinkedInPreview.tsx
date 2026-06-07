@@ -1,5 +1,7 @@
 'use client'
 
+import { useState, useRef } from 'react'
+
 interface LinkedInPreviewProps {
   headline: string
   body: string
@@ -19,7 +21,19 @@ export function LinkedInPreview({
   title = 'Comunidade Brasileira Global',
   avatarUrl,
 }: LinkedInPreviewProps) {
+  const [expanded, setExpanded] = useState(false)
+  const [activeSlide, setActiveSlide] = useState(0)
+  const scrollRef = useRef<HTMLDivElement>(null)
+
   const fullText = `${headline}\n\n${body}\n\n${cta}`
+
+  const handleScroll = () => {
+    if (!scrollRef.current) return
+    const scrollLeft = scrollRef.current.scrollLeft
+    const width = scrollRef.current.offsetWidth
+    const index = Math.round(scrollLeft / width)
+    setActiveSlide(index)
+  }
 
   return (
     <div className="mx-auto max-w-[375px]">
@@ -46,17 +60,49 @@ export function LinkedInPreview({
         {/* Text */}
         <div className="px-3 pb-2">
           <p className="text-brand-dark text-sm leading-relaxed whitespace-pre-wrap">
-            {fullText.slice(0, 250)}
-            {fullText.length > 250 && (
-              <span className="text-brand-slate font-medium">... ver mais</span>
+            {expanded ? (
+              <>
+                {fullText}{' '}
+                <button onClick={() => setExpanded(false)} className="text-brand-slate font-medium">
+                  ...ver menos
+                </button>
+              </>
+            ) : (
+              <>
+                {fullText.slice(0, 200)}
+                {fullText.length > 200 && (
+                  <button
+                    onClick={() => setExpanded(true)}
+                    className="text-brand-slate font-medium"
+                  >
+                    ...ver mais
+                  </button>
+                )}
+              </>
             )}
           </p>
         </div>
 
-        {/* Image */}
+        {/* Images - swipeable */}
         {imageUrls.length > 0 && (
-          <div className="border-brand-slate/10 border-y">
-            <img src={imageUrls[0]} alt="post" className="h-auto w-full object-cover" />
+          <div className="relative border-y">
+            <div
+              ref={scrollRef}
+              onScroll={handleScroll}
+              className="flex snap-x snap-mandatory overflow-x-auto"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {imageUrls.map((url, i) => (
+                <div key={i} className="aspect-[1200/627] w-full shrink-0 snap-center">
+                  <img src={url} alt={`slide ${i + 1}`} className="h-full w-full object-cover" />
+                </div>
+              ))}
+            </div>
+            {imageUrls.length > 1 && (
+              <div className="absolute top-2 right-2 rounded-full bg-black/50 px-2 py-0.5 text-[10px] text-white">
+                {activeSlide + 1} / {imageUrls.length}
+              </div>
+            )}
           </div>
         )}
 

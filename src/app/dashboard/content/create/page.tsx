@@ -102,6 +102,7 @@ export default function CreateContentPage() {
             altText: data.data.altText || '',
           },
           contentPieceId: data.data.id || null,
+          imageUrls: data.data.imageUrls || [],
           loading: false,
         })
       } else {
@@ -223,7 +224,7 @@ export default function CreateContentPage() {
                     purpose={state.purpose}
                     content={state.generatedContent}
                     contentPieceId={state.contentPieceId}
-                    imageUrls={[]}
+                    imageUrls={state.imageUrls}
                     scheduleDate={state.scheduleDate}
                     scheduleTime={state.scheduleTime}
                     onScheduleDateChange={(date) => updateState({ scheduleDate: date })}

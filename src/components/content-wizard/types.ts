@@ -26,6 +26,7 @@ export interface WizardState {
     altText: string
   } | null
   contentPieceId: string | null
+  imageUrls: string[]
   loading: boolean
   error: string | null
 }
@@ -44,6 +45,7 @@ export const INITIAL_STATE: WizardState = {
   scheduleTime: '12:00',
   generatedContent: null,
   contentPieceId: null,
+  imageUrls: [],
   loading: false,
   error: null,
 }
