@@ -91,16 +91,53 @@ function cleanJsonContent(content: string): string {
   return content.trim()
 }
 
+function sanitizeJsonString(jsonStr: string): string {
+  // Kimi sometimes returns literal newlines inside JSON strings (invalid)
+  // We need to escape them properly while preserving structure
+  let result = ''
+  let inString = false
+  let escaped = false
+
+  for (let i = 0; i < jsonStr.length; i++) {
+    const char = jsonStr[i]
+
+    if (escaped) {
+      result += char
+      escaped = false
+      continue
+    }
+
+    if (char === '\\') {
+      result += char
+      escaped = true
+      continue
+    }
+
+    if (char === '"' && !escaped) {
+      inString = !inString
+      result += char
+      continue
+    }
+
+    if (inString && (char === '\n' || char === '\r')) {
+      result += '\\n'
+      continue
+    }
+
+    result += char
+  }
+
+  return result
+}
+
 function parseGeneratedCopy(content: string): CopyGenerationOutput {
   const cleaned = cleanJsonContent(content)
 
-  // Strategy 1: Look for JSON after a clear marker (Kimi often puts JSON at the very end)
-  // Try to find the last valid JSON object with our expected keys
-  const possibleJsons: string[] = []
-
   // Find all potential JSON objects by tracking brace depth
+  const possibleJsons: string[] = []
   let depth = 0
   let start = -1
+
   for (let i = 0; i < cleaned.length; i++) {
     if (cleaned[i] === '{') {
       if (depth === 0) start = i
@@ -114,10 +151,11 @@ function parseGeneratedCopy(content: string): CopyGenerationOutput {
     }
   }
 
-  // Try each potential JSON from last to first (JSON usually at end)
+  // Try each potential JSON from last to first (JSON usually at end of reasoning)
   for (const jsonStr of [...possibleJsons].reverse()) {
     try {
-      const p = JSON.parse(jsonStr)
+      const sanitized = sanitizeJsonString(jsonStr)
+      const p = JSON.parse(sanitized)
       if (p.headline && typeof p.headline === 'string') {
         return {
           headline: String(p.headline || '').slice(0, 100),
