@@ -99,11 +99,13 @@ async function callProvider(
       { role: 'user' as const, content: options.prompt },
     ],
   }
-  // Kimi k2.6 only accepts temperature=1
+  // Kimi k2.5/k2.6 only accepts temperature=1
   if (!isKimi) {
     body.temperature = options.temperature ?? 0.7
   } else {
     body.temperature = 1
+    // Disable thinking mode to get direct answers without reasoning chain
+    body.thinking = { type: 'disabled' }
   }
   // Force JSON output for structured tasks when using Kimi
   if (isKimi && options.system?.includes('JSON')) {
