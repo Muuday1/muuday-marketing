@@ -17,34 +17,39 @@ export async function renderToPng(
 ): Promise<Buffer> {
   const { width = 1080, height = 1080 } = options
 
-  const fonts = await loadFonts()
+  try {
+    const fonts = await loadFonts()
 
-  const svg = await satori(element, {
-    width,
-    height,
-    fonts: [
-      {
-        name: 'Inter',
-        data: fonts.regular,
-        weight: 400,
-        style: 'normal',
+    const svg = await satori(element, {
+      width,
+      height,
+      fonts: [
+        {
+          name: 'Inter',
+          data: fonts.regular,
+          weight: 400,
+          style: 'normal',
+        },
+        {
+          name: 'Inter',
+          data: fonts.bold,
+          weight: 700,
+          style: 'normal',
+        },
+      ],
+    })
+
+    const resvg = new Resvg(svg, {
+      fitTo: {
+        mode: 'width',
+        value: width,
       },
-      {
-        name: 'Inter',
-        data: fonts.bold,
-        weight: 700,
-        style: 'normal',
-      },
-    ],
-  })
+    })
 
-  const resvg = new Resvg(svg, {
-    fitTo: {
-      mode: 'width',
-      value: width,
-    },
-  })
-
-  const pngData = resvg.render()
-  return Buffer.from(pngData.asPng())
+    const pngData = resvg.render()
+    return Buffer.from(pngData.asPng())
+  } catch (err) {
+    console.error('renderToPng failed:', err)
+    throw err
+  }
 }

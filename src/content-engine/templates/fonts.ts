@@ -1,5 +1,6 @@
 import { promises as fs } from 'fs'
 import path from 'path'
+import { fileURLToPath } from 'url'
 
 let regularFont: ArrayBuffer | null = null
 let boldFont: ArrayBuffer | null = null
@@ -8,15 +9,28 @@ function bufferToArrayBuffer(buf: Buffer): ArrayBuffer {
   return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength) as ArrayBuffer
 }
 
-function findFontsDir(): string {
-  // Try multiple paths for different environments (local, Vercel, Docker)
-  const candidates = [
-    path.join(process.cwd(), 'public', 'fonts'),
-    path.join(process.cwd(), 'fonts'),
-    path.join(__dirname, '..', '..', '..', 'public', 'fonts'),
-    path.join('/var/task', 'public', 'fonts'),
-  ]
-  return candidates[0]
+async function dirExists(dir: string): Promise<boolean> {
+  try {
+    await fs.access(dir)
+    return true
+  } catch {
+    return false
+  }
+}
+
+async function getFontDir(): Promise<string> {
+  // ESM-compatible way to get __dirname
+  const __filename = fileURLToPath(import.meta.url)
+  const __dirname = path.dirname(__filename)
+
+  // Try fonts next to this file first (works in Vercel serverless)
+  const localDir = path.join(__dirname, 'fonts')
+  if (await dirExists(localDir)) {
+    return localDir
+  }
+
+  // Fallback to public/fonts (works locally)
+  return path.join(process.cwd(), 'public', 'fonts')
 }
 
 export async function loadFonts(): Promise<{ regular: ArrayBuffer; bold: ArrayBuffer }> {
@@ -24,7 +38,7 @@ export async function loadFonts(): Promise<{ regular: ArrayBuffer; bold: ArrayBu
     return { regular: regularFont, bold: boldFont }
   }
 
-  const fontDir = findFontsDir()
+  const fontDir = await getFontDir()
   const regularPath = path.join(fontDir, 'Inter-Regular.ttf')
   const boldPath = path.join(fontDir, 'Inter-Bold.ttf')
 

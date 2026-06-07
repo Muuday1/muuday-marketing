@@ -21,6 +21,20 @@ interface CopyGenerationOutput {
   altText?: string
 }
 
+function getLengthLimit(platform: Platform): string {
+  const limits: Record<string, string> = {
+    instagram: 'Body: 250-350 caracteres. Curto, direto, punchy.',
+    tiktok: 'Body: 100-150 caracteres. Ultra curto.',
+    twitter: 'Body: 200-250 caracteres. Dentro do limite.',
+    linkedin: 'Body: 800-1200 caracteres. Profissional mas humano.',
+    youtube: 'Body: 300-500 caracteres. Descrição de vídeo.',
+    blog: 'Body: 1500-2500 caracteres. Artigo completo.',
+    newsletter: 'Body: 1000-2000 caracteres. Email aprofundado.',
+    podcast: 'Body: 400-800 caracteres. Show notes.',
+  }
+  return limits[platform] || limits.instagram
+}
+
 function buildSystemPrompt(input: CopyGenerationInput): string {
   const basePrompt = `${BRAND_DNA}
 
@@ -29,22 +43,24 @@ ${PLATFORM_VOICE[input.platform] || PLATFORM_VOICE.instagram}
 TOPIC ANGLE: ${PILLAR_ANGLES[input.pillar]}
 OVERALL TONE: ${input.tone || 'warm'}
 ${input.purpose ? `PURPOSE: ${input.purpose}` : ''}
+${getLengthLimit(input.platform)}
 
 OUTPUT (JSON only):
 {
   "headline": "Hook de até 80 caracteres. Nada genérico.",
-  "body": "Copy para ${input.platform}. Respeite as regras de voz acima.",
+  "body": "Copy para ${input.platform}. Respeite o limite de caracteres acima.",
   "cta": "Chamada curta e natural (máx 60 chars).",
   "hashtags": ["#tag1", "#tag2", "#tag3"],
   "altText": "Descrição acessível"
 }
 
 RULES:
-1. Max 15% sentences start with "Você/Quando/Se/Para"
-2. Use fragments. Imperfect grammar = okay if human.
-3. Include ONE specific detail (number, place, brand, time).
-4. Body should NOT read like a listicle unless platform demands it.
-5. Hashtags in Portuguese.`
+1. STRICT length limit. Do NOT exceed the character count above.
+2. Max 15% sentences start with "Você/Quando/Se/Para"
+3. Use fragments. Imperfect grammar = okay if human.
+4. Include ONE specific detail (number, place, brand, time).
+5. Body should NOT read like a listicle unless platform demands it.
+6. Hashtags in Portuguese.`
 
   // If format is provided, append format-specific strategy guide
   if (input.format) {
