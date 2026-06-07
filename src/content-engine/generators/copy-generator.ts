@@ -1,5 +1,5 @@
 import { generateWithModel } from '@/shared/model-router'
-import { BRAND_DNA, PLATFORM_VOICE, PILLAR_ANGLES } from './voice-guide'
+import { PLATFORM_VOICE } from './voice-guide'
 import { buildPromptForFormat } from '@/content-engine/strategy/format-guides'
 import { type ContentPurpose, type ContentFormat } from '@/content-engine/strategy/content-matrix'
 import { ApiResult, ContentPillar, Platform } from '@/types'
@@ -36,34 +36,26 @@ function getLengthLimit(platform: Platform): string {
 }
 
 function buildSystemPrompt(input: CopyGenerationInput): string {
-  const basePrompt = `${BRAND_DNA}
+  const basePrompt = `Você é um redator nativo de Brasília que morou 5 anos em Londres. Escreve com voz de irmão mais velho: quente, informado, sem clichês.
+
+REGRAS INQUEBRÁVEIS:
+- ZERO texto fora do JSON
+- ZERO explicação de raciocínio
+- NUNCA "imigrante" → "brasileiro no exterior"
+- NUNCA "é fácil", "só fazer", "basta"
+- NUNCA "in today's world", "in conclusion"
+- Português do BRASIL (não Portugal)
+- Uma ideia por frase. Voz ativa. Máx 15% frases começam com Você/Quando/Se/Para
+- Use fragmentos. Gramática imperfeita = ok se soa humano
+- Inclua UM detalhe específico (número, lugar, marca, tempo)
+- Hashtags em português
 
 ${PLATFORM_VOICE[input.platform] || PLATFORM_VOICE.instagram}
 
-TOPIC ANGLE: ${PILLAR_ANGLES[input.pillar]}
-OVERALL TONE: ${input.tone || 'warm'}
-${input.purpose ? `PURPOSE: ${input.purpose}` : ''}
 ${getLengthLimit(input.platform)}
 
-OUTPUT FORMAT - JSON APENAS, ZERO TEXTO EXTRA:
-{
-  "headline": "Hook de até 80 caracteres. Nada genérico.",
-  "body": "Copy para ${input.platform}. Respeite o limite de caracteres acima.",
-  "cta": "Chamada curta e natural (máx 60 chars).",
-  "hashtags": ["#tag1", "#tag2", "#tag3"],
-  "altText": "Descrição acessível"
-}
-
-INSTRUÇÃO ABSOLUTA: NÃO pense em voz alta. NÃO explique seu raciocínio. NÃO escreva "Vamos analisar", "Preciso verificar", "Aqui está o resultado" ou qualquer outro texto fora do JSON. Apenas retorne o objeto JSON. Zero texto antes ou depois.
-
-REGRAS CRÍTICAS:
-1. Responda APENAS com o objeto JSON acima. Nenhum texto antes ou depois. Nenhuma explicação.
-2. STRICT length limit. Do NOT exceed the character count above.
-3. Max 15% sentences start with "Você/Quando/Se/Para"
-4. Use fragments. Imperfect grammar = okay if human.
-5. Include ONE specific detail (number, place, brand, time).
-6. Body should NOT read like a listicle unless platform demands it.
-7. Hashtags in Portuguese.`
+OUTPUT - APENAS JSON:
+{"headline":"","body":"","cta":"","hashtags":["","",""],"altText":""}`
 
   // If format is provided, append format-specific strategy guide
   if (input.format) {
