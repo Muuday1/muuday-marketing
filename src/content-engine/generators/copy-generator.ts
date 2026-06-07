@@ -65,9 +65,20 @@ RULES:
   return basePrompt
 }
 
+function cleanJsonContent(content: string): string {
+  // Remove markdown code blocks
+  const codeBlockMatch = content.match(/```(?:json)?\n?([\s\S]*?)```/)
+  if (codeBlockMatch) {
+    return codeBlockMatch[1].trim()
+  }
+  return content.trim()
+}
+
 function parseGeneratedCopy(content: string): CopyGenerationOutput {
+  const cleaned = cleanJsonContent(content)
+
   try {
-    const jsonMatch = content.match(/\{[\s\S]*\}/)
+    const jsonMatch = cleaned.match(/\{[\s\S]*\}/)
     if (jsonMatch) {
       const p = JSON.parse(jsonMatch[0])
       return {
@@ -85,8 +96,8 @@ function parseGeneratedCopy(content: string): CopyGenerationOutput {
   }
 
   return {
-    headline: content.slice(0, 80),
-    body: content,
+    headline: cleaned.slice(0, 80),
+    body: cleaned,
     cta: 'Saiba mais',
     hashtags: ['#BrasilGlobal'],
     altText: 'Imagem relacionada',
