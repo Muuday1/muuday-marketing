@@ -1,3 +1,4 @@
+import React from 'react'
 // Muuday Bold — High impact, high contrast
 // Thick borders, lime neon feel, geometric shapes.
 // For when you need to stop the scroll.

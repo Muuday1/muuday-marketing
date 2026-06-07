@@ -1,3 +1,4 @@
+import React from 'react'
 // Muuday Minimal — Pure whitespace, thin typography
 // White background, lime as single accent, maximum breathing room.
 // Inspired by Dieter Rams / Braun philosophy within Muuday identity.

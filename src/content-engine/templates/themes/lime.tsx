@@ -1,3 +1,4 @@
+import React from 'react'
 // Muuday Lime — Default brand theme
 // Clean, modern, lime-forward. The "official" Muuday look.
 // Cover: Dark bg with lime gradient accent

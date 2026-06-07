@@ -1,3 +1,4 @@
+import React from 'react'
 // Muuday Editorial — Magazine sophistication
 // Uses DM Serif Display for headlines, Muuday dark + lime.
 // Red accent line (inspired by Monocle but with Muuday red/rose).

@@ -1,3 +1,4 @@
+import React from 'react'
 // Etsy-inspired: handmade, earthy, organic textures
 // Uses warm terracotta, craft paper feel, serif accents
 

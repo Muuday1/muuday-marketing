@@ -1,3 +1,4 @@
+import React from 'react'
 // Preply-inspired: trust, education, calm gradients
 // Uses soft blues, clean geometry, rounded cards
 
@@ -59,7 +60,7 @@ export function CalmCover({ title, subtitle }: { title: string; subtitle?: strin
       >
         <div
           style={{
-            display: 'inline-flex',
+            display: 'flex',
             alignItems: 'center',
             gap: 8,
             backgroundColor: `${P.primary}15`,

@@ -1,3 +1,4 @@
+import React from 'react'
 // Airbnb-inspired: warm, inviting, lifestyle photography feel
 // Uses gradient overlays, rounded corners, generous whitespace
 

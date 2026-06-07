@@ -1,3 +1,4 @@
+import React from 'react'
 // Muuday Dark — Premium dark mode
 // Sophisticated, tech-forward. Dark bg with lime glow and grid texture.
 // Uses JetBrains Mono for accents.

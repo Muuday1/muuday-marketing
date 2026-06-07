@@ -1,3 +1,4 @@
+import React from 'react'
 // Muuday Design System — Official brand tokens
 // All carousel themes must use ONLY these tokens.
 //
@@ -66,7 +67,7 @@ export function MuudayBadge({ text, bg, color }: { text: string; bg: string; col
   return (
     <div
       style={{
-        display: 'inline-flex',
+        display: 'flex',
         alignItems: 'center',
         padding: '8px 16px',
         borderRadius: MUUDAY.radius.full,
@@ -170,7 +171,7 @@ export function MuudayNumberPill({
   return (
     <div
       style={{
-        display: 'inline-flex',
+        display: 'flex',
         alignItems: 'center',
         padding: '6px 16px',
         borderRadius: MUUDAY.radius.md,
