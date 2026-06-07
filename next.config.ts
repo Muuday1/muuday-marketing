@@ -3,6 +3,7 @@ import type { NextConfig } from 'next'
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   output: 'standalone',
+  serverExternalPackages: ['@resvg/resvg-js'],
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'cdn.sanity.io' },
