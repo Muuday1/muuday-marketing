@@ -18,8 +18,16 @@ export async function renderToPng(
   const { width = 1080, height = 1080 } = options
 
   try {
+    console.log('[SATORI] Loading fonts...')
     const fonts = await loadFonts()
+    console.log(
+      '[SATORI] Fonts loaded, regular:',
+      fonts.regular.byteLength,
+      'bold:',
+      fonts.bold.byteLength
+    )
 
+    console.log('[SATORI] Rendering SVG...')
     const svg = await satori(element, {
       width,
       height,
@@ -38,6 +46,7 @@ export async function renderToPng(
         },
       ],
     })
+    console.log('[SATORI] SVG rendered, length:', svg.length)
 
     const resvg = new Resvg(svg, {
       fitTo: {
@@ -47,9 +56,11 @@ export async function renderToPng(
     })
 
     const pngData = resvg.render()
-    return Buffer.from(pngData.asPng())
+    const buffer = Buffer.from(pngData.asPng())
+    console.log('[SATORI] PNG rendered, size:', buffer.length)
+    return buffer
   } catch (err) {
-    console.error('renderToPng failed:', err)
+    console.error('[SATORI] renderToPng failed:', err)
     throw err
   }
 }

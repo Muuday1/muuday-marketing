@@ -69,6 +69,10 @@ async function generateInstagramCarousel(
   hashtags: string[],
   theme: CarouselTheme
 ): Promise<string[]> {
+  console.log('[CAROUSEL] Starting generation with theme:', theme)
+  console.log('[CAROUSEL] Headline:', headline.slice(0, 50))
+  console.log('[CAROUSEL] Tips count:', tips.length)
+
   const slides = await generateCarousel({
     title: headline,
     subtitle: '',
@@ -78,11 +82,16 @@ async function generateInstagramCarousel(
     theme,
   })
 
+  console.log('[CAROUSEL] Generated', slides.length, 'slides')
+
   const urls: string[] = []
   for (let i = 0; i < slides.length; i++) {
     const path = `${contentPieceId}/slide-${i}.png`
+    console.log('[CAROUSEL] Uploading slide', i, 'to', path)
     urls.push(await uploadAsset(path, slides[i].buffer, 'image/png'))
   }
+
+  console.log('[CAROUSEL] Upload complete:', urls.length, 'urls')
   return urls
 }
 
