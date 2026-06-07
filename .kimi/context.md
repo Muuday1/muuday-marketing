@@ -1,14 +1,46 @@
 # Contexto Atual — Podcast Muuday
 
 > **Última sessão:** 2026-06-07
-> **Status:** ✅ Abertura oficial v7 aprovada · Pipeline congelado · Playbook escrito
+> **Status:** ✅ Abertura, fechamento, identidade sonora e manual de produção completos
+> **Próximo passo:** Episódio piloto
 
 ---
 
-## 🏆 Abertura Oficial v7
+## 🏆 Produtos Entregues
 
-**Arquivo:** `public/audio/podcast/abertura/abertura-oficial.mp3`
-**Duração:** 17.4s · **Aprovada para todos os episódios**
+| #   | Entrega              | Status | Arquivo/Local                                                  |
+| --- | -------------------- | ------ | -------------------------------------------------------------- |
+| 1   | Abertura oficial v7  | ✅     | `public/audio/podcast/abertura/abertura-oficial.mp3` (17.4s)   |
+| 2   | Fechamento com CTA   | ✅     | `public/audio/podcast/abertura/fechamento-oficial.mp3` (15.0s) |
+| 3   | Identidade sonora    | ✅     | `public/audio/podcast/efeitos/` (33 efeitos, ~2.9MB)           |
+| 4   | Manual de produção   | ✅     | `docs/strategy/podcast-producao-episodio.md` (600+ linhas)     |
+| 5   | Playbook de decisões | ✅     | `docs/strategy/podcast-historias-playbook.md`                  |
+
+---
+
+## 🎙️ Arquivos de Áudio Oficiais
+
+```
+public/audio/podcast/
+├── abertura/
+│   ├── abertura-oficial.mp3      ← 17.4s
+│   ├── fechamento-oficial.mp3    ← 15.0s
+│   ├── musica-bed-oficial.mp3    ← Mixkit Track 34
+│   ├── voz-oficial.mp3
+│   ├── voz-fechamento.mp3
+│   └── README.md
+├── efeitos/
+│   ├── 33 efeitos MP3            ← Stingers, impacts, beds, UI, logo
+│   ├── index.html                ← Player de teste
+│   └── README.md                 ← Catálogo completo
+└── estudos/
+```
+
+---
+
+## 📝 Roteiros Oficiais
+
+**Abertura:**
 
 ```
 [smiling]  Se tem uma coisa que eu aprendi com milhares de brazucas pelo mundo...
@@ -18,90 +50,73 @@
            de deixar o Brasil pra trás... e descobriu que "mudar" pode ser mais que um verbo.
 ```
 
-### Configuração congelada
+**Fechamento:**
+
+```
+[warm]    Obrigada por ficar comigo até aqui.
+[smiling] Me conta o que achou lá no Instagram, arroba use mudei.
+[warm]    E não esquece de seguir a gente pra não perder a próxima história.
+```
+
+---
+
+## ⚙️ Configuração Congelada
 
 ```
 ElevenLabs:
   voice: Jessica (voice_id: cgSgspJ2msm6clMCkdW9)
-  model: eleven_flash_v2_5  ← OBRIGATÓRIO
+  model: eleven_flash_v2_5
   stability: 0.45
   style: 0.80
   speed: 1.0
 
 Pipeline ffmpeg:
-  atempo=1.01              # Padrão para aberturas/narrativas
-  asetrate=43700           # Pitch drift fixo
-  roomtone volume=0.025    # Pink noise ambiente
+  atempo=1.01
+  asetrate=43700
+  roomtone volume=0.025
   loudnorm=I=-16:TP=-1.5:LRA=11
 
 Mix música:
   música: Mixkit Track 34
   delay: 2s
   gain: 0.8
-  mix tool: Python manual (ffmpeg 8.1.1 bugado)
+  mix tool: Python manual
 ```
 
 ---
 
-## 📁 Estrutura de Arquivos
+## 📚 Documentação Completa
 
-```
-public/audio/podcast/
-├── abertura/
-│   ├── abertura-oficial.mp3      ← ✅ Versão aprovada
-│   ├── musica-bed-oficial.mp3    ← Música isolada
-│   ├── voz-oficial.mp3           ← Voz sem música
-│   └── README.md                 ← Metadados
-├── estudos/                       ← Testes e versões antigas
-└── episodios/                     ← [futuro]
-
-public/test-audio/abertura/
-├── abertura-muuday-v7-final.mp3   ← Cópia de trabalho
-├── index.html                     ← Player de teste
-├── opcoes-texto-v6.md             ← Registro de roteiros
-└── estudos/                       ← 168 arquivos de teste
-```
+| Documento                                     | Descrição                                                                                                                                    |
+| --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `docs/strategy/podcast-producao-episodio.md`  | **Manual completo** — fluxo de produção, busca de histórias, framework de roteirização, checklist, templates, aspectos legais, cross-posting |
+| `docs/strategy/podcast-historias-playbook.md` | Playbook de decisões e configurações                                                                                                         |
+| `docs/operations/podcast-tts-pipeline.md`     | Pipeline técnico de áudio                                                                                                                    |
+| `docs/operations/elevenlabs-tags-guide.md`    | 35+ tags expressivas                                                                                                                         |
 
 ---
 
-## 📚 Documentação
+## 🎯 Próximos Passos
 
-| Documento                                     | Descrição                                             |
-| --------------------------------------------- | ----------------------------------------------------- |
-| `docs/strategy/podcast-historias-playbook.md` | **Playbook completo** — decisões, pipeline, checklist |
-| `docs/operations/podcast-tts-pipeline.md`     | Pipeline técnico detalhado                            |
-| `docs/operations/elevenlabs-tags-guide.md`    | 35+ tags expressivas                                  |
-
----
-
-## ⚠️ Aprendizados Críticos
-
-1. **ElevenLabs modelo:** Só `eleven_flash_v2_5` interpreta tags. Turbo/multilingual falam as tags.
-2. **ffmpeg 8.1.1 bugs:** `afade` cria silêncio; `amix` trunca. Usar Python para mix.
-3. **Stability 0.45** é o sweet spot: expressivo mas não teatral.
-4. **atempo 1.01** é o padrão para aberturas: ágil sem parecer acelerado.
-5. **Uma tag por segmento:** Nunca misturar tags no mesmo texto.
-6. **Silence detection:** ~30% das gerações pronunciam a tag. Cortar automaticamente.
-
----
-
-## 🎯 Próximos Passos (Ordenados)
-
-1. [ ] **Fechamento/encerramento** — Produzir outro com mesma música, tom de despedida
-2. [ ] **Script de segmentação automática** — Split por tag + pipeline em um comando
-3. [ ] **Episódio piloto** — End-to-end com história real, testar todo o fluxo
-4. [ ] **Transições e stingers** — Identidade sonora entre seções
-5. [ ] **Template de roteiro no Sanity** — Estrutura padrão para escritores
+| #   | Tarefa                           | Status         |
+| --- | -------------------------------- | -------------- |
+| 1   | Abertura oficial v7              | ✅ Concluído   |
+| 2   | Fechamento com CTA               | ✅ Concluído   |
+| 3   | Identidade sonora (33 efeitos)   | ✅ Concluído   |
+| 4   | Manual de produção               | ✅ Concluído   |
+| 5   | **Episódio piloto**              | 🔥 **Próximo** |
+| 6   | Script de segmentação automática | Pendente       |
+| 7   | Template de roteiro no Sanity    | Pendente       |
 
 ---
 
 ## 🔗 Links
 
-- Player: `file:///Users/igorpinto/social-media-machine/public/test-audio/abertura/index.html`
-- Playbook: `docs/strategy/podcast-historias-playbook.md`
-- Pipeline: `docs/operations/podcast-tts-pipeline.md`
+- Player abertura/fechamento: `file:///Users/igorpinto/social-media-machine/public/test-audio/abertura/index.html`
+- Player efeitos: `file:///Users/igorpinto/social-media-machine/public/audio/podcast/efeitos/index.html`
+- Manual: `docs/strategy/podcast-producao-episodio.md`
 
 ## 📝 Session 2026-06-07
 
-- Podcast abertura v7 aprovada como oficial. Estrutura limpa criada em public/audio/podcast/. Playbook escrito em docs/strategy/podcast-historias-playbook.md
+- Manual completo de producao de episodios criado. Podcast: abertura + fechamento + 33 efeitos + manual 600+ linhas. Tudo pronto para episodio piloto.
 - Quality gates: TS ✓ Tests ✗

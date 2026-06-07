@@ -6,7 +6,18 @@ import type { CarouselTheme } from '@/content-engine/templates'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { title, platform, pillar, topic, tone, scheduledFor, theme, generateCoverImage } = body
+    const {
+      title,
+      platform,
+      pillar,
+      topic,
+      tone,
+      scheduledFor,
+      theme,
+      generateCoverImage,
+      purpose,
+      format,
+    } = body
 
     if (!title || !platform || !pillar) {
       return NextResponse.json(
@@ -24,6 +35,8 @@ export async function POST(request: NextRequest) {
       scheduledFor,
       theme: theme as CarouselTheme,
       generateCoverImage: generateCoverImage === true,
+      purpose,
+      format,
     })
 
     if (!result.success) {

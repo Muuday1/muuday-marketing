@@ -18,6 +18,8 @@ interface PipelineInput {
   scheduledFor?: string
   theme?: CarouselTheme
   generateCoverImage?: boolean
+  purpose?: string
+  format?: string
 }
 
 interface PipelineOutput {
@@ -121,7 +123,7 @@ async function generateFLUXCover(
 }
 
 export async function runContentPipeline(input: PipelineInput): Promise<ApiResult<PipelineOutput>> {
-  const theme = input.theme || 'classic'
+  const theme = input.theme || 'warm'
 
   const copyResult = await generateCopy({
     platform: input.platform,
@@ -182,7 +184,7 @@ export async function runContentPipeline(input: PipelineInput): Promise<ApiResul
   const { data: contentPiece, error: dbError } = await supabase
     .from('marketing_content_pieces')
     .insert({
-      type: mapPlatformToType(input.platform),
+      type: input.format || mapPlatformToType(input.platform),
       status: voice.passed ? 'review' : 'draft',
       title: input.title,
       content: JSON.stringify(copy),
@@ -192,6 +194,8 @@ export async function runContentPipeline(input: PipelineInput): Promise<ApiResul
         topic: input.topic,
         tone: input.tone,
         theme,
+        purpose: input.purpose,
+        format: input.format,
         scheduledFor: input.scheduledFor,
         caption: copy.body,
         hashtags: copy.hashtags,
@@ -219,6 +223,8 @@ export async function runContentPipeline(input: PipelineInput): Promise<ApiResul
           topic: input.topic,
           tone: input.tone,
           theme,
+          purpose: input.purpose,
+          format: input.format,
           scheduledFor: input.scheduledFor,
           caption: copy.body,
           hashtags: copy.hashtags,

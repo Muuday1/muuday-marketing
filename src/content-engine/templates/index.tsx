@@ -29,7 +29,7 @@ export interface LinkedInCardInput {
  * Generate Instagram carousel (5 PNGs).
  */
 export async function generateCarousel(input: CarouselInput): Promise<GeneratedSlide[]> {
-  const theme = getCarouselTheme(input.theme || 'classic')
+  const theme = getCarouselTheme(input.theme || 'warm')
   const slides: GeneratedSlide[] = []
 
   const coverPng = await renderToPng(

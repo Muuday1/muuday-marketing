@@ -25,7 +25,7 @@ export default async function ContentPage() {
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="mb-6 flex items-center justify-between">
           <h1 className="text-brand-dark text-3xl font-bold">Conteúdo</h1>
-          <Link href="/dashboard/content/new">
+          <Link href="/dashboard/content/create">
             <button className="bg-brand-primary rounded-lg px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90">
               + Novo conteúdo
             </button>
@@ -97,7 +97,7 @@ export default async function ContentPage() {
               <CardContent className="p-8 text-center">
                 <p className="text-brand-slate">Nenhum conteúdo ainda.</p>
                 <Link
-                  href="/dashboard/content/new"
+                  href="/dashboard/content/create"
                   className="text-brand-primary mt-2 inline-block text-sm"
                 >
                   Criar o primeiro conteúdo →

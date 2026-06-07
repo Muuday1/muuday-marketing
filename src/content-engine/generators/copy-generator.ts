@@ -1,5 +1,7 @@
 import { generateWithModel } from '@/shared/model-router'
 import { BRAND_DNA, PLATFORM_VOICE, PILLAR_ANGLES } from './voice-guide'
+import { buildPromptForFormat } from '@/content-engine/strategy/format-guides'
+import { type ContentPurpose, type ContentFormat } from '@/content-engine/strategy/content-matrix'
 import { ApiResult, ContentPillar, Platform } from '@/types'
 
 interface CopyGenerationInput {
@@ -7,6 +9,8 @@ interface CopyGenerationInput {
   pillar: ContentPillar
   topic: string
   tone?: 'warm' | 'informative' | 'motivational' | 'fun'
+  purpose?: ContentPurpose
+  format?: string
 }
 
 interface CopyGenerationOutput {
@@ -18,12 +22,13 @@ interface CopyGenerationOutput {
 }
 
 function buildSystemPrompt(input: CopyGenerationInput): string {
-  return `${BRAND_DNA}
+  const basePrompt = `${BRAND_DNA}
 
 ${PLATFORM_VOICE[input.platform] || PLATFORM_VOICE.instagram}
 
 TOPIC ANGLE: ${PILLAR_ANGLES[input.pillar]}
 OVERALL TONE: ${input.tone || 'warm'}
+${input.purpose ? `PURPOSE: ${input.purpose}` : ''}
 
 OUTPUT (JSON only):
 {
@@ -40,6 +45,24 @@ RULES:
 3. Include ONE specific detail (number, place, brand, time).
 4. Body should NOT read like a listicle unless platform demands it.
 5. Hashtags in Portuguese.`
+
+  // If format is provided, append format-specific strategy guide
+  if (input.format) {
+    try {
+      const formatGuide = buildPromptForFormat(
+        input.format as ContentFormat,
+        input.purpose || 'educate',
+        input.topic,
+        input.pillar
+      )
+      return `${basePrompt}\n\n${formatGuide}`
+    } catch {
+      // If format guide fails, fall back to base prompt
+      return basePrompt
+    }
+  }
+
+  return basePrompt
 }
 
 function parseGeneratedCopy(content: string): CopyGenerationOutput {

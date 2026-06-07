@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Muuday Podcast — Abertura Oficial v7</title>
+<title>Muuday Podcast — Abertura e Fechamento Oficiais</title>
 <style>
   * { box-sizing: border-box; }
   body {
@@ -45,76 +45,51 @@
     margin-bottom: 14px;
   }
   audio { width: 100%; }
-  .specs {
-    margin-top: 28px;
-    background: #141414;
-    border: 1px solid #222;
-    border-radius: 12px;
-    padding: 20px 24px;
-  }
-  .specs h3 {
-    margin: 0 0 12px 0;
-    font-size: 0.9em;
-    color: #9FE870;
-  }
-  .spec-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px 20px;
-    font-size: 0.82em;
-  }
-  .spec-grid dt { color: #888; }
-  .spec-grid dd { color: #ccc; margin: 0; }
   .texto {
-    margin-top: 24px;
-    background: #141414;
-    border: 1px solid #222;
-    border-radius: 12px;
-    padding: 20px 24px;
+    margin-top: 16px;
     font-size: 0.9em;
-  }
-  .texto h3 {
-    margin: 0 0 10px 0;
-    font-size: 0.9em;
-    color: #9FE870;
   }
   .tag { color: #9FE870; font-weight: 600; }
-  .arrow { color: #555; margin: 0 6px; }
+  .divider {
+    border: none;
+    border-top: 1px solid #222;
+    margin: 32px 0;
+  }
 </style>
 </head>
 <body>
 
 <h1>🎙️ Muuday Podcast</h1>
-<p class="subtitle">Abertura Oficial — Aprovada para todos os episódios</p>
+<p class="subtitle">Abertura e Fechamento Oficiais — Aprovados para todos os episódios</p>
 
 <div class="player-box">
-  <span class="badge">v7 OFICIAL</span>
-  <h2>abertura-muuday-v7-final.mp3</h2>
+  <span class="badge">ABERTURA</span>
+  <h2>abertura-oficial.mp3</h2>
   <p class="meta">17.4s · 192kbps · Mono · 44.1kHz</p>
   <audio controls preload="metadata">
-    <source src="abertura-muuday-v7-final.mp3" type="audio/mpeg">
+    <source src="../../audio/podcast/abertura/abertura-oficial.mp3" type="audio/mpeg">
   </audio>
+  <div class="texto">
+    <p><span class="tag">[smiling]</span> Se tem uma coisa que eu aprendi com milhares de brazucas pelo mundo... é que a gente nunca desiste.</p>
+    <p><span class="tag">[excited]</span> Eu sou a Jessica, e esse é o Muuday!</p>
+    <p><span class="tag">[narrating]</span> Hoje a gente vai falar sobre a história de quem deu o passo de deixar o Brasil pra trás... e descobriu que "mudar" pode ser mais que um verbo.</p>
+  </div>
 </div>
 
-<div class="texto">
-  <h3>Roteiro</h3>
-  <p><span class="tag">[smiling]</span> Se tem uma coisa que eu aprendi com milhares de brazucas pelo mundo... é que a gente nunca desiste.</p>
-  <p><span class="tag">[excited]</span> Eu sou a Jessica, e esse é o Muuday!</p>
-  <p><span class="tag">[narrating]</span> Hoje a gente vai falar sobre a história de quem deu o passo de deixar o Brasil pra trás... e descobriu que "mudar" pode ser mais que um verbo.</p>
-</div>
+<hr class="divider">
 
-<div class="specs">
-  <h3>Especificações Técnicas</h3>
-  <dl class="spec-grid">
-    <dt>Voz</dt><dd>Jessica (ElevenLabs)</dd>
-    <dt>Modelo</dt><dd>eleven_flash_v2_5</dd>
-    <dt>Stability</dt><dd>0.45</dd>
-    <dt>Style</dt><dd>0.80</dd>
-    <dt>Velocidade</dt><dd>atempo=1.01</dd>
-    <dt>Música</dt><dd>Mixkit Track 34</dd>
-    <dt>Mix</dt><dd>Delay 2s, gain 0.8</dd>
-    <dt>Loudness</dt><dd>-16 LUFS</dd>
-  </dl>
+<div class="player-box">
+  <span class="badge">FECHAMENTO</span>
+  <h2>fechamento-oficial.mp3</h2>
+  <p class="meta">15.0s · 192kbps · Mono · 44.1kHz</p>
+  <audio controls preload="metadata">
+    <source src="../../audio/podcast/abertura/fechamento-oficial.mp3" type="audio/mpeg">
+  </audio>
+  <div class="texto">
+    <p><span class="tag">[warm]</span> Obrigada por ficar comigo até aqui.</p>
+    <p><span class="tag">[smiling]</span> Me conta o que achou lá no Instagram, arroba use mudei.</p>
+    <p><span class="tag">[warm]</span> E não esquece de seguir a gente pra não perder a próxima história.</p>
+  </div>
 </div>
 
 </body>

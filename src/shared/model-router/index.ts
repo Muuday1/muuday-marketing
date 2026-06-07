@@ -52,12 +52,12 @@ const PROVIDERS: Record<QualityTier, ProviderConfig> = {
 }
 
 const TASK_MODEL_MAP: Record<TaskType, QualityTier> = {
-  copy: 'premium', // Kimi for brand voice
-  structured: 'premium', // Kimi for structured output/JSON
+  copy: 'standard', // OpenAI gpt-4.1 — faster, reliable, no reasoning mode issues
+  structured: 'standard', // OpenAI for structured output/JSON
   code: 'premium', // Kimi for code generation
-  summary: 'premium', // Kimi for summaries
-  image: 'premium', // Kimi for image prompts
-  video: 'premium', // Kimi for video scripts
+  summary: 'standard', // OpenAI for summaries
+  image: 'standard', // OpenAI for image prompts
+  video: 'standard', // OpenAI for video scripts
 }
 
 const costTracker: Record<string, number> = {}

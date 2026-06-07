@@ -22,7 +22,7 @@
 
 ### 1. Abertura Oficial (v7)
 
-**Arquivo:** `public/audio/podcast/abertura/abertura-oficial.mp3`
+**Arquivo:** `public/audio/podcast/abertura/abertura-oficial.mp3` (17.4s)
 
 Aprovada após 7 iterações. Características:
 
@@ -45,7 +45,99 @@ Aprovada após 7 iterações. Características:
             pode ser mais que um verbo.
 ```
 
-### 2. Pipeline de Áudio — Configuração Final
+### 2. Fechamento Oficial
+
+**Arquivo:** `public/audio/podcast/abertura/fechamento-oficial.mp3` (15.0s)
+
+Mesmo pipeline da abertura. Tom acolhedor, com CTA para Instagram.
+
+**Roteiro:**
+
+```
+[warm]    Obrigada por ficar comigo até aqui.
+[smiling] Me conta o que achou lá no Instagram, arroba use mudei.
+[warm]    E não esquece de seguir a gente pra não perder a próxima história.
+```
+
+**Diretrizes:**
+
+- Pronunciar "@usemuuday" como "arroba use mudei" (trocadilho da marca)
+- CTA suave, não agressivo — combina com o tom acolhedor do podcast
+- Mesma música da abertura para consistência sonora
+
+### 3. Identidade Sonora Completa
+
+**Pasta:** `public/audio/podcast/efeitos/` (33 efeitos, ~2.9MB)
+
+Gerada com Python + numpy — síntese de áudio broadcast-quality. Todos os efeitos são royalty-free e exclusivos da marca.
+
+#### Stingers / Transições (6 efeitos)
+
+| Efeito                   | Duração | Uso                      |
+| ------------------------ | ------- | ------------------------ |
+| `stinger-sweep-up`       | 2.5s    | Entrada de seção         |
+| `stinger-sweep-down`     | 2.0s    | Saída de seção           |
+| `stinger-whoosh`         | 1.5s    | Corte rápido             |
+| `stinger-reverse-cymbal` | 2.0s    | Build antes de revelação |
+| `stinger-glitch`         | 0.5s    | Transição moderna        |
+| `stinger-transition`     | 2.0s    | Versão alternativa       |
+
+#### Impacts / Hits (7 efeitos)
+
+| Efeito            | Duração | Uso                 |
+| ----------------- | ------- | ------------------- |
+| `impact-thud`     | 1.5s    | Momento emocional   |
+| `impact-sub-drop` | 2.0s    | Transição dramática |
+| `impact-hit`      | 0.8s    | Marca tópico        |
+| `impact-boom`     | 1.2s    | Climax              |
+| `impact-rim`      | 0.4s    | ênfase rápida       |
+| `impact-metallic` | 1.0s    | Revelação           |
+
+#### Ambient Beds (6 efeitos)
+
+| Efeito             | Duração | Uso                  |
+| ------------------ | ------- | -------------------- |
+| `bed-suspense`     | 15s     | Tensão, mistério     |
+| `bed-warm`         | 15s     | Momentos emotivos    |
+| `bed-uplifting`    | 15s     | Esperança, superação |
+| `bed-neutral`      | 15s     | Narração pura        |
+| `bed-dark-tension` | 12s     | Suspense intenso     |
+| `bed-hopeful`      | 15s     | Momento de virada    |
+
+#### UI / CTA Sounds (7 efeitos)
+
+| Efeito       | Duração | Uso              |
+| ------------ | ------- | ---------------- |
+| `ui-pop`     | 0.4s    | Alerta CTA       |
+| `ui-chime`   | 0.6s    | Dica/destaque    |
+| `ui-click`   | 0.15s   | Transição rápida |
+| `ui-success` | 0.8s    | Confirmação      |
+| `ui-error`   | 0.3s    | Correção         |
+| `ui-bell`    | 0.7s    | Intro de dica    |
+
+#### Identidade Sonora Exclusiva (5 efeitos)
+
+| Efeito            | Duração | Uso                 |
+| ----------------- | ------- | ------------------- |
+| `logo-sting`      | 4.0s    | Reels/shorts        |
+| `logo-ident`      | 2.5s    | Logos               |
+| `signature-tone`  | 2.0s    | Tom de assinatura   |
+| `build-countdown` | 3.0s    | Contagem regressiva |
+| `watermark`       | 1.0s    | Proteção            |
+
+#### Níveis de Volume Recomendados
+
+| Tipo         | Volume relativo à voz |
+| ------------ | --------------------- |
+| Stingers     | -6dB (60%)            |
+| Impacts      | -8dB (40%)            |
+| Ambient Beds | -20dB (10%)           |
+| UI Sounds    | -10dB (30%)           |
+| Logo/Ident   | -4dB (63%)            |
+
+---
+
+### 4. Pipeline de Áudio — Configuração Final
 
 #### ElevenLabs
 
@@ -223,23 +315,30 @@ O ElevenLabs pronuncia "Muuday" de forma aceitável (algo como "Mu-dêi"). Não 
 
 ## 🎯 Próximos Passos
 
-| Prioridade | Tarefa                                                 | Responsável |
-| ---------- | ------------------------------------------------------ | ----------- |
-| Alta       | Produzir fechamento/encerramento do episódio           | Studio      |
-| Alta       | Criar script de segmentação automática (split por tag) | Dev         |
-| Média      | Produzir episódio piloto completo (end-to-end)         | Content     |
-| Média      | Definir identidade sonora: transições, stingers, sfx   | Studio      |
-| Baixa      | Avaliar Auphonic vs pipeline ffmpeg puro               | Studio      |
-| Baixa      | Criar template de roteiro no Sanity CMS                | Dev         |
+| Prioridade | Tarefa                                           | Status        | Responsável |
+| ---------- | ------------------------------------------------ | ------------- | ----------- |
+| ✅         | Abertura oficial v7                              | **Concluído** | Studio      |
+| ✅         | Fechamento com CTA @usemuuday                    | **Concluído** | Studio      |
+| ✅         | Identidade sonora completa (33 efeitos)          | **Concluído** | Studio      |
+| ✅         | Manual de produção de episódios                  | **Concluído** | Content     |
+| 🔥         | **Produzir episódio piloto**                     | **Próximo**   | Content     |
+| Alta       | Script de segmentação automática (split por tag) | Pendente      | Dev         |
+| Média      | Template de roteiro no Sanity CMS                | Pendente      | Dev         |
+| Média      | Avaliar Auphonic vs pipeline ffmpeg puro         | Pendente      | Studio      |
 
 ---
 
 ## 🔗 Referências
 
-- `docs/operations/podcast-tts-pipeline.md` — Pipeline técnico completo
-- `docs/operations/elevenlabs-tags-guide.md` — Guia de 35+ tags
-- `public/audio/podcast/abertura/README.md` — Metadados da abertura
-- `public/test-audio/abertura/index.html` — Player de teste
+| Documento                                    | Descrição                                                                                                    |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `docs/strategy/podcast-producao-episodio.md` | **Manual completo** — fluxo de produção, busca de histórias, framework de roteirização, checklist, templates |
+| `docs/operations/podcast-tts-pipeline.md`    | Pipeline técnico de áudio                                                                                    |
+| `docs/operations/elevenlabs-tags-guide.md`   | Guia de 35+ tags expressivas                                                                                 |
+| `public/audio/podcast/abertura/README.md`    | Metadados da abertura e fechamento                                                                           |
+| `public/audio/podcast/efeitos/README.md`     | Catálogo da biblioteca de efeitos                                                                            |
+| `public/test-audio/abertura/index.html`      | Player de teste (abertura + fechamento)                                                                      |
+| `public/audio/podcast/efeitos/index.html`    | Player de teste (efeitos sonoros)                                                                            |
 
 ---
 

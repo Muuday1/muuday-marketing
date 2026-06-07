@@ -29,7 +29,7 @@ export default async function ContentDetailPage({ params }: PageProps) {
   const copy = JSON.parse(content.content || '{}')
   const imageUrls: string[] = content.metadata?.imageUrls || []
   const coverImageUrl: string | undefined = content.metadata?.coverImageUrl
-  const theme: string = content.metadata?.theme || 'classic'
+  const theme: string = content.metadata?.theme || 'warm'
   const status = content.status
 
   return (

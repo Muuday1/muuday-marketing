@@ -1,8 +1,12 @@
-import React from 'react'
+// Muuday Minimal — Pure whitespace, thin typography
+// White background, lime as single accent, maximum breathing room.
+// Inspired by Dieter Rams / Braun philosophy within Muuday identity.
 
-const GREEN = '#9FE870'
-const DARK = '#0F172A'
-const WHITE = '#FFFFFF'
+import { MUUDAY } from './design-system'
+
+const C = MUUDAY.colors
+const F = MUUDAY.fonts
+const S = MUUDAY.space
 
 export function MinimalCover({ title, subtitle }: { title: string; subtitle?: string }) {
   return (
@@ -14,60 +18,83 @@ export function MinimalCover({ title, subtitle }: { title: string; subtitle?: st
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: WHITE,
-        padding: '80px',
+        backgroundColor: C.white,
+        padding: S['2xl'],
         textAlign: 'center',
+        position: 'relative',
       }}
     >
-      <div style={{ width: '60px', height: '4px', backgroundColor: GREEN, marginBottom: '48px' }} />
+      {/* Single lime dot */}
+      <div
+        style={{
+          width: 8,
+          height: 8,
+          borderRadius: '50%',
+          backgroundColor: C.lime,
+          marginBottom: S.lg,
+        }}
+      />
+
       <h1
         style={{
-          fontFamily: 'Inter',
+          fontFamily: F.sans,
           fontWeight: 800,
-          fontSize: '72px',
-          lineHeight: 1.1,
-          color: DARK,
+          fontSize: 64,
+          lineHeight: 1.05,
+          color: C.dark,
           margin: 0,
-          maxWidth: '900px',
-          letterSpacing: '-0.02em',
+          maxWidth: 900,
+          letterSpacing: '-0.03em',
         }}
       >
         {title}
       </h1>
+
       {subtitle && (
         <p
           style={{
-            fontFamily: 'Inter',
-            fontWeight: 400,
-            fontSize: '28px',
-            color: '#64748b',
-            marginTop: '32px',
-            maxWidth: '700px',
+            fontFamily: F.sans,
+            fontWeight: 300,
+            fontSize: 26,
+            color: C.slate,
+            marginTop: S.lg,
+            maxWidth: 650,
+            lineHeight: 1.5,
+            letterSpacing: '0.01em',
           }}
         >
           {subtitle}
         </p>
       )}
+
       <div
         style={{
           position: 'absolute',
-          bottom: '48px',
+          bottom: S['2xl'],
           display: 'flex',
           alignItems: 'center',
-          gap: '10px',
+          gap: 8,
         }}
       >
-        <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: GREEN }} />
+        <div
+          style={{
+            width: 6,
+            height: 6,
+            borderRadius: '50%',
+            backgroundColor: C.lime,
+          }}
+        />
         <span
           style={{
-            fontFamily: 'Inter',
+            fontFamily: F.sans,
             fontWeight: 600,
-            fontSize: '18px',
-            color: '#94a3b8',
-            letterSpacing: '0.05em',
+            fontSize: 14,
+            color: C.slate,
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
           }}
         >
-          @MUUDAY
+          @muuday
         </span>
       </div>
     </div>
@@ -90,61 +117,83 @@ export function MinimalTip({
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        backgroundColor: WHITE,
-        padding: '80px',
+        backgroundColor: C.white,
+        padding: S['2xl'],
+        position: 'relative',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: '16px', marginBottom: '48px' }}>
+      {/* Large thin number */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'baseline',
+          gap: S.md,
+          marginBottom: S.lg,
+        }}
+      >
         <span
           style={{
-            fontFamily: 'Inter',
+            fontFamily: F.sans,
             fontWeight: 200,
-            fontSize: '96px',
-            color: GREEN,
+            fontSize: 100,
             lineHeight: 1,
+            color: C.lime,
+            letterSpacing: '-0.04em',
           }}
         >
           {String(number).padStart(2, '0')}
         </span>
-        <div style={{ width: '40px', height: '2px', backgroundColor: '#e2e8f0' }} />
+        <div style={{ flex: 1, height: 1, backgroundColor: C.slateLighter }} />
       </div>
+
       <h2
         style={{
-          fontFamily: 'Inter',
+          fontFamily: F.sans,
           fontWeight: 700,
-          fontSize: '44px',
-          color: DARK,
+          fontSize: 40,
+          color: C.dark,
           margin: 0,
-          marginBottom: '24px',
-          lineHeight: 1.2,
+          marginBottom: S.md,
+          lineHeight: 1.15,
+          letterSpacing: '-0.02em',
         }}
       >
         {title}
       </h2>
+
       <p
         style={{
-          fontFamily: 'Inter',
+          fontFamily: F.sans,
           fontWeight: 400,
-          fontSize: '28px',
-          color: '#475569',
-          lineHeight: 1.6,
+          fontSize: 26,
+          color: C.slate,
+          lineHeight: 1.55,
           margin: 0,
           flex: 1,
         }}
       >
         {description}
       </p>
-      <div style={{ marginTop: '48px' }}>
+
+      {/* Bottom brand */}
+      <div
+        style={{
+          marginTop: S.lg,
+          paddingTop: S.md,
+          borderTop: `1px solid ${C.slateLighter}`,
+        }}
+      >
         <span
           style={{
-            fontFamily: 'Inter',
+            fontFamily: F.sans,
             fontWeight: 600,
-            fontSize: '16px',
-            color: '#cbd5e1',
-            letterSpacing: '0.1em',
+            fontSize: 14,
+            color: C.slateLighter,
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
           }}
         >
-          @MUUDAY
+          @muuday
         </span>
       </div>
     </div>
@@ -161,43 +210,79 @@ export function MinimalCTA({ cta, hashtags }: { cta: string; hashtags?: string[]
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: DARK,
-        padding: '80px',
+        backgroundColor: C.dark,
+        padding: S['2xl'],
         textAlign: 'center',
+        position: 'relative',
       }}
     >
-      <div style={{ width: '60px', height: '4px', backgroundColor: GREEN, marginBottom: '48px' }} />
+      {/* Single lime dot */}
+      <div
+        style={{
+          width: 8,
+          height: 8,
+          borderRadius: '50%',
+          backgroundColor: C.lime,
+          marginBottom: S.lg,
+        }}
+      />
+
       <h2
         style={{
-          fontFamily: 'Inter',
+          fontFamily: F.sans,
           fontWeight: 800,
-          fontSize: '56px',
-          color: WHITE,
+          fontSize: 52,
+          color: C.white,
           margin: 0,
-          marginBottom: '48px',
-          lineHeight: 1.15,
-          maxWidth: '900px',
+          lineHeight: 1.08,
+          maxWidth: 900,
+          letterSpacing: '-0.02em',
         }}
       >
         {cta}
       </h2>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '32px' }}>
-        <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: GREEN }} />
+
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          marginTop: S.lg,
+        }}
+      >
+        <div
+          style={{
+            width: 6,
+            height: 6,
+            borderRadius: '50%',
+            backgroundColor: C.lime,
+          }}
+        />
         <span
           style={{
-            fontFamily: 'Inter',
+            fontFamily: F.sans,
             fontWeight: 600,
-            fontSize: '20px',
-            color: WHITE,
-            letterSpacing: '0.05em',
+            fontSize: 16,
+            color: C.slateLight,
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
           }}
         >
-          @MUUDAY
+          @muuday
         </span>
       </div>
+
       {hashtags && hashtags.length > 0 && (
-        <p style={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '22px', color: '#64748b' }}>
-          {hashtags.slice(0, 5).join(' ')}
+        <p
+          style={{
+            fontFamily: F.sans,
+            fontWeight: 400,
+            fontSize: 20,
+            color: C.slate,
+            marginTop: S.md,
+          }}
+        >
+          {hashtags.slice(0, 5).join('  ')}
         </p>
       )}
     </div>
