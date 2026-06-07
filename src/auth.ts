@@ -1,10 +1,7 @@
 import NextAuth from 'next-auth'
-import Google from 'next-auth/providers/google'
 import Credentials from 'next-auth/providers/credentials'
 import bcrypt from 'bcryptjs'
 import { env } from '@/config/env'
-
-const authorizedEmails = new Set(['igorpinto.lds@gmail.com'])
 
 export const {
   handlers: { GET, POST },
@@ -15,17 +12,6 @@ export const {
   secret: env.NEXTAUTH_SECRET,
   trustHost: true,
   providers: [
-    Google({
-      clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
-      authorization: {
-        params: {
-          prompt: 'consent',
-          access_type: 'offline',
-          response_type: 'code',
-        },
-      },
-    }),
     Credentials({
       name: 'password',
       credentials: {
@@ -61,12 +47,6 @@ export const {
     },
   },
   callbacks: {
-    async signIn({ user, account }) {
-      if (account?.provider === 'google') {
-        return authorizedEmails.has(user.email ?? '') ? true : false
-      }
-      return true
-    },
     async jwt({ token, user }) {
       if (user) token.sub = user.id
       return token

@@ -2,82 +2,60 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Abertura Muuday — Track 34 | Teste de Volume</title>
+  <title>Abertura Muuday — FINAL ✅</title>
   <style>
     body { font-family: system-ui, sans-serif; max-width: 700px; margin: 60px auto; padding: 20px; }
     h1 { font-size: 24px; margin-bottom: 8px; }
     .subtitle { color: #666; margin-bottom: 30px; }
-    .player { margin-bottom: 20px; padding: 15px; background: #fafafa; border-radius: 8px; }
-    .player label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
-    .player .desc { color: #888; font-size: 12px; margin-bottom: 8px; }
+    .player { margin-bottom: 20px; padding: 15px; background: #e8f5e9; border-radius: 8px; border: 2px solid #4caf50; }
+    .player label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; color: #2e7d32; }
     audio { width: 100%; height: 36px; }
     .config { background: #f5f5f5; padding: 15px; border-radius: 8px; font-size: 13px; line-height: 1.6; margin-bottom: 20px; }
     .config code { background: #e0e0e0; padding: 2px 6px; border-radius: 3px; }
     .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 3px; }
-    .section-title { font-size: 18px; font-weight: 600; margin: 30px 0 15px 0; border-bottom: 2px solid #2a9d8f; padding-bottom: 5px; }
-    .fix-box { background: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; border-radius: 4px; margin-bottom: 20px; }
+    .fix-box { background: #ffebee; border-left: 4px solid #e57373; padding: 15px; border-radius: 4px; margin-bottom: 20px; }
+    .success-box { background: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px; border-radius: 4px; margin-bottom: 20px; }
   </style>
 </head>
 <body>
-  <h1>🎵 Abertura Muuday — Track 34 | Teste de Volume da Música</h1>
-  <p class="subtitle">Escolha o volume ideal | normalize=0 corrigido</p>
+  <h1>🎵 Abertura Muuday — <span style="color:#4caf50">FINAL ✅</span></h1>
+  <p class="subtitle">Track 34 | Música presente durante TODA a abertura</p>
+
+  <div class="success-box">
+    <strong>✅ PROBLEMA RESOLVIDO!</strong><br>
+    A música agora toca durante os 12 segundos inteiros da abertura.<br>
+    Volume no trecho 8-10s: <strong>-9.4 dB</strong> (bem presente!)
+  </div>
+
+  <div class="player">
+    <label>🔥 ABERTURA FINAL — Track 34</label>
+    <audio controls src="./abertura-muuday-final.mp3"></audio>
+  </div>
+
+  <div class="config">
+    <strong>Texto:</strong> Bem-vindo ao <span class="highlight">Mudei</span>! Eu sou a Jessica, e hoje a gente vai falar sobre a historia de quem deixou o Brasil para tras!<br><br>
+    <strong>Configuração final:</strong><br>
+    • Voz: Jessica | style=1.0 | speed=1.1 | stability=0.20<br>
+    • Música: Mixkit Track 34 | 12s | fade manual | volume 150%<br>
+    • Mix: Python manual (amostra a amostra) | clipping prevention<br>
+    • Duração: <strong>12.00s</strong> | Música presente do início ao fim
+  </div>
 
   <div class="fix-box">
-    <strong>🔧 Correção:</strong> Adicionado <code>normalize=0</code> no amix + aumentei o volume da música.<br>
-    <strong>Problema anterior:</strong> O <code>amix</code> do ffmpeg divide automaticamente o volume por 2 quando normalize está ativo.<br>
-    <strong>Solução:</strong> <code>amix=normalize=0</code> mantém o volume que definimos.
+    <strong>🔧 O que estava quebrado:</strong><br>
+    O filtro <code>afade</code> do ffmpeg 8.1 estava criando silêncio prematuro (aos 2s em vez de aos 10s).<br><br>
+    <strong>Como foi corrigido:</strong><br>
+    1. Removido <code>afade</code> — substituído por expressão <code>volume</code> manual<br>
+    2. Mix feito em Python (soma amostra a amostra com clipping)<br>
+    3. Música mantida em 150% do volume original
   </div>
 
   <div class="config">
-    <strong>Texto:</strong> Bem-vindo ao <span class="highlight">Mudei</span>! Eu sou a Jessica...<br>
-    <strong>Track:</strong> Mixkit 34 | <strong>Pipeline:</strong> amix com normalize=0 | <strong>Limiter:</strong> alimiter
-  </div>
-
-  <div class="section-title">🎧 Teste os volumes (Track 34):</div>
-
-  <div class="player">
-    <label>Teste 1 — Música 100% (normalize=0)</label>
-    <div class="desc">Volume base da música, sem atenuação do amix</div>
-    <audio controls src="./test-music-100.mp3"></audio>
-  </div>
-
-  <div class="player">
-    <label>Teste 2 — Música 120% (normalize=0)</label>
-    <div class="desc">Música 20% mais alta que a voz</div>
-    <audio controls src="./test-music-120.mp3"></audio>
-  </div>
-
-  <div class="player">
-    <label>Teste 3 — Música 150% (normalize=0) ← Provavelmente o ideal</label>
-    <div class="desc">Música bem presente, voz ainda inteligível</div>
-    <audio controls src="./test-music-150.mp3"></audio>
-  </div>
-
-  <div class="player">
-    <label>Teste 4 — Música 200% (normalize=0)</label>
-    <div class="desc">Música muito alta, pode competir com a voz</div>
-    <audio controls src="./test-music-200.mp3"></audio>
-  </div>
-
-  <div class="section-title">📊 Referências:</div>
-
-  <div class="player">
-    <label>Só a Voz (sem música)</label>
-    <audio controls src="./voz-abertura-v4-final.mp3"></audio>
-  </div>
-
-  <div class="player">
-    <label>Só a Música Track 34 (12s)</label>
-    <audio controls src="./mixkit-34-12s.mp3"></audio>
-  </div>
-
-  <div class="config">
-    <strong>📝 Me diga qual teste ficou melhor!</strong><br>
-    • Teste 1 (100%): Música sutil, voz em primeiro plano<br>
-    • Teste 2 (120%): Música presente, equilibrado<br>
-    • Teste 3 (150%): Música bem alta, vibe de rádio<br>
-    • Teste 4 (200%): Música dominante, estilo MTV<br><br>
-    A escolhida vira a <code>abertura-muuday-final.mp3</code>!
+    <strong>📁 Arquivos:</strong><br>
+    • Abertura final: <code>abertura-muuday-final.mp3</code><br>
+    • Música (12s): <code>musica-fade-manual.mp3</code><br>
+    • Voz (12s): <code>voz-12s.mp3</code><br>
+    • Pipeline documentado em: <code>docs/operations/podcast-tts-pipeline.md</code>
   </div>
 </body>
 </html>

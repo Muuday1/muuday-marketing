@@ -60,3 +60,8 @@ Testar amostras de 10s com cada valor para calibrar por tipo de conteúdo.
 
 - Player de testes: http://localhost:3000/test-audio/story-demo/
 - Documentação: `docs/operations/podcast-tts-pipeline.md`
+
+## 📝 Session 2026-06-07
+
+- Fix Google OAuth: migrate to Auth.js v5, update env vars, fix Vercel alias
+- Quality gates: TS ✓ Tests ✗
