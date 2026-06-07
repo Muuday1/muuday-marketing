@@ -27,6 +27,12 @@ export function Header() {
               <Link href="/dashboard/content" className="text-brand-slate hover:text-brand-dark">
                 Conteúdo
               </Link>
+              <Link
+                href="/dashboard/content/create"
+                className="bg-brand-lime text-brand-dark hover:bg-brand-lime/90 rounded-full px-3 py-1 text-xs font-semibold"
+              >
+                + Criar
+              </Link>
               <Link href="/dashboard/calendar" className="text-brand-slate hover:text-brand-dark">
                 Calendário
               </Link>

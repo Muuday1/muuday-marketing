@@ -154,9 +154,14 @@ export default async function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
+                <Link href="/dashboard/content/create">
+                  <button className="bg-brand-lime hover:bg-brand-lime/90 text-brand-dark w-full rounded-lg px-4 py-2 text-left text-sm font-semibold transition-colors">
+                    ✨ Criar conteúdo (Wizard)
+                  </button>
+                </Link>
                 <Link href="/dashboard/content/new">
                   <button className="border-brand-slate/20 hover:bg-brand-light text-brand-dark w-full rounded-lg border px-4 py-2 text-left text-sm font-medium transition-colors">
-                    📝 Criar novo conteúdo
+                    📝 Criar rápido
                   </button>
                 </Link>
                 <Link href="/dashboard/content">
