@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { auth } from '@/auth'
 
-export function middleware(request: NextRequest) {
-  const path = request.nextUrl.pathname
+export default auth((req) => {
+  const { nextUrl } = req
+  const path = nextUrl.pathname
+
+  // Skip auth for NextAuth routes, cron endpoints, and health check
   if (
     path.startsWith('/api/auth/') ||
     path.startsWith('/api/cron/') ||
@@ -11,8 +14,15 @@ export function middleware(request: NextRequest) {
   ) {
     return NextResponse.next()
   }
+
+  // Check if user is authenticated
+  if (!req.auth) {
+    const loginUrl = new URL('/login', nextUrl)
+    return NextResponse.redirect(loginUrl)
+  }
+
   return NextResponse.next()
-}
+})
 
 export const config = {
   matcher: ['/dashboard/:path*', '/api/:path*'],
