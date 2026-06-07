@@ -46,6 +46,16 @@ export const authOptions: NextAuthOptions = {
     },
   },
   callbacks: {
+    async signIn({ user, account }) {
+      // Only allow Google OAuth from authorized email
+      if (account?.provider === 'google') {
+        const allowedEmails = ['igorpinto.lds@gmail.com']
+        if (!allowedEmails.includes(user.email ?? '')) {
+          return false
+        }
+      }
+      return true
+    },
     async jwt({ token, user }) {
       if (user) token.sub = user.id
       return token
