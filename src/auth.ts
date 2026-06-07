@@ -73,7 +73,7 @@ export const {
     },
     async session({ session, token }) {
       if (token?.sub && session.user) {
-        ;(session.user as Record<string, unknown>).id = token.sub
+        ;(session.user as unknown as Record<string, unknown>).id = token.sub
       }
       return session
     },
