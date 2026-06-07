@@ -1,0 +1,1 @@
+export { publishToInstagram } from './instagram'

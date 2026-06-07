@@ -6,7 +6,8 @@ const envSchema = z.object({
   NEXT_PUBLIC_APP_VERSION: z.string().default('0.3.0'),
 
   // AI Providers
-  OPENAI_API_KEY: z.string().min(1, 'OpenAI API key is required').optional().default('sk-dummy'),
+  OPENAI_API_KEY: z.string().optional().default(''),
+  OPENROUTER_API_KEY: z.string().optional().default(''),
   ANTHROPIC_API_KEY: z.string().optional().default(''),
   DEEPSEEK_API_KEY: z.string().optional().default(''),
   KIMI_API_KEY: z.string().optional().default(''),
@@ -32,6 +33,9 @@ const envSchema = z.object({
   NEXT_PUBLIC_SUPABASE_URL: z.string().url().optional().default('http://localhost:54321'),
   NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().optional().default(''),
   SUPABASE_SERVICE_ROLE_KEY: z.string().optional().default(''),
+  SUPABASE_ACCESS_TOKEN: z.string().optional().default(''),
+  SUPABASE_DB_DIRECT_URL: z.string().optional().default(''),
+  SUPABASE_DB_POOLER_URL: z.string().optional().default(''),
 
   // Sanity
   NEXT_PUBLIC_SANITY_PROJECT_ID: z.string().optional().default(''),
@@ -50,7 +54,16 @@ const envSchema = z.object({
 
   // Make.com
   MAKE_WEBHOOK_URL: z.string().url().optional().default('http://localhost:3000/webhook'),
-  MAKE_WEBHOOK_API_KEY: z.string().optional().default('dummy-make-webhook-key'),
+  MAKE_WEBHOOK_API_KEY: z.string().optional().default(''),
+  MAKE_WEBHOOK_SECRET: z.string().optional().default(''),
+  MAKE_API_TOKEN: z.string().optional().default(''),
+
+  // Sentry
+  SENTRY_DSN: z.string().optional().default(''),
+  NEXT_PUBLIC_SENTRY_DSN: z.string().optional().default(''),
+  SENTRY_ORG: z.string().optional().default(''),
+  SENTRY_PROJECT: z.string().optional().default(''),
+  SENTRY_AUTH_TOKEN: z.string().optional().default(''),
 
   // Internal
   APP_SECRET: z

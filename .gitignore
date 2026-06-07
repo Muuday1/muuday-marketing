@@ -36,3 +36,19 @@ Thumbs.db
 # Misc
 *.tsbuildinfo
 .vercel
+
+# Playwright screenshots/snapshots
+.playwright-mcp/
+
+# Test outputs
+test-output/
+
+# Temporary test scripts
+scripts/test-publish-*.ts
+scripts/test-storage-upload.ts
+scripts/test-carousel.ts
+scripts/create-supabase-tables.ts
+
+# Temporary screenshots
+*.png
+public/generated/

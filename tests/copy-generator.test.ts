@@ -14,17 +14,19 @@ describe('generateCopy', () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
       json: async () => ({
-        choices: [{
-          message: {
-            content: JSON.stringify({
-              headline: 'Test Headline',
-              body: 'Test body content',
-              cta: 'Test CTA',
-              hashtags: ['#test'],
-              platform: 'instagram',
-            }),
+        choices: [
+          {
+            message: {
+              content: JSON.stringify({
+                headline: 'Test Headline',
+                body: 'Test body content',
+                cta: 'Test CTA',
+                hashtags: ['#test'],
+                platform: 'instagram',
+              }),
+            },
           },
-        }],
+        ],
       }),
     })
 
@@ -55,7 +57,7 @@ describe('generateCopy', () => {
 
     expect(result.success).toBe(false)
     if (!result.success) {
-      expect(result.error).toContain('OpenAI error')
+      expect(result.error).toMatch(/failed after \d+ retries|error/i)
     }
   })
 })

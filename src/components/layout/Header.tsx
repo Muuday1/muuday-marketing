@@ -30,8 +30,14 @@ export function Header() {
               <Link href="/dashboard/calendar" className="text-brand-slate hover:text-brand-dark">
                 Calendário
               </Link>
-              <Link href="/dashboard/ads" className="text-brand-slate hover:text-brand-dark">
-                Ads
+              <Link href="/dashboard/campaigns" className="text-brand-slate hover:text-brand-dark">
+                Campanhas
+              </Link>
+              <Link href="/dashboard/alerts" className="text-brand-slate hover:text-brand-dark">
+                Alertas
+              </Link>
+              <Link href="/dashboard/reports" className="text-brand-slate hover:text-brand-dark">
+                Relatórios
               </Link>
               <Link href="/dashboard/leads" className="text-brand-slate hover:text-brand-dark">
                 Leads

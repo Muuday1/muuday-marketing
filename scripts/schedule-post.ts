@@ -1,91 +1,33 @@
-#!/usr/bin/env tsx
-/**
- * Schedule a post for publishing.
- * Usage: npx tsx scripts/schedule-post.ts <content_piece_id> <platform> <datetime>
- * Example: npx tsx scripts/schedule-post.ts abc-123 instagram "2026-06-10T14:00:00Z"
- */
-
-import { createClient } from '@supabase/supabase-js'
-import { config } from 'dotenv'
-
-config({ path: '.env.local' })
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-
-if (!supabaseUrl || !supabaseKey) {
-  console.error('Supabase credentials not configured')
-  process.exit(1)
-}
-
-const supabase = createClient(supabaseUrl, supabaseKey, {
-  auth: { persistSession: false },
-})
+import 'dotenv/config'
+import { publishDuePosts } from '../src/content-engine/publishers/scheduler'
 
 async function main() {
-  const [, , contentPieceId, platform, scheduledFor] = process.argv
+  console.log('⏰ Checking scheduled posts...\n')
 
-  if (!contentPieceId || !platform || !scheduledFor) {
-    console.error(
-      'Usage: npx tsx scripts/schedule-post.ts <content_piece_id> <platform> <datetime>'
-    )
-    console.error(
-      'Example: npx tsx scripts/schedule-post.ts abc-123 instagram "2026-06-10T14:00:00Z"'
-    )
-    process.exit(1)
+  const result = await publishDuePosts()
+
+  if (result.published.length > 0) {
+    console.log(`✅ Published ${result.published.length} post(s):`)
+    for (const p of result.published) {
+      console.log(`   [${p.platform}] Post ID: ${p.postId}`)
+    }
   }
 
-  if (!['instagram', 'linkedin', 'tiktok', 'twitter'].includes(platform)) {
-    console.error('Platform must be one of: instagram, linkedin, tiktok, twitter')
-    process.exit(1)
+  if (result.failed.length > 0) {
+    console.log(`\n❌ Failed ${result.failed.length} post(s):`)
+    for (const f of result.failed) {
+      console.log(`   ${f.id}: ${f.error}`)
+    }
   }
 
-  const scheduledDate = new Date(scheduledFor)
-  if (isNaN(scheduledDate.getTime())) {
-    console.error('Invalid datetime format. Use ISO 8601: 2026-06-10T14:00:00Z')
-    process.exit(1)
+  if (result.published.length === 0 && result.failed.length === 0) {
+    console.log('✅ No posts to publish right now.')
   }
 
-  const { data: content } = await supabase
-    .from('marketing_content_pieces')
-    .select('id, title')
-    .eq('id', contentPieceId)
-    .single()
-
-  if (!content) {
-    console.error(`Content piece not found: ${contentPieceId}`)
-    process.exit(1)
-  }
-
-  const { data, error } = await supabase
-    .from('marketing_social_posts')
-    .insert({
-      content_piece_id: contentPieceId,
-      platform,
-      status: 'scheduled',
-      scheduled_for: scheduledFor,
-    })
-    .select('id')
-    .single()
-
-  if (error) {
-    console.error('Failed to schedule post:', error.message)
-    process.exit(1)
-  }
-
-  await supabase
-    .from('marketing_content_pieces')
-    .update({ status: 'scheduled' })
-    .eq('id', contentPieceId)
-
-  console.log('Post scheduled successfully')
-  console.log(`  Content: ${content.title}`)
-  console.log(`  Platform: ${platform}`)
-  console.log(`  Scheduled for: ${scheduledDate.toLocaleString('pt-BR')}`)
-  console.log(`  Post ID: ${data.id}`)
+  console.log('\nDone.')
 }
 
-main().catch((err) => {
-  console.error('Error:', err)
+main().catch((e) => {
+  console.error('Error:', e)
   process.exit(1)
 })

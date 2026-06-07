@@ -24,8 +24,8 @@ const PROVIDERS: Record<QualityTier, ProviderConfig> = {
   premium: {
     name: 'kimi',
     apiKey: env.KIMI_API_KEY,
-    baseUrl: 'https://api.moonshot.cn/v1/chat/completions',
-    model: 'kimi-k2-0711',
+    baseUrl: 'https://api.moonshot.ai/v1/chat/completions',
+    model: 'kimi-k2.6',
     maxRetries: 3,
   },
   standard: {
@@ -52,12 +52,12 @@ const PROVIDERS: Record<QualityTier, ProviderConfig> = {
 }
 
 const TASK_MODEL_MAP: Record<TaskType, QualityTier> = {
-  copy: 'premium',      // Kimi for brand voice
+  copy: 'premium', // Kimi for brand voice
   structured: 'premium', // Kimi for structured output/JSON
-  code: 'premium',      // Kimi for code generation
-  summary: 'premium',   // Kimi for summaries
-  image: 'premium',     // Kimi for image prompts
-  video: 'premium',     // Kimi for video scripts
+  code: 'premium', // Kimi for code generation
+  summary: 'premium', // Kimi for summaries
+  image: 'premium', // Kimi for image prompts
+  video: 'premium', // Kimi for video scripts
 }
 
 const costTracker: Record<string, number> = {}
@@ -90,14 +90,20 @@ async function callProvider(
     ...config.headers,
   }
 
-  const body = {
+  const isKimi = config.name === 'kimi'
+  const body: Record<string, unknown> = {
     model: config.model,
-    max_tokens: options.maxTokens ?? 1024,
-    temperature: options.temperature ?? 0.7,
+    max_tokens: options.maxTokens ?? (isKimi ? 2048 : 1024),
     messages: [
       ...(options.system ? [{ role: 'system' as const, content: options.system }] : []),
       { role: 'user' as const, content: options.prompt },
     ],
+  }
+  // Kimi k2.6 only accepts temperature=1
+  if (!isKimi) {
+    body.temperature = options.temperature ?? 0.7
+  } else {
+    body.temperature = 1
   }
 
   try {
@@ -114,7 +120,8 @@ async function callProvider(
 
     const data = await response.json()
 
-    const content = data.choices?.[0]?.message?.content
+    const message = data.choices?.[0]?.message
+    const content = message?.content || message?.reasoning_content || ''
 
     if (!content) {
       return { success: false, error: `${config.name} returned empty content` }
@@ -171,9 +178,11 @@ export async function generateWithModel(
 /**
  * Generate an image using fal.ai.
  */
-export async function generateImage(
-  options: { prompt: string; size?: string; style?: string }
-): Promise<ApiResult<{ url: string }>> {
+export async function generateImage(options: {
+  prompt: string
+  size?: string
+  style?: string
+}): Promise<ApiResult<{ url: string }>> {
   if (!env.FAL_KEY || env.FAL_KEY === 'dummy') {
     return { success: false, error: 'FAL_KEY not configured' }
   }

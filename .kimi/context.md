@@ -24,6 +24,7 @@
 ## ✅ What Exists Right Now
 
 ### Infrastructure
+
 - [x] Next.js 15 + TypeScript + Tailwind v4 scaffolded
 - [x] Vitest test suite (6 test files)
 - [x] Storybook configured
@@ -36,6 +37,7 @@
 - [ ] Git repo — NOT INITIALIZED
 
 ### Content Engine (70% done)
+
 - [x] Copy generator (Claude/GPT prompts ready)
 - [x] Image generator (DALL-E, needs upgrade to FLUX)
 - [x] Brand voice validator
@@ -43,6 +45,7 @@
 - [x] Batch generation script
 
 ### Pages (Mock data)
+
 - [x] Landing page (Hero, Pillars, Latest Content, Community CTA)
 - [x] Dashboard (stats cards, pipeline)
 - [x] Blog listing + article pages
@@ -50,11 +53,13 @@
 - [x] Contact, About, Privacy Policy pages
 
 ### UI Components
+
 - [x] Button, Card, Badge, Input, Textarea
 - [x] Header, Footer, HeroSection, ContentPillars
 - [x] Toast, Skeleton
 
 ### Missing / Planned
+
 - [ ] Model Router layer
 - [ ] Visual Factory (FLUX, Ideogram, Recraft)
 - [ ] Canvas / Brand Templates (Satori)
@@ -77,6 +82,7 @@
 **Get the app running locally with all quality gates passing.**
 
 ### Sprint Tasks (Priority Order)
+
 1. `npm install` + fix `env.ts` for dev
 2. `git init` + first commit
 3. Create `.env.local`
@@ -92,6 +98,7 @@
 ## 🔧 Immediate Next Steps (Do These Now)
 
 ### Step 1: Foundation (This Session)
+
 ```bash
 npm install
 git init
@@ -100,16 +107,19 @@ git commit -m "chore: initial scaffold"
 ```
 
 ### Step 2: Dev Environment
+
 - Create `.env.local` with dummy values
 - Make `env.ts` dev-friendly (optional vars)
 - Install missing packages
 
 ### Step 3: Quality Gates
+
 - Fix TypeScript errors
 - Fix test failures
 - Verify build passes
 
 ### Step 4: First Real Output
+
 - Connect Model Router to Claude or GPT
 - Generate one carousel background with FLUX
 - Compose with brand template
@@ -131,12 +141,12 @@ git commit -m "chore: initial scaffold"
 
 ## 🚧 Active Blockers
 
-| Blocker | Workaround | Action Needed |
-|---------|------------|---------------|
-| No node_modules | Can't run anything | `npm install` |
-| No .env.local | App crashes | Create file |
-| env.ts too strict | Can't start dev | Make vars optional |
-| No git | No version control | `git init` |
+| Blocker           | Workaround         | Action Needed      |
+| ----------------- | ------------------ | ------------------ |
+| No node_modules   | Can't run anything | `npm install`      |
+| No .env.local     | App crashes        | Create file        |
+| env.ts too strict | Can't start dev    | Make vars optional |
+| No git            | No version control | `git init`         |
 
 ---
 
@@ -165,22 +175,23 @@ src/
 
 ## 💰 Current API Budget (Monthly)
 
-| Provider | Budget | Used | Status |
-|----------|--------|------|--------|
-| Claude API | $50 | $0 | Ready |
-| GPT-4.1 API | $30 | $0 | Ready |
-| DeepSeek | $10 | $0 | Ready |
-| FLUX 2 (fal.ai) | $15 | $0 | Ready |
-| ElevenLabs | $22 | $0 | Ready |
-| Runway | $35 | $0 | Future |
-| Pika / Kling | $30 | $0 | Future |
-| **Total** | **~$192** | **$0** | **—** |
+| Provider        | Budget    | Used   | Status |
+| --------------- | --------- | ------ | ------ |
+| Claude API      | $50       | $0     | Ready  |
+| GPT-4.1 API     | $30       | $0     | Ready  |
+| DeepSeek        | $10       | $0     | Ready  |
+| FLUX 2 (fal.ai) | $15       | $0     | Ready  |
+| ElevenLabs      | $22       | $0     | Ready  |
+| Runway          | $35       | $0     | Future |
+| Pika / Kling    | $30       | $0     | Future |
+| **Total**       | **~$192** | **$0** | **—**  |
 
 ---
 
 ## 📝 Notes for Next Session
 
 The user wants:
+
 1. A complete plan based on everything discussed
 2. Organized folders ✓ (just created)
 3. Updated AGENTS.md ✓ (just created)
@@ -190,6 +201,7 @@ The user wants:
 7. Scale mindset ✓ (built into all docs)
 
 What's left to DO (not just document):
+
 - Actually get the app running
 - Connect first AI provider
 - Generate first piece of content
@@ -201,13 +213,31 @@ The user is a solo founder. The machine needs to run with minimal daily input. E
 Remember: This is the MARKETING MACHINE. The product/app is separate. This machine's job is to drive traffic, capture leads, build community, and monetize attention.
 
 ## 📝 Session 2026-06-06
+
 - Foundation complete: 8-layer architecture, agent memory, session protocols, all quality gates passing
 - Quality gates: TS ✓ Tests ✗
 
 ## 📝 Session 2026-06-06
+
 - feat: complete all 15 missing foundation items + core implementations — Makefile, Dockerfile, docker-compose, .cursorrules, .vscode, Husky+lint-staged, runbook, cost-budget, incident-response, database-schema, seed-data, CI preview+prod deployments, README rewrite, missing deps, .env complete, sync-meta-ads script. Core implementations: Upstash Redis, PostHog tracking, JWT auth+rate limiting, Supabase lead capture, Model Router with retry/fallback/cost tracking, health endpoint. Quality: TS 0 errors, ESLint 0 warnings, 27/27 tests passing.
 - Quality gates: TS ✓ Tests ✗
 
 ## 📝 Session 2026-06-06
+
 - feat: resolved all 20 TODO stubs — sync-meta-ads Supabase upsert, Make.com webhooks (content gen, publish, meta sync), Meta webhooks (HMAC verification, message/leadgen handling), structured error logging, Instagram Graph API publish flow. Quality: TS 0 errors, ESLint 0 warnings, 27/27 tests. 15 npm vulnerabilities documented as known issue (dev deps, breaking change risk)
+- Quality gates: TS ✓ Tests ✗
+
+## 📝 Session 2026-06-06
+
+- Fase 1 Content Engine: Kimi integration, pipeline, API endpoint, CLI script, dashboard integration. Tested end-to-end with 9/10 brand voice score.
+- Quality gates: TS ✓ Tests ✗
+
+## 📝 Session 2026-06-06
+
+- Fase 1 Complete: Satori visual templates, integrated pipeline (copy+carousel), dashboard preview, Instagram publisher ready, scheduler built. All quality gates pass.
+- Quality gates: TS ✓ Tests ✗
+
+## 📝 Session 2026-06-06
+
+- Meta Ads sync working with real credentials. Added Campaigns, Alerts, Reports dashboard modules. Fixed sync script and Supabase WebSocket issues.
 - Quality gates: TS ✓ Tests ✗

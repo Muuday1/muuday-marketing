@@ -11,7 +11,7 @@ export default async function ContentPage() {
 
   const { data: content } = await supabase
     .from('marketing_content_pieces')
-    .select('id, title, type, status, created_at, brand_voice_score')
+    .select('id, title, type, status, created_at, brand_voice_score, metadata')
     .order('created_at', { ascending: false })
 
   const statusCounts: Record<string, number> = {}
@@ -43,36 +43,55 @@ export default async function ContentPage() {
 
         <div className="space-y-3">
           {content && content.length > 0 ? (
-            content.map((item) => (
-              <Card key={item.id}>
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="text-brand-dark font-medium">{item.title}</h3>
-                      <p className="text-brand-slate mt-1 text-xs">
-                        {item.type} • Criado em{' '}
-                        {new Date(item.created_at).toLocaleDateString('pt-BR')}
-                        {item.brand_voice_score ? ` • Score: ${item.brand_voice_score}/10` : ''}
-                      </p>
-                    </div>
-                    <Badge
-                      variant={
-                        item.status === 'published' || item.status === 'approved'
-                          ? 'success'
-                          : item.status === 'review'
-                            ? 'warning'
-                            : item.status === 'scheduled'
-                              ? 'info'
-                              : 'secondary'
-                      }
-                      className="capitalize"
+            content.map((item) => {
+              const imageUrls: string[] = item.metadata?.imageUrls || []
+              return (
+                <Card key={item.id}>
+                  <CardContent className="p-4">
+                    <Link
+                      href={`/dashboard/content/${item.id}`}
+                      className="group flex items-start gap-4"
                     >
-                      {item.status}
-                    </Badge>
-                  </div>
-                </CardContent>
-              </Card>
-            ))
+                      {imageUrls.length > 0 && (
+                        <div className="shrink-0">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={imageUrls[0]}
+                            alt={item.title}
+                            className="h-16 w-16 rounded-lg object-cover"
+                          />
+                        </div>
+                      )}
+                      <div className="min-w-0 flex-1">
+                        <h3 className="text-brand-dark group-hover:text-brand-primary font-medium transition-colors">
+                          {item.title}
+                        </h3>
+                        <p className="text-brand-slate mt-1 text-xs">
+                          {item.type} • Criado em{' '}
+                          {new Date(item.created_at).toLocaleDateString('pt-BR')}
+                          {item.brand_voice_score ? ` • Score: ${item.brand_voice_score}/10` : ''}
+                          {imageUrls.length > 0 ? ` • ${imageUrls.length} slides` : ''}
+                        </p>
+                      </div>
+                      <Badge
+                        variant={
+                          item.status === 'published' || item.status === 'approved'
+                            ? 'success'
+                            : item.status === 'review'
+                              ? 'warning'
+                              : item.status === 'scheduled'
+                                ? 'info'
+                                : 'secondary'
+                        }
+                        className="capitalize"
+                      >
+                        {item.status}
+                      </Badge>
+                    </Link>
+                  </CardContent>
+                </Card>
+              )
+            })
           ) : (
             <Card>
               <CardContent className="p-8 text-center">

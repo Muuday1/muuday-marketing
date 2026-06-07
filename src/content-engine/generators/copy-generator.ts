@@ -1,4 +1,4 @@
-import { env } from '@/config/env'
+import { generateWithModel } from '@/shared/model-router'
 import { ApiResult, ContentPillar, Platform } from '@/types'
 
 interface CopyGenerationInput {
@@ -68,48 +68,22 @@ function parseGeneratedCopy(content: string): CopyGenerationOutput {
 }
 
 /**
- * Generate social media copy using OpenAI.
+ * Generate social media copy using Kimi (primary) via Model Router.
  * All copy must pass brand voice validation before publish.
  */
 export async function generateCopy(
   input: CopyGenerationInput
 ): Promise<ApiResult<CopyGenerationOutput>> {
-  try {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${env.OPENAI_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        messages: [
-          {
-            role: 'system',
-            content: buildSystemPrompt(input),
-          },
-          {
-            role: 'user',
-            content: `Tema: ${input.topic}\nPilar: ${input.pillar}\nPlataforma: ${input.platform}`,
-          },
-        ],
-        temperature: 0.8,
-        max_tokens: 800,
-      }),
-    })
+  const result = await generateWithModel('copy', {
+    system: buildSystemPrompt(input),
+    prompt: `Tema: ${input.topic}\nPilar: ${input.pillar}\nPlataforma: ${input.platform}`,
+    maxTokens: 4096,
+  })
 
-    if (!response.ok) {
-      const error = await response.text()
-      return { success: false, error: `OpenAI error: ${error}` }
-    }
-
-    const data = await response.json()
-    const content = data.choices[0]?.message?.content || ''
-
-    const parsed = parseGeneratedCopy(content)
-    return { success: true, data: parsed }
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'Unknown error'
-    return { success: false, error: message }
+  if (!result.success) {
+    return { success: false, error: result.error }
   }
+
+  const parsed = parseGeneratedCopy(result.data)
+  return { success: true, data: parsed }
 }
