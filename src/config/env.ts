@@ -9,6 +9,8 @@ const envSchema = z.object({
   OPENAI_API_KEY: z.string().optional().default(''),
   OPENROUTER_API_KEY: z.string().optional().default(''),
   ANTHROPIC_API_KEY: z.string().optional().default(''),
+  AUPHONIC_API_KEY: z.string().optional().default(''),
+
   DEEPSEEK_API_KEY: z.string().optional().default(''),
   KIMI_API_KEY: z.string().optional().default(''),
 

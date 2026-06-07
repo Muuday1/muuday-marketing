@@ -1,7 +1,7 @@
 import { generateCopy } from './generators/copy-generator'
 import { checkBrandVoice } from './validators/brand-voice-check'
 import { generateCarousel } from './templates'
-import { supabaseServer } from './supabase-client'
+import { supabaseServer } from '@/lib/supabase/server'
 import { uploadAsset } from './storage'
 import { ApiResult, ContentPillar, Platform } from '@/types'
 

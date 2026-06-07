@@ -327,3 +327,14 @@ This release implements all previously missing foundation infrastructure with **
 - **Quality Gates**
   - TypeScript: 0 errors
   - ESLint: 0 warnings
+
+## [0.5.0] - 2026-06-07
+
+### Project Reorganization
+
+- **Deleted 20+ directories of dead code** — removed publishers/, meta-ads/, ab-testing/, audio/, newsletter/, scheduler/, seo/, podcast/, community/, integrations/, and 8 empty directories
+- **Consolidated Supabase clients** — single source of truth at `src/lib/supabase/server.ts`
+- **Reorganized scripts** — production scripts in `scripts/`, test scripts in `scripts/test/`
+- **Documented folder structure** in `AGENTS.md` with enforced rules for file placement
+- **NextAuth robust auth** — bcrypt password + Google OAuth restricted to igorpinto.lds@gmail.com
+- **TypeScript**: 0 errors after reorganization

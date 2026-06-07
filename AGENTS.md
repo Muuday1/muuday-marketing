@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-06-06
+last_updated: 2026-06-07
 owner: founder
 scope: global
 ---
@@ -31,6 +31,73 @@ LAYER 6: PUBLISHER        → Instagram, LinkedIn, YouTube, TikTok, Blog, Newsle
 LAYER 7: ADS MANAGER      → Meta, LinkedIn, creative remixer, optimizer
 LAYER 8: ANALYTICS        → Organic, paid, content performance, LLM SEO
 ```
+
+## Folder Structure (Enforced)
+
+**This structure is sacred. Every file must live in its correct directory. No exceptions.**
+
+```
+src/
+  app/                    # Next.js App Router ONLY
+    api/                  # API endpoints (cron, webhooks, auth)
+    dashboard/            # Dashboard pages
+    login/                # Auth page
+    layout.tsx            # Root layout (AuthProvider + global styles)
+  components/             # React components (no business logic)
+    auth/                 # Auth-specific components
+    feedback/             # Skeleton, Toast, loading states
+    layout/               # Header, navigation, shell
+    ui/                   # UI primitives (Button, Card, Input, Badge)
+  config/                 # Environment variables, constants
+  content-engine/         # Content generation pipeline (THE CORE)
+    generators/           # AI copy generation (Kimi, OpenAI)
+    meta/                 # Meta Ads sync (Graph API)
+    publishers/           # Social media publishing (Instagram, LinkedIn, TikTok)
+    schedulers/           # Post scheduling logic
+    templates/            # Satori visual templates (PNG generation)
+    validators/           # Brand voice check, quality gates
+  lib/                    # Shared utilities (framework-agnostic)
+    supabase/             # Supabase client (single source of truth)
+    utils/                # Helper functions (cn, format, etc.)
+  middleware/             # Next.js middleware
+    auth.ts               # JWT session verification
+  analytics/              # Analytics tracking
+    metrics/              # Engagement rate calculations
+  cache/                  # Redis/Upstash caching
+  shared/                 # Cross-domain shared code
+    model-router/         # AI provider routing (Kimi → fallback chain)
+  stories/                # Storybook stories
+  types/                  # TypeScript types (single file)
+  auth.ts                 # NextAuth configuration (root-level, allowed)
+  middleware.ts           # Next.js middleware entry (root-level, allowed)
+
+scripts/
+  *.ts                    # Production scripts (pipeline, sync, publish)
+  test/
+    *.ts                  # Test/validation scripts only
+```
+
+### Folder Rules
+
+| Rule                                             | Violation Example                  | Correct                             |
+| ------------------------------------------------ | ---------------------------------- | ----------------------------------- |
+| **No code in wrong domain**                      | Meta Ads logic in `src/publisher/` | Use `src/content-engine/meta/`      |
+| **No duplicate clients**                         | Two Supabase clients               | One in `src/lib/supabase/server.ts` |
+| **No business logic in components**              | API calls in `components/ui/`      | Move to `src/content-engine/`       |
+| **No root-level files** (except auth/middleware) | `src/utils.ts`                     | Use `src/lib/utils/`                |
+| **No empty directories**                         | `src/ads-manager/` (empty)         | Delete it                           |
+| **No test files in src/**                        | `src/test-foo.ts`                  | Use `scripts/test/`                 |
+| **No orphan code**                               | File never imported                | Delete it                           |
+
+### Adding New Folders
+
+**Before creating a new directory, ask:**
+
+1. Does an existing folder already serve this domain?
+2. Will this folder have at least 3 files within 2 weeks?
+3. Is this a cross-cutting concern (→ `src/shared/`) or domain-specific?
+
+**If yes to all three:** Create the folder and update this doc.
 
 ## Tech Stack (Locked)
 

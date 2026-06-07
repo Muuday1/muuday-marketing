@@ -1,4 +1,4 @@
-import { supabaseServer } from '../supabase-client'
+import { supabaseServer } from '@/lib/supabase/server'
 import { env } from '@/config/env'
 
 interface MetaCampaignSummary {
