@@ -1,191 +1,227 @@
-# Pipeline TTS para Podcast Muuday
+# Podcast TTS Pipeline — Configuração Final
 
-> **Status**: Pipeline validado — melhor resultado: `combined-pipeline-auphonic-final.mp3`
-> **Voz**: Jessica (Playful, Bright, Warm) — ID: `cgSgspJ2msm6clMCkdW9`
-> **Última atualização**: 2026-06-07
-
----
-
-## 🎯 Visão Geral
-
-Pipeline completo para transformar texto em narração de podcast ultra-natural usando ElevenLabs + pós-produção automática. Elimina o efeito "robô" do TTS através de vari-speed, room tone e processamento profissional via Auphonic.
+> **Última atualização:** 2026-06-07  
+> **Status:** ✅ Pipeline validado e pronto para produção  
+> **Próximo ajuste:** Fine-tuning do vari-speed (`atempo`) para naturalidade perfeita
 
 ---
 
-## 🛠️ Etapas do Pipeline
+## 🏆 Configuração Vencedora
 
-### 1. Gerar áudio com ElevenLabs (com tag de emoção)
+| Parâmetro     | Valor               | Notas                                                     |
+| ------------- | ------------------- | --------------------------------------------------------- |
+| **Provedor**  | ElevenLabs          | Creator plan ($22/mo)                                     |
+| **Voz**       | `Jessica`           | Melhor para português brasileiro                          |
+| **Modelo**    | `eleven_flash_v2_5` | **Obrigatório** — único que interpreta tags como prosódia |
+| **Stability** | `0.30`              | Baixo = mais expressivo, menos robótico                   |
+| **Style**     | `0.75`              | Alto = mais entonação natural                             |
+| **Speed**     | `1.0`               | Deixar no padrão; vari-speed é pós-processado no ffmpeg   |
+
+> ⚠️ **NUNCA usar `eleven_turbo_v2_5` ou `eleven_multilingual_v2`** — eles **falam as tags como palavras** (ex: diz "sarcastic" em vez de interpretar como sarcasmo).
+
+---
+
+## 🎭 Tags Expressivas Suportadas (v3+)
+
+O `eleven_flash_v2_5` interpreta estas tags como **direções de performance**, não como texto:
+
+| Tag            | Efeito                   | Quando usar                    |
+| -------------- | ------------------------ | ------------------------------ |
+| `[narrating]`  | Tom neutro, informativo  | Abertura, transições           |
+| `[sarcastic]`  | Tom irônico, seco        | Piadas, críticas leves         |
+| `[whispering]` | Sussurro, íntimo         | Suspense, confidências         |
+| `[laughs]`     | Risada natural           | Final de piada, momentos leves |
+| `[smiling]`    | Tom levemente sorridente | Boas-vindas, notícias boas     |
+
+> 💡 **Não use múltiplas tags no mesmo texto** — o modelo funciona melhor com **uma tag por geração**. Para narração longa com emoções variadas, use a estratégia de [segmentação](#-estratégia-de-segmentação).
+
+---
+
+## 🔧 Pipeline FFmpeg (Pós-Processamento)
+
+### Step 1: Vari-Speed + Pitch Drift
 
 ```bash
-# Modelo: eleven_multilingual_v2
-# Voz: Jessica (cgSgspJ2msm6clMCkdW9)
-# Settings otimizados:
-#   stability: 0.3
-#   similarity_boost: 0.5
-#   style: 0.75
-#   use_speaker_boost: true
-```
-
-**Regra de ouro**: Usar **uma única tag** no início (`[narrating]`) para induzir entonação storyteller. Nunca múltiplas tags — ficam cheesy.
-
-**Estratégia de partes**: Gerar em **2 partes separadas** para facilitar o corte da tag:
-
-- Parte 1: `[narrating] <primeira metade do roteiro>`
-- Parte 2: `<segunda metade do roteiro>` (sem tag)
-
-Isso evita que a tag do meio do texto seja falada no áudio final.
-
----
-
-### 2. Detectar silêncios (para localizar a tag)
-
-```bash
-ffmpeg -i part1-raw.mp3 -af silencedetect=noise=-40dB:d=0.15 -f null - 2>&1 | grep -E "silence_start|silence_end"
-```
-
-**Exemplo de saída:**
-
-```
-silence_start: 0.838776
-silence_end: 2.198662 | silence_duration: 1.359887
-```
-
-A tag `[narrating]` termina em ~0.84s. O silêncio vai até ~2.20s. O conteúdo real começa em **2.20s**.
-
----
-
-### 3. Cortar a tag
-
-```bash
-ffmpeg -y -i part1-raw.mp3 -ss 2.20 -c copy part1-clean.mp3
-```
-
-A Parte 2 não precisa de corte (gerada sem tag).
-
----
-
-### 4. Concatenar as partes
-
-```bash
-ffmpeg -y -i part1-clean.mp3 -i part2.mp3 \
-  -filter_complex "[0:a][1:a]concat=n=2:v=0:a=1[out]" -map "[out]" combined-clean.mp3
-```
-
----
-
-### 5. Aplicar vari-speed + pitch drift
-
-Humanos não falam com velocidade constante. O TTS sim. Vari-speed de 1% quebra o padrão mecânico.
-
-```bash
-ffmpeg -y -i combined-clean.mp3 \
+ffmpeg -y -i input.mp3 \
   -af "atempo=0.99,asetrate=43700,highpass=f=60,lowpass=f=10000" \
-  -ar 44100 combined-step1.mp3
+  -ar 44100 step1.mp3
 ```
 
-| Parâmetro         | Valor                    | Efeito           |
-| ----------------- | ------------------------ | ---------------- |
-| `atempo=0.99`     | 1% mais lento            | Menos robótico   |
-| `asetrate=43700`  | Pitch levemente abaixado | Menos "perfeito" |
-| `highpass=f=60`   | Remove sub-graves        | Mais limpo       |
-| `lowpass=f=10000` | Suaviza agudos           | Menos estridente |
+| Parâmetro         | Valor         | O que faz                                                          |
+| ----------------- | ------------- | ------------------------------------------------------------------ |
+| `atempo=0.99`     | **Ajustável** | Desacelera 1% para sofrer menos "robotizado". Teste `0.98` a `1.0` |
+| `asetrate=43700`  | Fixo          | Aumenta pitch sutilmente (~7 cent) para soar mais humano           |
+| `highpass=f=60`   | Fixo          | Remove subgraves indesejados                                       |
+| `lowpass=f=10000` | Fixo          | Suaviza agudos excessivos do TTS                                   |
 
----
+> 🎚️ **Ajuste fino do atempo:** Valores menores = mais lento/"ponderado". Valores maiores = mais rápido/"dinâmico". O ideal está entre `0.98` e `1.0` — **testar por voz e por conteúdo**.
 
-### 6. Adicionar room tone
-
-Ruído de ambiente sutil para criar sensação de espaço real.
+### Step 2: Room Tone (Ambiente)
 
 ```bash
-ffmpeg -y -f lavfi -i "anoisesrc=color=pink:r=44100:duration=15" \
+ffmpeg -y -f lavfi -i "anoisesrc=color=pink:r=44100:duration=60" \
   -af "lowpass=f=4000,highpass=f=80,volume=0.025" \
   -ar 44100 roomtone.mp3
 ```
 
----
+| Parâmetro        | Valor         | O que faz                                                         |
+| ---------------- | ------------- | ----------------------------------------------------------------- |
+| `color=pink`     | Fixo          | Pink noise = mais natural que white noise                         |
+| `volume=0.025`   | **Ajustável** | Quase inaudível, mas tira o "vácuo" do TTS. Teste `0.02` a `0.04` |
+| `lowpass=f=4000` | Fixo          | Mantém apenas frequências de ambiente                             |
 
-### 7. Mixar voz + room tone + normalizar
+### Step 3: Mix + Loudness Normalization
 
 ```bash
-ffmpeg -y -i combined-step1.mp3 -i roomtone.mp3 \
+ffmpeg -y -i step1.mp3 -i roomtone.mp3 \
   -filter_complex "
     [0:a]volume=1.0[voice];
     [1:a]volume=1.0[rt];
     [voice][rt]amix=inputs=2:duration=first:dropout_transition=1[mixed];
     [mixed]loudnorm=I=-16:TP=-1.5:LRA=11[out]
-  " -map "[out]" -ar 44100 -b:a 192k combined-pipeline.mp3
+  " \
+  -map "[out]" -ar 44100 -b:a 192k final.mp3
 ```
 
-| Parâmetro        | Valor             | Efeito           |
-| ---------------- | ----------------- | ---------------- |
-| `loudnorm=I=-16` | Loudness -16 LUFS | Padrão podcast   |
-| `TP=-1.5`        | True Peak -1.5dB  | Sem distorção    |
-| `LRA=11`         | Loudness Range 11 | Dinâmica natural |
+| Parâmetro   | Valor | O que faz                                   |
+| ----------- | ----- | ------------------------------------------- |
+| `I=-16`     | Fixo  | Loudness target (-16 LUFS = padrão podcast) |
+| `TP=-1.5`   | Fixo  | True Peak limit (evita distorção)           |
+| `LRA=11`    | Fixo  | Loudness Range (dinâmica natural)           |
+| `-b:a 192k` | Fixo  | Qualidade MP3 broadcast                     |
 
 ---
 
-### 8. Enviar para Auphonic (pós-produção profissional)
+## 🧩 Estratégia de Segmentação
+
+Para narrações longas com múltiplas emoções, **não gere tudo de uma vez**. Segmentar garante que cada tag seja interpretada corretamente.
+
+### Exemplo: Texto com 3 emoções
+
+```
+[narrating] A imigração é um tema complexo.
+[sarcastic] Claro, porque é tão fácil deixar tudo para trás.
+[whispering] Mas tem um segredo que ninguém conta...
+```
+
+### Fluxo de Segmentação
+
+```
+Segmento 1: [narrating] "A imigração é um tema complexo."
+   ↓
+  Eleven v3 → raw_1.mp3
+   ↓
+  Detectar silêncio inicial → cortar tag falada (se houver)
+   ↓
+  Pipeline ffmpeg → seg_1.mp3
+
+Segmento 2: [sarcastic] "Claro, porque é tão fácil deixar tudo para trás."
+   ↓
+  Eleven v3 → raw_2.mp3
+   ↓
+  Cortar tag → Pipeline → seg_2.mp3
+
+Segmento 3: [whispering] "Mas tem um segredo que ninguém conta..."
+   ↓
+  Eleven v3 → raw_3.mp3
+   ↓
+  Cortar tag → Pipeline → seg_3.mp3
+
+Concatenação final:
+  ffmpeg -f concat -i list.txt -c copy episodio.mp3
+```
+
+> No Eleven v3, tags iniciais (`[narrating]`, `[sarcastic]`) **podem** ser faladas como palavras. Use `silencedetect` para identificar e cortar.
+
+---
+
+## 📏 Corte de Tag Falada (Silence Detection)
 
 ```bash
-npx tsx scripts/test-auphonic-standalone.ts combined-pipeline.mp3
+# Detectar onde a tag falada termina
+ffmpeg -i raw.mp3 -af silencedetect=noise=-30dB:d=0.1 -f null - 2>&1 | \
+  grep -E "silence_start|silence_end"
+
+# Cortar a partir do fim do primeiro silêncio
+ffmpeg -y -ss [silence_end] -i raw.mp3 -c:a copy limpo.mp3
 ```
 
-**O que o Auphonic faz automaticamente:**
+**Padrão típico:**
 
-- 🎯 Adaptive Leveler — equaliza volume entre frases
-- 🔇 Dynamic Denoiser — remove ruído residual
-- ✨ Voice AutoEQ — realça frequências da voz
-- 📐 True Peak Limiter — protege contra distorção
-- 🎚️ Loudness normalization — confirma -16 LUFS
+- `0.00s` → `silence_start: 0`
+- `0.72s` → `silence_end` ← **cortar aqui**
+- `0.72s` em diante → conteúdo real
 
 ---
 
-## 📊 Resultado Final
+## 🎚️ Auphonic: Opcional
 
-| Arquivo                                | Tamanho | Estado                           |
-| -------------------------------------- | ------- | -------------------------------- |
-| `combined-clean.mp3`                   | ~53 KB  | Após corte da tag + concatenação |
-| `combined-pipeline.mp3`                | ~161 KB | Após vari-speed + room tone      |
-| `combined-pipeline-auphonic-final.mp3` | ~208 KB | **RESULTADO FINAL**              |
+Para **voz pura sem música de fundo**, o pipeline ffmpeg é **suficiente**.
+
+Use Auphonic apenas se:
+
+- Há música de fundo junto com voz (Adaptive Leveler)
+- A gravação tem ruído de ambiente significativo (Denoiser)
+- Há múltiplos locutores com volumes diferentes
+- Precisa de True Peak mais seguro (streaming)
+
+**Latência:** +30-60s por upload/processamento/download  
+**Custo:** 2h/mês grátis, depois €9/mês
 
 ---
 
-## ⚡ Resumo em uma linha
+## 🔄 Script de Pipeline Completo
 
+```typescript
+// src/audio/podcast-pipeline.ts
+
+const ELEVENLABS_CONFIG = {
+  voiceId: 'Jessica',
+  modelId: 'eleven_flash_v2_5',
+  stability: 0.3,
+  style: 0.75,
+  speed: 1.0,
+} as const
+
+const PIPELINE_CONFIG = {
+  atempo: 0.99, // ⭐ Ajustável: 0.98 - 1.0
+  roomtoneVolume: 0.025, // ⭐ Ajustável: 0.02 - 0.04
+  loudnessTarget: -16, // LUFS
+  truePeak: -1.5, // dB
+  loudnessRange: 11, // LRA
+} as const
 ```
-ElevenLabs ([narrating] tag) → cortar tag → concatenar → vari-speed 0.99x → room tone → Auphonic
-```
 
 ---
 
-## 📝 Variáveis de ambiente necessárias
+## 📋 Checklist de Produção
 
-```bash
-ELEVENLABS_API_KEY=sk_...
-AUPHONIC_API_KEY=...
-```
-
----
-
-## 🚫 O que NÃO funciona
-
-| Técnica                          | Por que falhou                        |
-| -------------------------------- | ------------------------------------- |
-| Múltiplas tags no texto          | Ficam cheesy/forçadas                 |
-| Tags no meio do texto            | São faladas no áudio (difícil cortar) |
-| Gírias excessivas ("cara", "pá") | Ficam artificiais                     |
-| Compressão agressiva ffmpeg      | Destrói a naturalidade                |
-| Reverb excessivo                 | Fica com "eco de banheiro"            |
+- [ ] Usar `eleven_flash_v2_5` (nunca turbo/multilingual)
+- [ ] Voz = Jessica
+- [ ] Stability = 0.30, Style = 0.75
+- [ ] Uma tag por geração (segmentar se necessário)
+- [ ] Aplicar vari-speed (`atempo=0.99`)
+- [ ] Aplicar pitch drift (`asetrate=43700`)
+- [ ] Mix com room tone (`volume=0.025`)
+- [ ] Normalizar loudness (`-16 LUFS`)
+- [ ] Verificar se tags foram faladas → cortar se necessário
+- [ ] Exportar em 192kbps, 44.1kHz
 
 ---
 
-## ✅ O que FUNCIONA
+## 🎯 Próximo Ajuste: Fine-Tuning do Vari-Speed
 
-| Técnica                       | Impacto                            |
-| ----------------------------- | ---------------------------------- |
-| **Tag única no início**       | Induz entonação sem poluir o áudio |
-| **Gerar em partes separadas** | Permite corte preciso da tag       |
-| **Vari-speed 0.99x**          | Quebra a perfeição mecânica do TTS |
-| **Pitch drift sutil**         | Torna a voz menos "plástica"       |
-| **Room tone**                 | Cria sensação de espaço real       |
-| **Auphonic**                  | Polimento profissional automático  |
+O parâmetro `atempo` é o único que ainda precisa de calibração por conteúdo:
+
+| Conteúdo                 | atempo recomendado | Por quê                   |
+| ------------------------ | ------------------ | ------------------------- |
+| Narração calma/reflexiva | `0.98`             | Mais lento = mais peso    |
+| Notícias/informativo     | `0.99`             | Equilíbrio natural        |
+| Entrevista/conversação   | `1.0`              | Velocidade realista       |
+| Suspense/tensão          | `0.97`             | Mais pausa entre palavras |
+
+**Testar sempre:** Gerar 10s de amostra com 3 valores (`0.98`, `0.99`, `1.0`), ouvir e comparar.
+
+---
+
+_Documento vivo — atualizar conforme novos testes e ajustes._
