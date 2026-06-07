@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { runContentPipeline } from '@/content-engine/pipeline'
+import { runContentPipeline, generateImagesForContent } from '@/content-engine/pipeline'
 import { ContentPillar, Platform } from '@/types'
 import type { CarouselTheme } from '@/content-engine/templates'
+import { after } from 'next/server'
 
 export async function POST(request: NextRequest) {
   try {
@@ -41,6 +42,28 @@ export async function POST(request: NextRequest) {
 
     if (!result.success) {
       return NextResponse.json({ success: false, error: result.error }, { status: 500 })
+    }
+
+    // Generate images in background after response is sent
+    // This avoids Vercel's 10s serverless timeout
+    if (result.data.contentPieceId) {
+      after(async () => {
+        try {
+          await generateImagesForContent({
+            contentPieceId: result.data.contentPieceId,
+            platform: platform as Platform,
+            headline: result.data.headline,
+            body: result.data.body,
+            cta: result.data.cta,
+            hashtags: result.data.hashtags || [],
+            theme: theme as CarouselTheme,
+            generateCoverImage: generateCoverImage === true,
+            topic: topic || title,
+          })
+        } catch (err) {
+          console.error('[BACKGROUND] Image generation failed:', err)
+        }
+      })
     }
 
     return NextResponse.json({ success: true, data: result.data })

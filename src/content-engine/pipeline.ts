@@ -30,6 +30,19 @@ interface PipelineOutput {
   brandVoiceScore: number
   passed: boolean
   imageUrls: string[]
+  hashtags: string[]
+}
+
+interface ImageGenerationInput {
+  contentPieceId: string
+  platform: Platform
+  headline: string
+  body: string
+  cta: string
+  hashtags: string[]
+  theme?: CarouselTheme
+  generateCoverImage?: boolean
+  topic?: string
 }
 
 function extractTips(body: string): { title: string; description: string }[] {
@@ -134,6 +147,7 @@ async function generateFLUXCover(
 export async function runContentPipeline(input: PipelineInput): Promise<ApiResult<PipelineOutput>> {
   const theme = input.theme || 'warm'
 
+  // Step 1: Generate copy (fast - usually 2-5s)
   const copyResult = await generateCopy({
     platform: input.platform,
     pillar: input.pillar,
@@ -147,6 +161,7 @@ export async function runContentPipeline(input: PipelineInput): Promise<ApiResul
 
   const copy = copyResult.data
 
+  // Step 2: Check brand voice (fast - local)
   const voiceResult = checkBrandVoice({
     headline: copy.headline,
     body: copy.body,
@@ -159,40 +174,7 @@ export async function runContentPipeline(input: PipelineInput): Promise<ApiResul
 
   const voice = voiceResult.data
 
-  // Generate platform-specific visuals
-  let imageUrls: string[] = []
-  let coverImageUrl: string | null = null
-  const tempId = `temp-${Date.now()}`
-
-  if (input.platform === 'instagram') {
-    try {
-      console.log('[PIPELINE] Generating Instagram carousel...')
-      const tips = extractTips(copy.body)
-      console.log('[PIPELINE] Tips extracted:', tips.length)
-      imageUrls = await generateInstagramCarousel(
-        tempId,
-        copy.headline,
-        tips,
-        copy.cta,
-        copy.hashtags,
-        theme
-      )
-      console.log('[PIPELINE] Carousel generated:', imageUrls.length, 'images')
-    } catch (err) {
-      console.error('[PIPELINE] Carousel failed:', err)
-    }
-  } else if (input.platform === 'linkedin') {
-    try {
-      imageUrls = await generateLinkedInVisual(tempId, copy.headline, copy.body)
-    } catch (err) {
-      console.warn('LinkedIn card failed:', err)
-    }
-  }
-
-  if (input.generateCoverImage) {
-    coverImageUrl = await generateFLUXCover(tempId, copy.headline, input.topic)
-  }
-
+  // Step 3: Save to DB immediately (fast)
   const { data: contentPiece, error: dbError } = await supabase
     .from('marketing_content_pieces')
     .insert({
@@ -211,40 +193,18 @@ export async function runContentPipeline(input: PipelineInput): Promise<ApiResul
         scheduledFor: input.scheduledFor,
         caption: copy.body,
         hashtags: copy.hashtags,
-        imageUrls,
-        coverImageUrl,
+        imageUrls: [],
+        coverImageUrl: null,
       },
       brand_voice_score: voice.score,
       ai_provider: 'kimi',
-      ai_model: 'kimi-k2.6',
+      ai_model: 'kimi-k2.5',
     })
     .select('id')
     .single()
 
   if (dbError) {
     return { success: false, error: `DB: ${dbError.message}` }
-  }
-
-  if (imageUrls.length > 0 || coverImageUrl) {
-    await supabase
-      .from('marketing_content_pieces')
-      .update({
-        metadata: {
-          platform: input.platform,
-          pillar: input.pillar,
-          topic: input.topic,
-          tone: input.tone,
-          theme,
-          purpose: input.purpose,
-          format: input.format,
-          scheduledFor: input.scheduledFor,
-          caption: copy.body,
-          hashtags: copy.hashtags,
-          imageUrls,
-          coverImageUrl,
-        },
-      })
-      .eq('id', contentPiece.id)
   }
 
   return {
@@ -256,8 +216,73 @@ export async function runContentPipeline(input: PipelineInput): Promise<ApiResul
       cta: copy.cta,
       brandVoiceScore: voice.score,
       passed: voice.passed,
-      imageUrls,
+      imageUrls: [],
+      hashtags: copy.hashtags || [],
     },
+  }
+}
+
+/**
+ * Generate images for a content piece in background.
+ * This is called via unstable_after to avoid Vercel's 10s timeout.
+ */
+export async function generateImagesForContent(input: ImageGenerationInput): Promise<void> {
+  const theme = input.theme || 'warm'
+  const tempId = `temp-${Date.now()}`
+  let imageUrls: string[] = []
+  let coverImageUrl: string | null = null
+
+  console.log('[BACKGROUND] Starting image generation for', input.contentPieceId)
+
+  if (input.platform === 'instagram') {
+    try {
+      const tips = extractTips(input.body)
+      console.log('[BACKGROUND] Tips extracted:', tips.length)
+      imageUrls = await generateInstagramCarousel(
+        tempId,
+        input.headline,
+        tips,
+        input.cta,
+        input.hashtags,
+        theme
+      )
+      console.log('[BACKGROUND] Carousel generated:', imageUrls.length, 'images')
+    } catch (err) {
+      console.error('[BACKGROUND] Carousel failed:', err)
+    }
+  } else if (input.platform === 'linkedin') {
+    try {
+      imageUrls = await generateLinkedInVisual(tempId, input.headline, input.body)
+    } catch (err) {
+      console.warn('[BACKGROUND] LinkedIn card failed:', err)
+    }
+  }
+
+  if (input.generateCoverImage && input.topic) {
+    try {
+      coverImageUrl = await generateFLUXCover(tempId, input.headline, input.topic)
+    } catch (err) {
+      console.warn('[BACKGROUND] FLUX cover failed:', err)
+    }
+  }
+
+  // Update DB with generated images
+  if (imageUrls.length > 0 || coverImageUrl) {
+    const { error } = await supabase
+      .from('marketing_content_pieces')
+      .update({
+        metadata: {
+          imageUrls,
+          coverImageUrl,
+        },
+      })
+      .eq('id', input.contentPieceId)
+
+    if (error) {
+      console.error('[BACKGROUND] DB update failed:', error)
+    } else {
+      console.log('[BACKGROUND] Images saved to DB for', input.contentPieceId)
+    }
   }
 }
 
