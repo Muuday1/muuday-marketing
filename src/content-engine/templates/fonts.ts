@@ -56,20 +56,33 @@ export async function loadFonts(): Promise<{ regular: ArrayBuffer; bold: ArrayBu
     path.join('/var/task', 'fonts'),
   ]
 
+  console.log('[FONTS] process.cwd():', process.cwd())
+
   for (const dir of fsCandidates) {
+    console.log('[FONTS] Checking:', dir)
     if (await dirExists(dir)) {
+      console.log('[FONTS] Directory exists:', dir)
       const regularPath = path.join(dir, 'Inter-Regular.ttf')
       if (await fileExists(regularPath)) {
+        console.log('[FONTS] Loading from filesystem:', regularPath)
         regularFont = await loadFontFromFile(regularPath)
         boldFont = await loadFontFromFile(path.join(dir, 'Inter-Bold.ttf'))
         return { regular: regularFont, bold: boldFont }
+      } else {
+        console.log('[FONTS] Font not found at:', regularPath)
       }
+    } else {
+      console.log('[FONTS] Directory not found:', dir)
     }
   }
 
   // Fallback: fetch from GitHub raw CDN
+  console.log('[FONTS] Falling back to GitHub CDN')
+  const start = Date.now()
   regularFont = await loadFontFromUrl(`${GITHUB_FONT_BASE}/Inter-Regular.ttf`)
+  console.log('[FONTS] Regular font loaded from CDN in', Date.now() - start, 'ms')
   boldFont = await loadFontFromUrl(`${GITHUB_FONT_BASE}/Inter-Bold.ttf`)
+  console.log('[FONTS] Bold font loaded from CDN in', Date.now() - start, 'ms')
 
   return { regular: regularFont, bold: boldFont }
 }
