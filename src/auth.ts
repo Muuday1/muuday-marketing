@@ -1,13 +1,10 @@
-import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import bcrypt from 'bcryptjs'
 import { env } from '@/config/env'
+import type { NextAuthOptions } from 'next-auth'
 
-export const {
-  handlers: { GET, POST },
-  auth,
-} = NextAuth({
+export const authOptions: NextAuthOptions = {
   secret: env.NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
@@ -60,4 +57,4 @@ export const {
       return session
     },
   },
-})
+}
