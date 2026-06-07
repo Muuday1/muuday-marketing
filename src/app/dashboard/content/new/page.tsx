@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Header } from '@/components/layout/Header'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
+import { CAROUSEL_THEMES } from '@/content-engine/templates'
 
 export default function NewContentPage() {
   const [title, setTitle] = useState('')
@@ -15,7 +16,9 @@ export default function NewContentPage() {
     'instagram'
   )
   const [pillar, setPillar] = useState('culture')
+  const [theme, setTheme] = useState<'classic' | 'minimal' | 'bold'>('classic')
   const [useAI, setUseAI] = useState(true)
+  const [generateCoverImage, setGenerateCoverImage] = useState(false)
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<string | null>(null)
   const router = useRouter()
@@ -29,7 +32,15 @@ export default function NewContentPage() {
       const res = await fetch('/api/content/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, type, platform, pillar, useAI }),
+        body: JSON.stringify({
+          title,
+          type,
+          platform,
+          pillar,
+          useAI,
+          theme,
+          generateCoverImage,
+        }),
       })
 
       const data = await res.json()
@@ -46,6 +57,8 @@ export default function NewContentPage() {
       setLoading(false)
     }
   }
+
+  const isVisual = platform === 'instagram' || platform === 'linkedin'
 
   return (
     <div className="bg-brand-light min-h-screen">
@@ -122,6 +135,27 @@ export default function NewContentPage() {
                 </select>
               </div>
 
+              {isVisual && (
+                <div>
+                  <label className="text-brand-dark mb-1 block text-sm font-medium">
+                    Tema visual
+                  </label>
+                  <select
+                    value={theme}
+                    onChange={(e) => setTheme(e.target.value as typeof theme)}
+                    className="border-brand-slate/20 text-brand-dark w-full rounded-lg border bg-white px-4 py-2"
+                  >
+                    {CAROUSEL_THEMES.map(
+                      (t: { id: string; label: string; description: string }) => (
+                        <option key={t.id} value={t.id}>
+                          {t.label} — {t.description}
+                        </option>
+                      )
+                    )}
+                  </select>
+                </div>
+              )}
+
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
@@ -131,9 +165,24 @@ export default function NewContentPage() {
                   className="border-brand-slate/20 rounded"
                 />
                 <label htmlFor="useAI" className="text-brand-dark text-sm">
-                  Usar AI para gerar copy e imagem
+                  Usar AI para gerar copy
                 </label>
               </div>
+
+              {isVisual && (
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    id="generateCoverImage"
+                    checked={generateCoverImage}
+                    onChange={(e) => setGenerateCoverImage(e.target.checked)}
+                    className="border-brand-slate/20 rounded"
+                  />
+                  <label htmlFor="generateCoverImage" className="text-brand-dark text-sm">
+                    Gerar imagem de capa com FLUX (custo extra)
+                  </label>
+                </div>
+              )}
 
               {result && (
                 <p

@@ -2,6 +2,42 @@
 
 All notable changes to the Muuday Marketing Machine project.
 
+## [0.5.0] - 2026-06-07
+
+### Podcast Abertura v6 — Produção Final
+
+- **Arquivo final**: `public/test-audio/abertura/abertura-muuday-v6-final.mp3` (20.34s, 192kbps)
+- **Voz**: ElevenLabs Jessica + `eleven_flash_v2_5`, stability 0.35, style 0.85
+- **Música**: Mixkit Track 34 (royalty-free), 15s clip com fade in/out
+- **Estrutura**: 0-2s música → 2-17s voz+música → 17-20s só voz
+- **Mix**: Delay 2s, gain música 0.8, mix manual Python (workaround ffmpeg 8.1.1 bug)
+
+#### Pipeline v6 (Segmentado com Tags)
+
+1. **Geração em 4 segmentos** (1 tag expressiva por segmento):
+   - `[smiling]` → "Se tem uma coisa que eu aprendi..."
+   - `[excited]` → "Eu sou a Jessica, e esse é o Muuday!"
+   - `[excited]` → "Hoje a gente vai falar sobre a história..."
+   - `[smiling]` → "Fica comigo. Vai ser bom demais."
+2. **Corte de tags** via `silencedetect` (detecta e remove tags faladas)
+3. **Vari-speed** (`atempo=0.99`) + **pitch drift** (`asetrate=43700`)
+4. **Room tone** + **loudnorm** (`I=-16`, `TP=-1.5`, `LRA=11`)
+5. **Mix manual Python** (sample-by-sample com clamping)
+
+#### Documentação Atualizada
+
+- `docs/operations/podcast-tts-pipeline.md` — Adicionada seção "Mix com Música de Fundo" e workaround do bug ffmpeg
+- `docs/operations/elevenlabs-tags-guide.md` — Guia completo com 35+ tags em 6 categorias
+- `.kimi/context.md` — Atualizado com estado da abertura v6
+
+#### Bugs Descobertos (ffmpeg 8.1.1)
+
+- `afade=t=out` → cria silêncio total após ~2s
+- `amix` → trunca quando o input mais curto termina
+- **Workaround**: Mix manual em Python com `array.array('h')` e clamping
+
+---
+
 ## [0.4.0] - 2026-06-07
 
 ### Infrastructure & Security

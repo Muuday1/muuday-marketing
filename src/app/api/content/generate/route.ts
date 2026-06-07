@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { runContentPipeline } from '@/content-engine/pipeline'
 import { ContentPillar, Platform } from '@/types'
+import type { CarouselTheme } from '@/content-engine/templates'
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { title, platform, pillar, topic, tone, scheduledFor } = body
+    const { title, platform, pillar, topic, tone, scheduledFor, theme, generateCoverImage } = body
 
     if (!title || !platform || !pillar) {
       return NextResponse.json(
@@ -21,6 +22,8 @@ export async function POST(request: NextRequest) {
       topic: topic || title,
       tone: tone || 'warm',
       scheduledFor,
+      theme: theme as CarouselTheme,
+      generateCoverImage: generateCoverImage === true,
     })
 
     if (!result.success) {

@@ -2,7 +2,7 @@
 
 > **Última atualização:** 2026-06-07  
 > **Status:** ✅ Pipeline validado e pronto para produção  
-> **Próximo ajuste:** Fine-tuning do vari-speed (`atempo`) para naturalidade perfeita
+> **Última versão:** v6 — Abertura segmentada com tags + Mixkit Track 34
 
 ---
 
@@ -13,8 +13,8 @@
 | **Provedor**  | ElevenLabs          | Creator plan ($22/mo)                                     |
 | **Voz**       | `Jessica`           | Melhor para português brasileiro                          |
 | **Modelo**    | `eleven_flash_v2_5` | **Obrigatório** — único que interpreta tags como prosódia |
-| **Stability** | `0.30`              | Baixo = mais expressivo, menos robótico                   |
-| **Style**     | `0.75`              | Alto = mais entonação natural                             |
+| **Stability** | `0.35`              | Baixo = mais expressivo, menos robótico                   |
+| **Style**     | `0.85`              | Alto = mais entonação natural                             |
 | **Speed**     | `1.0`               | Deixar no padrão; vari-speed é pós-processado no ffmpeg   |
 
 > ⚠️ **NUNCA usar `eleven_turbo_v2_5` ou `eleven_multilingual_v2`** — eles **falam as tags como palavras** (ex: diz "sarcastic" em vez de interpretar como sarcasmo).
@@ -178,8 +178,8 @@ Use Auphonic apenas se:
 const ELEVENLABS_CONFIG = {
   voiceId: 'Jessica',
   modelId: 'eleven_flash_v2_5',
-  stability: 0.3,
-  style: 0.75,
+  stability: 0.35,
+  style: 0.85,
   speed: 1.0,
 } as const
 
@@ -206,6 +206,74 @@ const PIPELINE_CONFIG = {
 - [ ] Normalizar loudness (`-16 LUFS`)
 - [ ] Verificar se tags foram faladas → cortar se necessário
 - [ ] Exportar em 192kbps, 44.1kHz
+
+---
+
+## 🎵 Mix com Música de Fundo
+
+Para adicionar música de fundo (bed) à narração:
+
+### Parâmetros da Abertura v6 (Referência)
+
+| Parâmetro       | Valor           | Descrição                     |
+| --------------- | --------------- | ----------------------------- |
+| **Música**      | Mixkit Track 34 | Royalty-free, 15s clip        |
+| **Delay voz**   | 2s              | Música sozinha no início      |
+| **Gain música** | 0.8             | Música a 80% do volume da voz |
+| **Fade in**     | 1s              | Suaviza entrada da música     |
+| **Fade out**    | 3s              | Suaviza saída da música       |
+| **Duração**     | 20.3s           | Voz 18.3s + delay 2s          |
+
+### Workaround: Bug do ffmpeg 8.1.1
+
+O `afade` e `amix` do ffmpeg 8.1.1 têm bugs críticos:
+
+- `afade=t=out` → cria silêncio total após ~2s
+- `amix` → trunca quando o input mais curto termina
+
+**Solução:** Mix manual em Python (sample-by-sample):
+
+```python
+import wave, array
+
+with wave.open("voz.wav", "rb") as w:
+    voz = array.array('h', w.readframes(w.getnframes()))
+with wave.open("musica.wav", "rb") as w:
+    mus = array.array('h', w.readframes(w.getnframes()))
+
+delay = 2 * 44100  # 2 segundos
+gain = 0.8
+
+# Aplicar delay na voz
+voz_delayed = array.array('h', [0] * delay)
+voz_delayed.extend(voz)
+
+# Ajustar tamanhos
+max_len = max(len(mus), len(voz_delayed))
+mus.extend([0] * (max_len - len(mus)))
+voz_delayed.extend([0] * (max_len - len(voz_delayed)))
+
+# Mix com clamping
+mix = array.array('h')
+for i in range(max_len):
+    s = int(voz_delayed[i] + mus[i] * gain)
+    mix.append(min(32767, max(-32768, s)))
+
+with wave.open("mix.wav", "wb") as w:
+    w.setnchannels(1)
+    w.setsampwidth(2)
+    w.setframerate(44100)
+    w.writeframes(mix.tobytes())
+```
+
+### Níveis de Volume Validados
+
+| Trecho | mean_volume | Contexto               |
+| ------ | ----------- | ---------------------- |
+| 0-2s   | -28.2 dB    | Música sozinha (intro) |
+| 4-6s   | -13.8 dB    | Voz + música (corpo)   |
+| 12-14s | -13.5 dB    | Fade out da música     |
+| 16-18s | -17.7 dB    | Só voz (conclusão)     |
 
 ---
 
