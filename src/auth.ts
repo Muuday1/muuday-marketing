@@ -10,24 +10,6 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
-      wellKnown: 'https://accounts.google.com/.well-known/openid-configuration',
-      authorization: {
-        url: 'https://accounts.google.com/o/oauth2/v2/auth',
-        params: {
-          prompt: 'consent',
-          access_type: 'offline',
-          response_type: 'code',
-          scope: 'openid email profile',
-        },
-      },
-      token: {
-        url: 'https://oauth2.googleapis.com/token',
-      },
-      userinfo: {
-        url: 'https://openidconnect.googleapis.com/v1/userinfo',
-      },
-      idToken: true,
-      checks: ['pkce', 'state'],
     }),
     CredentialsProvider({
       name: 'password',
