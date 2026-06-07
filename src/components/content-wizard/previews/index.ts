@@ -1,2 +1,8 @@
 export { InstagramPreview } from './InstagramPreview'
 export { LinkedInPreview } from './LinkedInPreview'
+export { TikTokPreview } from './TikTokPreview'
+export { TwitterPreview } from './TwitterPreview'
+export { BlogPreview } from './BlogPreview'
+export { NewsletterPreview } from './NewsletterPreview'
+export { YouTubePreview } from './YouTubePreview'
+export { PodcastPreview } from './PodcastPreview'

@@ -11,8 +11,16 @@ import {
   type ContentFormat,
   type ContentPurpose,
 } from '@/content-engine/strategy/content-matrix'
-import { InstagramPreview } from './previews/InstagramPreview'
-import { LinkedInPreview } from './previews/LinkedInPreview'
+import {
+  InstagramPreview,
+  LinkedInPreview,
+  TikTokPreview,
+  TwitterPreview,
+  BlogPreview,
+  NewsletterPreview,
+  YouTubePreview,
+  PodcastPreview,
+} from './previews'
 
 interface GeneratedContent {
   headline: string
@@ -35,6 +43,8 @@ interface ResultStepProps {
   onScheduleTimeChange: (time: string) => void
 }
 
+const PLATFORM_SUPPORTS_PUBLISH_NOW: ContentPlatform[] = ['instagram']
+
 export function ResultStep({
   platform,
   format,
@@ -54,6 +64,11 @@ export function ResultStep({
   const [publishResult, setPublishResult] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<'preview' | 'edit'>('preview')
 
+  const supportsPublishNow = PLATFORM_SUPPORTS_PUBLISH_NOW.includes(platform)
+  const platformLabel = PLATFORMS[platform]?.label || platform
+  const formatLabel = FORMATS[format]?.label || format
+  const purposeLabel = PURPOSES[purpose]?.label || purpose
+
   async function handleSchedule() {
     if (!scheduleDate || !contentPieceId) return
     setScheduling(true)
@@ -64,18 +79,10 @@ export function ResultStep({
       const res = await fetch('/api/content/schedule', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contentPieceId,
-          platform,
-          scheduledFor,
-        }),
+        body: JSON.stringify({ contentPieceId, platform, scheduledFor }),
       })
       const data = await res.json()
-      if (data.success) {
-        setScheduleResult('Agendado com sucesso!')
-      } else {
-        setScheduleResult(`Erro: ${data.error}`)
-      }
+      setScheduleResult(data.success ? 'Agendado com sucesso!' : `Erro: ${data.error}`)
     } catch {
       setScheduleResult('Erro ao agendar')
     } finally {
@@ -92,17 +99,10 @@ export function ResultStep({
       const res = await fetch('/api/content/publish-now', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contentPieceId,
-          platform,
-        }),
+        body: JSON.stringify({ contentPieceId, platform }),
       })
       const data = await res.json()
-      if (data.success) {
-        setPublishResult('Publicado com sucesso!')
-      } else {
-        setPublishResult(`Erro: ${data.error}`)
-      }
+      setPublishResult(data.success ? 'Publicado com sucesso!' : `Erro: ${data.error}`)
     } catch {
       setPublishResult('Erro ao publicar')
     } finally {
@@ -110,38 +110,66 @@ export function ResultStep({
     }
   }
 
-  const platformLabel = PLATFORMS[platform]?.label || platform
-  const formatLabel = FORMATS[format]?.label || format
-  const purposeLabel = PURPOSES[purpose]?.label || purpose
-
   const renderPlatformPreview = () => {
-    if (platform === 'instagram') {
-      return (
-        <InstagramPreview
-          headline={content.headline}
-          body={content.body}
-          cta={content.cta}
-          hashtags={content.hashtags}
-          imageUrls={imageUrls}
-        />
-      )
+    const props = {
+      headline: content.headline,
+      body: content.body,
+      cta: content.cta,
+      hashtags: content.hashtags,
+      imageUrls,
     }
-    if (platform === 'linkedin') {
-      return (
-        <LinkedInPreview
-          headline={content.headline}
-          body={content.body}
-          cta={content.cta}
-          imageUrls={imageUrls}
-        />
-      )
+
+    switch (platform) {
+      case 'instagram':
+        return <InstagramPreview {...props} />
+      case 'linkedin':
+        return (
+          <LinkedInPreview
+            headline={content.headline}
+            body={content.body}
+            cta={content.cta}
+            imageUrls={imageUrls}
+          />
+        )
+      case 'tiktok':
+        return (
+          <TikTokPreview
+            headline={content.headline}
+            body={content.body}
+            hashtags={content.hashtags}
+            imageUrls={imageUrls}
+          />
+        )
+      case 'twitter':
+        return (
+          <TwitterPreview headline={content.headline} body={content.body} imageUrls={imageUrls} />
+        )
+      case 'blog':
+        return <BlogPreview headline={content.headline} body={content.body} imageUrls={imageUrls} />
+      case 'newsletter':
+        return (
+          <NewsletterPreview
+            headline={content.headline}
+            body={content.body}
+            imageUrls={imageUrls}
+          />
+        )
+      case 'youtube':
+        return (
+          <YouTubePreview headline={content.headline} body={content.body} imageUrls={imageUrls} />
+        )
+      case 'podcast':
+        return (
+          <PodcastPreview headline={content.headline} body={content.body} imageUrls={imageUrls} />
+        )
+      default:
+        return (
+          <div className="text-brand-slate rounded-xl border bg-white p-8 text-center">
+            <p className="text-sm">Preview mobile para {platformLabel}</p>
+            <p className="mt-1 text-xs">Conteúdo gerado com sucesso!</p>
+          </div>
+        )
     }
-    return (
-      <div className="text-brand-slate rounded-xl border bg-white p-8 text-center">
-        <p className="text-sm">Preview não disponível para {platformLabel}</p>
-        <p className="mt-1 text-xs">Mas o conteúdo foi gerado com sucesso!</p>
-      </div>
-    )
   }
 
   return (
@@ -163,7 +191,7 @@ export function ResultStep({
               : 'text-brand-slate hover:text-brand-dark'
           }`}
         >
-          👀 Preview na plataforma
+          👀 Preview mobile
         </button>
         <button
           onClick={() => setActiveTab('edit')}
@@ -182,11 +210,10 @@ export function ResultStep({
         <div className="space-y-6">
           {renderPlatformPreview()}
 
-          {/* Images grid */}
           {imageUrls.length > 0 && (
             <div className="border-brand-slate/10 rounded-xl border bg-white p-4">
               <label className="text-brand-slate text-xs tracking-wide uppercase">
-                Slides gerados ({imageUrls.length})
+                Slides ({imageUrls.length})
               </label>
               <div className="mt-2 grid grid-cols-3 gap-2">
                 {imageUrls.map((url, i) => (
@@ -207,9 +234,7 @@ export function ResultStep({
       {activeTab === 'edit' && (
         <div className="space-y-4">
           <div className="border-brand-slate/10 rounded-xl border bg-white p-4">
-            <label className="text-brand-slate text-xs tracking-wide uppercase">
-              Headline / Hook
-            </label>
+            <label className="text-brand-slate text-xs tracking-wide uppercase">Headline</label>
             <p className="text-brand-dark mt-1 text-lg font-semibold">{content.headline}</p>
           </div>
           <div className="border-brand-slate/10 rounded-xl border bg-white p-4">
@@ -243,7 +268,11 @@ export function ResultStep({
         {/* Publish Now */}
         <div>
           <h3 className="text-brand-dark font-semibold">🚀 Publicar agora</h3>
-          <p className="text-brand-slate mt-1 text-xs">Publica diretamente no {platformLabel}</p>
+          <p className="text-brand-slate mt-1 text-xs">
+            {supportsPublishNow
+              ? `Publica diretamente no ${platformLabel}`
+              : `Publicação imediata no ${platformLabel} em breve. Use agendamento por enquanto.`}
+          </p>
 
           {publishResult && (
             <p
@@ -256,11 +285,11 @@ export function ResultStep({
           <div className="mt-3 flex gap-2">
             <Button
               onClick={handlePublishNow}
-              disabled={!contentPieceId || publishing}
+              disabled={!contentPieceId || publishing || !supportsPublishNow}
               size="sm"
               className="bg-brand-dark hover:bg-brand-dark/90 text-white"
             >
-              {publishing ? 'Publicando...' : 'Publicar agora'}
+              {publishing ? 'Publicando...' : supportsPublishNow ? 'Publicar agora' : 'Em breve'}
             </Button>
           </div>
         </div>
@@ -270,7 +299,7 @@ export function ResultStep({
         {/* Schedule */}
         <div>
           <h3 className="text-brand-dark font-semibold">📅 Agendar publicação</h3>
-          <p className="text-brand-slate mt-1 text-xs">Escolha data e hora para publicar</p>
+          <p className="text-brand-slate mt-1 text-xs">Funciona para todas as plataformas</p>
 
           <div className="mt-3 grid grid-cols-2 gap-3">
             <div>
