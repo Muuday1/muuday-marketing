@@ -1,40 +1,24 @@
 import { composeSlide, composeTipSlide, composeCTASlide, generateSlideBackground } from './composer'
 import type { ThemeTemplate } from './themes/types'
+import { editorialTheme, minimalTheme, boldTheme, darkTheme, warmTheme } from './themes-bundle'
 
 export type CarouselTheme = 'editorial' | 'minimal' | 'bold' | 'dark' | 'warm'
 
 export const CAROUSEL_THEMES: CarouselTheme[] = ['editorial', 'minimal', 'bold', 'dark', 'warm']
 
-function loadThemes(): Record<CarouselTheme, ThemeTemplate> {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const editorial = require('./themes/editorial')
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const minimal = require('./themes/minimal')
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const bold = require('./themes/bold')
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const dark = require('./themes/dark')
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const warm = require('./themes/warm')
-
-  return {
-    editorial: editorial.editorialTheme,
-    minimal: minimal.minimalTheme,
-    bold: bold.boldTheme,
-    dark: dark.darkTheme,
-    warm: warm.warmTheme,
-  }
+const THEMES: Record<CarouselTheme, ThemeTemplate> = {
+  editorial: editorialTheme,
+  minimal: minimalTheme,
+  bold: boldTheme,
+  dark: darkTheme,
+  warm: warmTheme,
 }
 
-let cachedThemes: Record<CarouselTheme, ThemeTemplate> | null = null
-
 export function getCarouselTheme(name: CarouselTheme): ThemeTemplate {
-  if (!cachedThemes) {
-    cachedThemes = loadThemes()
-  }
-  const theme = cachedThemes[name] || cachedThemes.editorial
+  const theme = THEMES[name]
   if (!theme) {
-    console.error(`[THEME] Theme "${name}" not found. Available:`, Object.keys(cachedThemes))
+    console.error(`[THEME] Theme "${name}" not found. Available:`, Object.keys(THEMES))
+    return THEMES.editorial
   }
   return theme
 }
