@@ -6,20 +6,21 @@ export type CarouselTheme = 'editorial' | 'minimal' | 'bold' | 'dark' | 'warm'
 export const CAROUSEL_THEMES: CarouselTheme[] = ['editorial', 'minimal', 'bold', 'dark', 'warm']
 
 async function loadThemes(): Promise<Record<CarouselTheme, ThemeTemplate>> {
-  const [{ editorialTheme }, { minimalTheme }, { boldTheme }, { darkTheme }, { warmTheme }] =
-    await Promise.all([
-      import('./themes/editorial'),
-      import('./themes/minimal'),
-      import('./themes/bold'),
-      import('./themes/dark'),
-      import('./themes/warm'),
-    ])
+  const editorialMod = await import('./themes/editorial')
+  const minimalMod = await import('./themes/minimal')
+  const boldMod = await import('./themes/bold')
+  const darkMod = await import('./themes/dark')
+  const warmMod = await import('./themes/warm')
+
+  console.log('[THEME] editorial keys:', Object.keys(editorialMod))
+  console.log('[THEME] editorialTheme:', typeof editorialMod.editorialTheme)
+
   return {
-    editorial: editorialTheme,
-    minimal: minimalTheme,
-    bold: boldTheme,
-    dark: darkTheme,
-    warm: warmTheme,
+    editorial: editorialMod.editorialTheme || editorialMod.default?.editorialTheme,
+    minimal: minimalMod.minimalTheme || minimalMod.default?.minimalTheme,
+    bold: boldMod.boldTheme || boldMod.default?.boldTheme,
+    dark: darkMod.darkTheme || darkMod.default?.darkTheme,
+    warm: warmMod.warmTheme || warmMod.default?.warmTheme,
   }
 }
 
