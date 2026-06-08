@@ -42,6 +42,7 @@ interface ImageGenerationInput {
   hashtags: string[]
   theme?: CarouselTheme
   generateCoverImage?: boolean
+  generateAllBackgrounds?: boolean
   topic?: string
 }
 
@@ -81,7 +82,8 @@ async function generateInstagramCarousel(
   cta: string,
   hashtags: string[],
   theme: CarouselTheme,
-  topic: string
+  topic: string,
+  generateAllBackgrounds?: boolean
 ): Promise<string[]> {
   console.log('[CAROUSEL] Starting generation with theme:', theme)
   console.log('[CAROUSEL] Headline:', headline.slice(0, 50))
@@ -95,6 +97,7 @@ async function generateInstagramCarousel(
     hashtags,
     theme,
     topic,
+    generateAllBackgrounds,
   })
 
   console.log('[CAROUSEL] Generated', slides.length, 'slides')
@@ -247,7 +250,8 @@ export async function generateImagesForContent(input: ImageGenerationInput): Pro
         input.cta,
         input.hashtags,
         theme,
-        input.topic || input.headline
+        input.topic || input.headline,
+        input.generateAllBackgrounds
       )
       console.log('[BACKGROUND] Carousel generated:', imageUrls.length, 'images')
     } catch (err) {

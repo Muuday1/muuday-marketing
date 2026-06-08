@@ -38,6 +38,7 @@ export interface CarouselInput {
   hashtags?: string[]
   theme?: CarouselTheme
   topic?: string
+  generateAllBackgrounds?: boolean
 }
 
 export interface LinkedInCardInput {
@@ -54,9 +55,12 @@ export async function generateCarousel(input: CarouselInput): Promise<GeneratedS
   const topic = input.topic || input.title
   const slides: GeneratedSlide[] = []
 
-  // Generate only ONE FLUX background for the cover (expensive)
-  // Tips and CTA use canvas-generated backgrounds (fast)
-  console.log('[CAROUSEL] Generating FLUX cover background...')
+  // Generate FLUX backgrounds
+  // Default: only cover gets FLUX (optimization)
+  // Optional: all slides get FLUX (premium quality)
+  const useFluxForAll = input.generateAllBackgrounds === true
+  console.log('[CAROUSEL] FLUX mode:', useFluxForAll ? 'all slides' : 'cover only')
+
   const coverBg = await generateSlideBackground(topic, 'cover', themeName)
 
   // Cover slide
@@ -67,7 +71,14 @@ export async function generateCarousel(input: CarouselInput): Promise<GeneratedS
   })
   slides.push({ buffer: coverBuffer, filename: '01-cover.png' })
 
-  // Tip slides - no FLUX, pure canvas
+  // Tip slides - FLUX optional
+  const tipBackgrounds: (string | null)[] = []
+  if (useFluxForAll) {
+    for (let i = 0; i < Math.min(input.tips.length, 3); i++) {
+      tipBackgrounds.push(await generateSlideBackground(topic, 'tip', themeName))
+    }
+  }
+
   for (let i = 0; i < Math.min(input.tips.length, 3); i++) {
     const tip = input.tips[i]
     const tipBuffer = await composeTipSlide({
@@ -77,7 +88,7 @@ export async function generateCarousel(input: CarouselInput): Promise<GeneratedS
         description: tip.description,
         number: i + 1,
       },
-      backgroundUrl: null,
+      backgroundUrl: useFluxForAll ? tipBackgrounds[i] : null,
     })
     slides.push({
       buffer: tipBuffer,

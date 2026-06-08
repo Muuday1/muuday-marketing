@@ -16,6 +16,7 @@ export async function POST(request: NextRequest) {
       scheduledFor,
       theme,
       generateCoverImage,
+      generateAllBackgrounds,
       purpose,
       format,
     } = body
@@ -58,6 +59,7 @@ export async function POST(request: NextRequest) {
             hashtags: result.data.hashtags || [],
             theme: theme as CarouselTheme,
             generateCoverImage: generateCoverImage === true,
+            generateAllBackgrounds: generateAllBackgrounds === true,
             topic: topic || title,
           })
         } catch (err) {
