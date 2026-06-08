@@ -1,6 +1,7 @@
 import { composeSlide, composeTipSlide, composeCTASlide, generateSlideBackground } from './composer'
 import type { ThemeTemplate } from './themes/types'
 import { editorialTheme, minimalTheme, boldTheme, darkTheme, warmTheme } from './themes-bundle'
+import { generateLinkedInCardBuffer } from './linkedin-card'
 
 export type CarouselTheme = 'editorial' | 'minimal' | 'bold' | 'dark' | 'warm'
 
@@ -100,19 +101,13 @@ export async function generateCarousel(input: CarouselInput): Promise<GeneratedS
 
 /**
  * Generate LinkedIn Insight Card (1200x627).
- * TODO: migrate to Canvas + FLUX
  */
-export async function generateLinkedInCard(_input: LinkedInCardInput): Promise<Buffer> {
-  // Placeholder - LinkedIn card needs separate 1200x627 template
-  const { createCanvas } = await import('@napi-rs/canvas')
-  const canvas = createCanvas(1200, 627)
-  const ctx = canvas.getContext('2d')
-  ctx.fillStyle = '#0D0D0D'
-  ctx.fillRect(0, 0, 1200, 627)
-  ctx.fillStyle = '#9FE870'
-  ctx.font = 'bold 48px sans-serif'
-  ctx.fillText('LinkedIn Card', 60, 320)
-  return Buffer.from(await canvas.encode('png'))
+export async function generateLinkedInCard(input: LinkedInCardInput): Promise<Buffer> {
+  return generateLinkedInCardBuffer({
+    headline: input.headline,
+    insight: input.insight,
+    author: 'muuday',
+  })
 }
 
 /**
