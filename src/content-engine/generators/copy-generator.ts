@@ -21,18 +21,62 @@ interface CopyGenerationOutput {
   altText?: string
 }
 
-function getLengthLimit(platform: Platform): string {
-  const limits: Record<string, string> = {
-    instagram: 'Body: 250-350 caracteres. Curto, direto, punchy.',
-    tiktok: 'Body: 100-150 caracteres. Ultra curto.',
-    twitter: 'Body: 200-250 caracteres. Dentro do limite.',
-    linkedin: 'Body: 800-1200 caracteres. Profissional mas humano.',
-    youtube: 'Body: 300-500 caracteres. Descrição de vídeo.',
-    blog: 'Body: 1500-2500 caracteres. Artigo completo.',
-    newsletter: 'Body: 1000-2000 caracteres. Email aprofundado.',
-    podcast: 'Body: 400-800 caracteres. Show notes.',
+interface LengthConfig {
+  min: number
+  max: number
+  ideal: number
+  label: string
+}
+
+function getLengthConfig(platform: Platform): LengthConfig {
+  const configs: Record<string, LengthConfig> = {
+    instagram: { min: 200, max: 350, ideal: 280, label: '250-350 caracteres' },
+    tiktok: { min: 80, max: 150, ideal: 120, label: '100-150 caracteres' },
+    twitter: { min: 180, max: 250, ideal: 220, label: '200-250 caracteres' },
+    linkedin: { min: 700, max: 1200, ideal: 900, label: '800-1200 caracteres' },
+    youtube: { min: 250, max: 500, ideal: 350, label: '300-500 caracteres' },
+    blog: { min: 1200, max: 2500, ideal: 1800, label: '1500-2500 caracteres' },
+    newsletter: { min: 800, max: 2000, ideal: 1400, label: '1000-2000 caracteres' },
+    podcast: { min: 300, max: 800, ideal: 500, label: '400-800 caracteres' },
   }
-  return limits[platform] || limits.instagram
+  return configs[platform] || configs.instagram
+}
+
+function getLengthLimit(platform: Platform): string {
+  const cfg = getLengthConfig(platform)
+  return `Body: ${cfg.label}. Curto, direto, punchy. STRICT: máximo ${cfg.max} caracteres. Conte SEMPRE antes de enviar.`
+}
+
+function truncateToLimit(text: string, max: number): string {
+  if (text.length <= max) return text
+  // Truncate at last complete sentence or line break before limit
+  const truncated = text.slice(0, max)
+  const lastPeriod = truncated.lastIndexOf('.')
+  const lastBreak = truncated.lastIndexOf('\n')
+  const cutPoint = Math.max(lastPeriod, lastBreak)
+  if (cutPoint > max * 0.7) {
+    return truncated.slice(0, cutPoint + 1).trim()
+  }
+  return truncated.trim()
+}
+
+function validateAndFixCopy(copy: CopyGenerationOutput, platform: Platform): CopyGenerationOutput {
+  const cfg = getLengthConfig(platform)
+
+  // Headline: max 80 for Instagram, 100 for others
+  const headlineMax = platform === 'instagram' ? 80 : 100
+  const headline = copy.headline.slice(0, headlineMax).trim()
+
+  // Body: hard truncate to platform limit
+  const body = truncateToLimit(copy.body, cfg.max).trim()
+
+  // CTA: max 60
+  const cta = copy.cta.slice(0, 60).trim()
+
+  // Hashtags: max 5
+  const hashtags = copy.hashtags.slice(0, 5).map((h) => h.trim())
+
+  return { headline, body, cta, hashtags, altText: copy.altText }
 }
 
 function buildSystemPrompt(input: CopyGenerationInput): string {
@@ -188,5 +232,12 @@ export async function generateCopy(
     return { success: false, error: result.error }
   }
 
-  return { success: true, data: parseGeneratedCopy(result.data) }
+  const parsed = parseGeneratedCopy(result.data)
+  const fixed = validateAndFixCopy(parsed, input.platform)
+
+  console.log(
+    `[COPY] Generated for ${input.platform}: headline=${fixed.headline.length} body=${fixed.body.length} max=${getLengthConfig(input.platform).max}`
+  )
+
+  return { success: true, data: fixed }
 }
