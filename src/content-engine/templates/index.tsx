@@ -53,12 +53,10 @@ export async function generateCarousel(input: CarouselInput): Promise<GeneratedS
   const topic = input.topic || input.title
   const slides: GeneratedSlide[] = []
 
-  // Generate backgrounds in parallel
-  console.log('[CAROUSEL] Generating FLUX backgrounds...')
-  const [coverBg, ...tipBgs] = await Promise.all([
-    generateSlideBackground(topic, 'cover', themeName),
-    ...input.tips.slice(0, 3).map((_, _i) => generateSlideBackground(topic, 'tip', themeName)),
-  ])
+  // Generate only ONE FLUX background for the cover (expensive)
+  // Tips and CTA use canvas-generated backgrounds (fast)
+  console.log('[CAROUSEL] Generating FLUX cover background...')
+  const coverBg = await generateSlideBackground(topic, 'cover', themeName)
 
   // Cover slide
   const coverBuffer = await composeSlide({
@@ -68,7 +66,7 @@ export async function generateCarousel(input: CarouselInput): Promise<GeneratedS
   })
   slides.push({ buffer: coverBuffer, filename: '01-cover.png' })
 
-  // Tip slides
+  // Tip slides - no FLUX, pure canvas
   for (let i = 0; i < Math.min(input.tips.length, 3); i++) {
     const tip = input.tips[i]
     const tipBuffer = await composeTipSlide({
@@ -78,7 +76,7 @@ export async function generateCarousel(input: CarouselInput): Promise<GeneratedS
         description: tip.description,
         number: i + 1,
       },
-      backgroundUrl: tipBgs[i],
+      backgroundUrl: null,
     })
     slides.push({
       buffer: tipBuffer,
@@ -86,12 +84,11 @@ export async function generateCarousel(input: CarouselInput): Promise<GeneratedS
     })
   }
 
-  // CTA slide
-  const ctaBg = await generateSlideBackground(topic, 'cta', themeName)
+  // CTA slide - no FLUX, pure canvas
   const ctaBuffer = await composeCTASlide({
     template,
     data: { cta: input.cta, hashtags: input.hashtags },
-    backgroundUrl: ctaBg,
+    backgroundUrl: null,
   })
   slides.push({
     buffer: ctaBuffer,
