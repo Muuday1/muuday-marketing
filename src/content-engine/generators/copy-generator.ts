@@ -1,7 +1,7 @@
 import { generateWithModel } from '@/shared/model-router'
 // import { PLATFORM_VOICE } from './voice-guide'
-import { buildPromptForFormat } from '@/content-engine/strategy/format-guides'
-import { type ContentPurpose, type ContentFormat } from '@/content-engine/strategy/content-matrix'
+// import { buildPromptForFormat } from '@/content-engine/strategy/format-guides'
+// import { type ContentPurpose, type ContentFormat } from '@/content-engine/strategy/content-matrix'
 import { ApiResult, ContentPillar, Platform } from '@/types'
 
 interface CopyGenerationInput {
@@ -77,37 +77,16 @@ function validateAndFixCopy(copy: CopyGenerationOutput, platform: Platform): Cop
 function buildSystemPrompt(input: CopyGenerationInput): string {
   const lengthCfg = getLengthConfig(input.platform)
 
-  const basePrompt = `Você é um redator nativo de Brasília que morou 5 anos em Londres. Escreve com voz de irmão mais velho: quente, informado, sem clichês.
+  return `Gere um post para ${input.platform} sobre ${input.topic}.
 
-REGRAS:
-- Responda APENAS em JSON válido. ZERO texto fora do JSON.
-- NUNCA "imigrante" → use "brasileiro no exterior"
-- NUNCA "é fácil", "só fazer", "basta"
+Responda APENAS em JSON válido no formato exato:
+{"headline":"","body":"","cta":"","hashtags":["","",""],"altText":""}
+
+Regras:
+- Body máximo ${lengthCfg.max} caracteres
+- Tom: ${input.tone || 'warm'}
 - Português do BRASIL
-- Use fragmentos curtos. Gramática imperfeita = ok se soa humano.
-- Inclua UM detalhe específico (número, lugar, marca)
-- Hashtags em português
-- Body: máximo ${lengthCfg.max} caracteres
-
-OUTPUT - APENAS JSON:
-{"headline":"","body":"","cta":"","hashtags":["","",""],"altText":""}`
-
-  // If format is provided, append format-specific strategy guide
-  if (input.format) {
-    try {
-      const formatGuide = buildPromptForFormat(
-        input.format as ContentFormat,
-        input.purpose || 'educate',
-        input.topic,
-        input.pillar
-      )
-      return `${basePrompt}\n\n${formatGuide}`
-    } catch {
-      return basePrompt
-    }
-  }
-
-  return basePrompt
+- ZERO texto fora do JSON`
 }
 
 function cleanJsonContent(content: string): string {
@@ -212,9 +191,11 @@ function parseGeneratedCopy(content: string): CopyGenerationOutput {
 export async function generateCopy(
   input: CopyGenerationInput
 ): Promise<ApiResult<CopyGenerationOutput>> {
+  const system = buildSystemPrompt(input)
+  const prompt = `Tema: ${input.topic}\nPlataforma: ${input.platform}\nPilar: ${input.pillar}\n\nGere o post em JSON. Body máximo ${getLengthConfig(input.platform).max} caracteres.`
+
   const result = await generateWithModel('copy', {
-    system: buildSystemPrompt(input),
-    prompt: `Tema: ${input.topic}\nPlataforma: ${input.platform}\nPilar: ${input.pillar}\n\nGere o post em JSON. Body máximo ${getLengthConfig(input.platform).max} caracteres.`,
+    prompt: `${system}\n\n---\n\n${prompt}`,
     maxTokens: 1280,
   })
 

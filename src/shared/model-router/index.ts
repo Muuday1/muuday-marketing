@@ -25,7 +25,7 @@ const PROVIDERS: Record<QualityTier, ProviderConfig> = {
     name: 'kimi',
     apiKey: env.KIMI_API_KEY,
     baseUrl: 'https://api.moonshot.ai/v1/chat/completions',
-    model: 'kimi-k2.5',
+    model: 'moonshot-v1-8k',
     maxRetries: 3,
   },
   standard: {
@@ -98,18 +98,7 @@ async function callProvider(
       ...(options.system ? [{ role: 'system' as const, content: options.system }] : []),
       { role: 'user' as const, content: options.prompt },
     ],
-  }
-  // Kimi k2.5/k2.6 only accepts temperature=1
-  if (!isKimi) {
-    body.temperature = options.temperature ?? 0.7
-  } else {
-    body.temperature = 1
-    // Disable thinking mode to get direct answers without reasoning chain
-    body.enable_thinking = false
-  }
-  // Force JSON output for structured tasks when using Kimi
-  if (isKimi && options.system?.includes('JSON')) {
-    body.response_format = { type: 'json_object' }
+    temperature: options.temperature ?? 0.7,
   }
 
   try {
