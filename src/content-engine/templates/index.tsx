@@ -21,7 +21,14 @@ const THEME_MAP: Record<CarouselTheme, ThemeTemplate> = {
 export const CAROUSEL_THEMES = Object.keys(THEME_MAP) as CarouselTheme[]
 
 export function getCarouselTheme(name: CarouselTheme): ThemeTemplate {
-  return THEME_MAP[name] || editorialTheme
+  const theme = THEME_MAP[name] || editorialTheme
+  if (!theme) {
+    console.error(
+      `[THEME] Theme "${name}" not found and editorialTheme is undefined. Available:`,
+      Object.keys(THEME_MAP)
+    )
+  }
+  return theme
 }
 
 export interface GeneratedSlide {
