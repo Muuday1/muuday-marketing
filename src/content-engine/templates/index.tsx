@@ -5,30 +5,32 @@ export type CarouselTheme = 'editorial' | 'minimal' | 'bold' | 'dark' | 'warm'
 
 export const CAROUSEL_THEMES: CarouselTheme[] = ['editorial', 'minimal', 'bold', 'dark', 'warm']
 
-async function loadThemes(): Promise<Record<CarouselTheme, ThemeTemplate>> {
-  const editorialMod = await import('./themes/editorial')
-  const minimalMod = await import('./themes/minimal')
-  const boldMod = await import('./themes/bold')
-  const darkMod = await import('./themes/dark')
-  const warmMod = await import('./themes/warm')
-
-  console.log('[THEME] editorial keys:', Object.keys(editorialMod))
-  console.log('[THEME] editorialTheme:', typeof editorialMod.editorialTheme)
+function loadThemes(): Record<CarouselTheme, ThemeTemplate> {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const editorial = require('./themes/editorial')
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const minimal = require('./themes/minimal')
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const bold = require('./themes/bold')
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const dark = require('./themes/dark')
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const warm = require('./themes/warm')
 
   return {
-    editorial: editorialMod.editorialTheme || editorialMod.default?.editorialTheme,
-    minimal: minimalMod.minimalTheme || minimalMod.default?.minimalTheme,
-    bold: boldMod.boldTheme || boldMod.default?.boldTheme,
-    dark: darkMod.darkTheme || darkMod.default?.darkTheme,
-    warm: warmMod.warmTheme || warmMod.default?.warmTheme,
+    editorial: editorial.editorialTheme,
+    minimal: minimal.minimalTheme,
+    bold: bold.boldTheme,
+    dark: dark.darkTheme,
+    warm: warm.warmTheme,
   }
 }
 
 let cachedThemes: Record<CarouselTheme, ThemeTemplate> | null = null
 
-export async function getCarouselTheme(name: CarouselTheme): Promise<ThemeTemplate> {
+export function getCarouselTheme(name: CarouselTheme): ThemeTemplate {
   if (!cachedThemes) {
-    cachedThemes = await loadThemes()
+    cachedThemes = loadThemes()
   }
   const theme = cachedThemes[name] || cachedThemes.editorial
   if (!theme) {
@@ -62,7 +64,7 @@ export interface LinkedInCardInput {
  */
 export async function generateCarousel(input: CarouselInput): Promise<GeneratedSlide[]> {
   const themeName = input.theme || 'editorial'
-  const template = await getCarouselTheme(themeName)
+  const template = getCarouselTheme(themeName)
   const topic = input.topic || input.title
   const slides: GeneratedSlide[] = []
 
