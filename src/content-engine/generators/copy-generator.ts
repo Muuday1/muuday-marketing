@@ -1,7 +1,6 @@
 import { generateWithModel } from '@/shared/model-router'
 // import { PLATFORM_VOICE } from './voice-guide'
-// import { buildPromptForFormat } from '@/content-engine/strategy/format-guides'
-// import { type ContentPurpose, type ContentFormat } from '@/content-engine/strategy/content-matrix'
+import { type ContentPurpose } from '@/content-engine/strategy/content-matrix'
 import { ApiResult, ContentPillar, Platform } from '@/types'
 
 interface CopyGenerationInput {
