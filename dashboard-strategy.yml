@@ -1,0 +1,151 @@
+- generic [active] [ref=e1]:
+    - generic [ref=e2]:
+        - banner [ref=e3]:
+            - generic [ref=e5]:
+                - generic [ref=e6]:
+                    - link "Muuday Marketing" [ref=e7] [cursor=pointer]:
+                        - /url: /dashboard
+                    - navigation [ref=e8]:
+                        - link "Dashboard" [ref=e9] [cursor=pointer]:
+                            - /url: /dashboard
+                        - link "Conteúdo" [ref=e10] [cursor=pointer]:
+                            - /url: /dashboard/content
+                        - link "+ Criar" [ref=e11] [cursor=pointer]:
+                            - /url: /dashboard/content/create
+                        - link "Calendário" [ref=e12] [cursor=pointer]:
+                            - /url: /dashboard/calendar
+                        - link "Campanhas" [ref=e13] [cursor=pointer]:
+                            - /url: /dashboard/campaigns
+                        - link "Alertas" [ref=e14] [cursor=pointer]:
+                            - /url: /dashboard/alerts
+                        - link "Relatórios" [ref=e15] [cursor=pointer]:
+                            - /url: /dashboard/reports
+                        - link "Leads" [ref=e16] [cursor=pointer]:
+                            - /url: /dashboard/leads
+                - button "Sair" [ref=e17]
+        - generic [ref=e18]:
+            - generic [ref=e19]:
+                - heading "Criar conteúdo" [level=1] [ref=e20]
+                - button "← Voltar" [ref=e21]
+            - generic [ref=e23]:
+                - generic [ref=e24]:
+                    - button "✓ Plataforma" [ref=e121]:
+                        - generic [ref=e26]: ✓
+                        - text: Plataforma
+                    - generic [ref=e27]: →
+                - generic [ref=e28]:
+                    - button "2 Formato" [ref=e29]:
+                        - generic [ref=e30]: '2'
+                        - text: Formato
+                    - generic [ref=e31]: →
+                - generic [ref=e32]:
+                    - button "3 Estratégia" [disabled] [ref=e33]:
+                        - generic [ref=e34]: '3'
+                        - text: Estratégia
+                    - generic [ref=e35]: →
+                - generic [ref=e36]:
+                    - button "4 Revisar" [disabled] [ref=e37]:
+                        - generic [ref=e38]: '4'
+                        - text: Revisar
+                    - generic [ref=e39]: →
+                - button "5 Resultado" [disabled] [ref=e41]:
+                    - generic [ref=e42]: '5'
+                    - text: Resultado
+            - generic [ref=e44]:
+                - generic [ref=e122]:
+                    - generic [ref=e123]:
+                        - heading "Escolha o formato" [level=2] [ref=e124]
+                        - paragraph [ref=e125]: Cada formato tem uma estratégia diferente de engajamento
+                    - generic [ref=e126]:
+                        - button "Foto no Feed Imagem única com legenda. Post clássico do Instagram. 🖼️ 4:5 ⚡ Fácil 👍 Médio 📅 3-4x/semana • 🕐 12:00 ou 18:00" [ref=e127]:
+                            - generic [ref=e128]:
+                                - generic [ref=e129]:
+                                    - heading "Foto no Feed" [level=3] [ref=e130]
+                                    - paragraph [ref=e131]: Imagem única com legenda. Post clássico do Instagram.
+                                - generic [ref=e132]: 🖼️
+                            - generic [ref=e133]:
+                                - generic [ref=e134]: 4:5
+                                - generic [ref=e135]: ⚡ Fácil
+                                - generic [ref=e136]: 👍 Médio
+                            - generic [ref=e137]: 📅 3-4x/semana • 🕐 12:00 ou 18:00
+                        - button "Carrossel 3-10 slides com storytelling visual. Alto engajamento e saves. 🖼️ 1:1 ⚡⚡ Médio 🔥 Alto engajamento 📅 2-3x/semana • 🕐 08:00 ou 18:00" [ref=e138]:
+                            - generic [ref=e139]:
+                                - generic [ref=e140]:
+                                    - heading "Carrossel" [level=3] [ref=e141]
+                                    - paragraph [ref=e142]: 3-10 slides com storytelling visual. Alto engajamento e saves.
+                                - generic [ref=e143]: 🖼️
+                            - generic [ref=e144]:
+                                - generic [ref=e145]: 1:1
+                                - generic [ref=e146]: ⚡⚡ Médio
+                                - generic [ref=e147]: 🔥 Alto engajamento
+                            - generic [ref=e148]: 📅 2-3x/semana • 🕐 08:00 ou 18:00
+                        - button "Reels Vídeo curto vertical 15-90s. Maior alcance orgânico do IG. 🎬 9:16 ⚡⚡⚡ Complexo 🔥 Alto engajamento 📅 4-7x/semana • 🕐 07:00, 12:00, 19:00" [ref=e149]:
+                            - generic [ref=e150]:
+                                - generic [ref=e151]:
+                                    - heading "Reels" [level=3] [ref=e152]
+                                    - paragraph [ref=e153]: Vídeo curto vertical 15-90s. Maior alcance orgânico do IG.
+                                - generic [ref=e154]: 🎬
+                            - generic [ref=e155]:
+                                - generic [ref=e156]: 9:16
+                                - generic [ref=e157]: ⚡⚡⚡ Complexo
+                                - generic [ref=e158]: 🔥 Alto engajamento
+                            - generic [ref=e159]: 📅 4-7x/semana • 🕐 07:00, 12:00, 19:00
+                        - button "Story Conteúdo efêmero 24h. Engajamento direto e interação. ✨ 9:16 ⚡ Fácil 🔥 Alto engajamento 📅 diário (3-7x) • 🕐 08:00, 12:00, 18:00, 21:00" [ref=e160]:
+                            - generic [ref=e161]:
+                                - generic [ref=e162]:
+                                    - heading "Story" [level=3] [ref=e163]
+                                    - paragraph [ref=e164]: Conteúdo efêmero 24h. Engajamento direto e interação.
+                                - generic [ref=e165]: ✨
+                            - generic [ref=e166]:
+                                - generic [ref=e167]: 9:16
+                                - generic [ref=e168]: ⚡ Fácil
+                                - generic [ref=e169]: 🔥 Alto engajamento
+                            - generic [ref=e170]: 📅 diário (3-7x) • 🕐 08:00, 12:00, 18:00, 21:00
+                        - button "Destaque Stories salvos permanentemente no perfil. Organizado por tema. ✨ 9:16 ⚡⚡ Médio 📊 Baixo 📅 semanal (atualizar) • 🕐 n/a" [ref=e171]:
+                            - generic [ref=e172]:
+                                - generic [ref=e173]:
+                                    - heading "Destaque" [level=3] [ref=e174]
+                                    - paragraph [ref=e175]: Stories salvos permanentemente no perfil. Organizado por tema.
+                                - generic [ref=e176]: ✨
+                            - generic [ref=e177]:
+                                - generic [ref=e178]: 9:16
+                                - generic [ref=e179]: ⚡⚡ Médio
+                                - generic [ref=e180]: 📊 Baixo
+                            - generic [ref=e181]: 📅 semanal (atualizar) • 🕐 n/a
+                        - button "Live Transmissão ao vivo. Q&A, entrevistas, anúncios. 🎬 9:16 ⚡⚡⚡ Complexo 🔥 Alto engajamento 📅 semanal • 🕐 20:00" [ref=e182]:
+                            - generic [ref=e183]:
+                                - generic [ref=e184]:
+                                    - heading "Live" [level=3] [ref=e185]
+                                    - paragraph [ref=e186]: Transmissão ao vivo. Q&A, entrevistas, anúncios.
+                                - generic [ref=e187]: 🎬
+                            - generic [ref=e188]:
+                                - generic [ref=e189]: 9:16
+                                - generic [ref=e190]: ⚡⚡⚡ Complexo
+                                - generic [ref=e191]: 🔥 Alto engajamento
+                            - generic [ref=e192]: 📅 semanal • 🕐 20:00
+                        - button "UGC Conteúdo gerado por usuários. Repost com permissão. ✨ 9:16 ⚡ Fácil 🔥 Alto engajamento 📅 2-3x/semana • 🕐 12:00 ou 18:00" [ref=e193]:
+                            - generic [ref=e194]:
+                                - generic [ref=e195]:
+                                    - heading "UGC" [level=3] [ref=e196]
+                                    - paragraph [ref=e197]: Conteúdo gerado por usuários. Repost com permissão.
+                                - generic [ref=e198]: ✨
+                            - generic [ref=e199]:
+                                - generic [ref=e200]: 9:16
+                                - generic [ref=e201]: ⚡ Fácil
+                                - generic [ref=e202]: 🔥 Alto engajamento
+                            - generic [ref=e203]: 📅 2-3x/semana • 🕐 12:00 ou 18:00
+                        - button "Meme Humor cultural brasileiro. Alta viralização e compartilhamento. 🖼️ 1:1 ⚡ Fácil 🔥 Alto engajamento 📅 2-3x/semana • 🕐 12:00 ou 18:00" [ref=e204]:
+                            - generic [ref=e205]:
+                                - generic [ref=e206]:
+                                    - heading "Meme" [level=3] [ref=e207]
+                                    - paragraph [ref=e208]: Humor cultural brasileiro. Alta viralização e compartilhamento.
+                                - generic [ref=e209]: 🖼️
+                            - generic [ref=e210]:
+                                - generic [ref=e211]: 1:1
+                                - generic [ref=e212]: ⚡ Fácil
+                                - generic [ref=e213]: 🔥 Alto engajamento
+                            - generic [ref=e214]: 📅 2-3x/semana • 🕐 12:00 ou 18:00
+                - generic [ref=e118]:
+                    - button "Voltar" [ref=e215]
+                    - button "Continuar" [disabled]
+    - alert [ref=e119]

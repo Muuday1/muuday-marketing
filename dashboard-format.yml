@@ -1,0 +1,127 @@
+- generic [active] [ref=e1]:
+    - generic [ref=e2]:
+        - banner [ref=e3]:
+            - generic [ref=e5]:
+                - generic [ref=e6]:
+                    - link "Muuday Marketing" [ref=e7] [cursor=pointer]:
+                        - /url: /dashboard
+                    - navigation [ref=e8]:
+                        - link "Dashboard" [ref=e9] [cursor=pointer]:
+                            - /url: /dashboard
+                        - link "Conteúdo" [ref=e10] [cursor=pointer]:
+                            - /url: /dashboard/content
+                        - link "+ Criar" [ref=e11] [cursor=pointer]:
+                            - /url: /dashboard/content/create
+                        - link "Calendário" [ref=e12] [cursor=pointer]:
+                            - /url: /dashboard/calendar
+                        - link "Campanhas" [ref=e13] [cursor=pointer]:
+                            - /url: /dashboard/campaigns
+                        - link "Alertas" [ref=e14] [cursor=pointer]:
+                            - /url: /dashboard/alerts
+                        - link "Relatórios" [ref=e15] [cursor=pointer]:
+                            - /url: /dashboard/reports
+                        - link "Leads" [ref=e16] [cursor=pointer]:
+                            - /url: /dashboard/leads
+                - button "Sair" [ref=e17]
+        - generic [ref=e18]:
+            - generic [ref=e19]:
+                - heading "Criar conteúdo" [level=1] [ref=e20]
+                - button "← Voltar" [ref=e21]
+            - generic [ref=e23]:
+                - generic [ref=e24]:
+                    - button "1 Plataforma" [ref=e25]:
+                        - generic [ref=e26]: '1'
+                        - text: Plataforma
+                    - generic [ref=e27]: →
+                - generic [ref=e28]:
+                    - button "2 Formato" [disabled] [ref=e29]:
+                        - generic [ref=e30]: '2'
+                        - text: Formato
+                    - generic [ref=e31]: →
+                - generic [ref=e32]:
+                    - button "3 Estratégia" [disabled] [ref=e33]:
+                        - generic [ref=e34]: '3'
+                        - text: Estratégia
+                    - generic [ref=e35]: →
+                - generic [ref=e36]:
+                    - button "4 Revisar" [disabled] [ref=e37]:
+                        - generic [ref=e38]: '4'
+                        - text: Revisar
+                    - generic [ref=e39]: →
+                - button "5 Resultado" [disabled] [ref=e41]:
+                    - generic [ref=e42]: '5'
+                    - text: Resultado
+            - generic [ref=e44]:
+                - generic [ref=e46]:
+                    - generic [ref=e47]:
+                        - heading "Escolha a plataforma" [level=2] [ref=e48]
+                        - paragraph [ref=e49]: Cada plataforma tem formatos e estratégias diferentes
+                    - generic [ref=e50]:
+                        - button "📸 Instagram Principal vitrine visual. Comunidade, lifestyle e descoberta. 🕐 08:00 🕐 12:00" [ref=e51]:
+                            - generic [ref=e52]: 📸
+                            - heading "Instagram" [level=3] [ref=e53]
+                            - paragraph [ref=e54]: Principal vitrine visual. Comunidade, lifestyle e descoberta.
+                            - generic [ref=e55]:
+                                - generic [ref=e56]: 🕐 08:00
+                                - generic [ref=e57]: 🕐 12:00
+                        - button "🎵 TikTok Alcance orgânico viral. Dicas rápidas, personalidade, trends. 🕐 07:00 🕐 12:00" [ref=e58]:
+                            - generic [ref=e59]: 🎵
+                            - heading "TikTok" [level=3] [ref=e60]
+                            - paragraph [ref=e61]: Alcance orgânico viral. Dicas rápidas, personalidade, trends.
+                            - generic [ref=e62]:
+                                - generic [ref=e63]: 🕐 07:00
+                                - generic [ref=e64]: 🕐 12:00
+                        - button "▶️ YouTube SEO de longo prazo. Tutoriais profundos e podcast. 🕐 14:00 🕐 16:00" [ref=e65]:
+                            - generic [ref=e66]: ▶️
+                            - heading "YouTube" [level=3] [ref=e67]
+                            - paragraph [ref=e68]: SEO de longo prazo. Tutoriais profundos e podcast.
+                            - generic [ref=e69]:
+                                - generic [ref=e70]: 🕐 14:00
+                                - generic [ref=e71]: 🕐 16:00
+                        - button "💼 LinkedIn Autoridade profissional. Carreira, networking, B2B. 🕐 08:00 🕐 12:00" [ref=e72]:
+                            - generic [ref=e73]: 💼
+                            - heading "LinkedIn" [level=3] [ref=e74]
+                            - paragraph [ref=e75]: Autoridade profissional. Carreira, networking, B2B.
+                            - generic [ref=e76]:
+                                - generic [ref=e77]: 🕐 08:00
+                                - generic [ref=e78]: 🕐 12:00
+                        - button "🐦 Twitter/X Opinião, threads educativas, engajamento em tempo real. 🕐 08:00 🕐 12:00" [ref=e79]:
+                            - generic [ref=e80]: 🐦
+                            - heading "Twitter/X" [level=3] [ref=e81]
+                            - paragraph [ref=e82]: Opinião, threads educativas, engajamento em tempo real.
+                            - generic [ref=e83]:
+                                - generic [ref=e84]: 🕐 08:00
+                                - generic [ref=e85]: 🕐 12:00
+                        - button "📘 Facebook Comunidades e grupos. Eventos locais. 30+ audience. 🕐 09:00 🕐 13:00" [ref=e86]:
+                            - generic [ref=e87]: 📘
+                            - heading "Facebook" [level=3] [ref=e88]
+                            - paragraph [ref=e89]: Comunidades e grupos. Eventos locais. 30+ audience.
+                            - generic [ref=e90]:
+                                - generic [ref=e91]: 🕐 09:00
+                                - generic [ref=e92]: 🕐 13:00
+                        - button "💬 WhatsApp Comunidade fechada. Updates rápidos e pessoais. 🕐 08:00 🕐 12:00" [ref=e93]:
+                            - generic [ref=e94]: 💬
+                            - heading "WhatsApp" [level=3] [ref=e95]
+                            - paragraph [ref=e96]: Comunidade fechada. Updates rápidos e pessoais.
+                            - generic [ref=e97]:
+                                - generic [ref=e98]: 🕐 08:00
+                                - generic [ref=e99]: 🕐 12:00
+                        - button "📧 Newsletter Conteúdo premium aprofundado. Relação direta com audiência. 🕐 08:00" [ref=e100]:
+                            - generic [ref=e101]: 📧
+                            - heading "Newsletter" [level=3] [ref=e102]
+                            - paragraph [ref=e103]: Conteúdo premium aprofundado. Relação direta com audiência.
+                            - generic [ref=e105]: 🕐 08:00
+                        - button "📝 Blog SEO e conteúdo evergreen. Artigos longos e tutoriais. 🕐 09:00" [ref=e106]:
+                            - generic [ref=e107]: 📝
+                            - heading "Blog" [level=3] [ref=e108]
+                            - paragraph [ref=e109]: SEO e conteúdo evergreen. Artigos longos e tutoriais.
+                            - generic [ref=e111]: 🕐 09:00
+                        - button "🎙️ Podcast Áudio longo. Histórias e entrevistas profundas. 🕐 06:00" [ref=e112]:
+                            - generic [ref=e113]: 🎙️
+                            - heading "Podcast" [level=3] [ref=e114]
+                            - paragraph [ref=e115]: Áudio longo. Histórias e entrevistas profundas.
+                            - generic [ref=e117]: 🕐 06:00
+                - generic [ref=e118]:
+                    - button "Voltar" [disabled]
+                    - button "Continuar" [ref=e120]
+    - alert [ref=e119]
