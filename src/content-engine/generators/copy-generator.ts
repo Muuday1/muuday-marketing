@@ -1,5 +1,5 @@
 import { generateWithModel } from '@/shared/model-router'
-import { PLATFORM_VOICE } from './voice-guide'
+// import { PLATFORM_VOICE } from './voice-guide'
 import { buildPromptForFormat } from '@/content-engine/strategy/format-guides'
 import { type ContentPurpose, type ContentFormat } from '@/content-engine/strategy/content-matrix'
 import { ApiResult, ContentPillar, Platform } from '@/types'
@@ -42,11 +42,6 @@ function getLengthConfig(platform: Platform): LengthConfig {
   return configs[platform] || configs.instagram
 }
 
-function getLengthLimit(platform: Platform): string {
-  const cfg = getLengthConfig(platform)
-  return `Body: ${cfg.label}. Curto, direto, punchy. STRICT: máximo ${cfg.max} caracteres. Conte SEMPRE antes de enviar.`
-}
-
 function truncateToLimit(text: string, max: number): string {
   if (text.length <= max) return text
   // Truncate at last complete sentence or line break before limit
@@ -80,23 +75,19 @@ function validateAndFixCopy(copy: CopyGenerationOutput, platform: Platform): Cop
 }
 
 function buildSystemPrompt(input: CopyGenerationInput): string {
+  const lengthCfg = getLengthConfig(input.platform)
+
   const basePrompt = `Você é um redator nativo de Brasília que morou 5 anos em Londres. Escreve com voz de irmão mais velho: quente, informado, sem clichês.
 
-REGRAS INQUEBRÁVEIS:
-- ZERO texto fora do JSON
-- ZERO explicação de raciocínio
-- NUNCA "imigrante" → "brasileiro no exterior"
+REGRAS:
+- Responda APENAS em JSON válido. ZERO texto fora do JSON.
+- NUNCA "imigrante" → use "brasileiro no exterior"
 - NUNCA "é fácil", "só fazer", "basta"
-- NUNCA "in today's world", "in conclusion"
-- Português do BRASIL (não Portugal)
-- Uma ideia por frase. Voz ativa. Máx 15% frases começam com Você/Quando/Se/Para
-- Use fragmentos. Gramática imperfeita = ok se soa humano
-- Inclua UM detalhe específico (número, lugar, marca, tempo)
+- Português do BRASIL
+- Use fragmentos curtos. Gramática imperfeita = ok se soa humano.
+- Inclua UM detalhe específico (número, lugar, marca)
 - Hashtags em português
-
-${PLATFORM_VOICE[input.platform] || PLATFORM_VOICE.instagram}
-
-${getLengthLimit(input.platform)}
+- Body: máximo ${lengthCfg.max} caracteres
 
 OUTPUT - APENAS JSON:
 {"headline":"","body":"","cta":"","hashtags":["","",""],"altText":""}`
@@ -112,7 +103,6 @@ OUTPUT - APENAS JSON:
       )
       return `${basePrompt}\n\n${formatGuide}`
     } catch {
-      // If format guide fails, fall back to base prompt
       return basePrompt
     }
   }
@@ -224,7 +214,7 @@ export async function generateCopy(
 ): Promise<ApiResult<CopyGenerationOutput>> {
   const result = await generateWithModel('copy', {
     system: buildSystemPrompt(input),
-    prompt: `Escreva um post para ${input.platform} sobre: ${input.topic}\n\nPilar: ${input.pillar}\n\nEscreva como uma pessoa real, não como AI. Use detalhes específicos. Seja honesto sobre as dificuldades.`,
+    prompt: `Tema: ${input.topic}\nPlataforma: ${input.platform}\nPilar: ${input.pillar}\n\nGere o post em JSON. Body máximo ${getLengthConfig(input.platform).max} caracteres.`,
     maxTokens: 1280,
   })
 
