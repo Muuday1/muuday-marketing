@@ -2,7 +2,6 @@ import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  output: 'standalone',
   serverExternalPackages: ['@resvg/resvg-js', '@napi-rs/canvas'],
   images: {
     remotePatterns: [
