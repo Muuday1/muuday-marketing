@@ -1,12 +1,10 @@
 import { composeSlide, composeTipSlide, composeCTASlide, generateSlideBackground } from './composer'
-import {
-  editorialTheme,
-  minimalTheme,
-  boldTheme,
-  darkTheme,
-  warmTheme,
-  type ThemeTemplate,
-} from './themes'
+import { editorialTheme } from './themes/editorial'
+import { minimalTheme } from './themes/minimal'
+import { boldTheme } from './themes/bold'
+import { darkTheme } from './themes/dark'
+import { warmTheme } from './themes/warm'
+import type { ThemeTemplate } from './themes/types'
 
 export type CarouselTheme = 'editorial' | 'minimal' | 'bold' | 'dark' | 'warm'
 
