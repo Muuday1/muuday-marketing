@@ -2,6 +2,34 @@
 
 All notable changes to the Muuday Marketing Machine project.
 
+## [0.6.1] - 2026-06-08
+
+### Copy Generation + Theme Bundling Fixes
+
+**Status:** ✅ Deployed em https://marketing.muuday.com
+
+#### Fixed
+
+- **Kimi API reliability**: Switched from `kimi-k2.5` to `moonshot-v1-8k` for copy generation
+  - Reason: k2.5 was returning empty `content` with only `reasoning_content` (~30-40s)
+  - Result: 5s response time, consistent JSON output
+- **Hard length validation**: `truncateToLimit()` enforces platform-specific limits
+  - Instagram body: 350 chars max
+  - All platforms have strict limits enforced post-generation
+- **Theme tree-shaking on Vercel**: Created `themes-bundle.ts` (single file with all 5 themes)
+  - Problem: Next.js bundler was removing separate theme files from serverless functions
+  - Solution: Inline all themes into one file, eliminated dynamic imports
+- **Build config**: Removed `output: 'standalone'` from `next.config.ts`
+  - Problem: Standalone output caused bundling issues on Vercel
+  - Result: Cleaner builds, proper serverless function bundling
+
+#### Technical Details
+
+- Fetch timeout: 45s (was 15s, too short for AI APIs)
+- Max tokens: 1280 for copy generation
+- Simplified system prompt to avoid reasoning-only mode
+- Carousel: Cover (FLUX bg + Canvas text) + Tips/CTA (pure Canvas gradients)
+
 ## [0.6.0] - 2026-06-06
 
 ### 5 Novos Templates de Carrossel — Identidade Muuday
