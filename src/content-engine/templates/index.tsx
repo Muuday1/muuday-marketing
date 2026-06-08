@@ -2,6 +2,7 @@ import { composeSlide, composeTipSlide, composeCTASlide, generateSlideBackground
 import type { ThemeTemplate } from './themes/types'
 import { editorialTheme, minimalTheme, boldTheme, darkTheme, warmTheme } from './themes-bundle'
 import { generateLinkedInCardBuffer } from './linkedin-card'
+import { generateStoryBuffer } from './story'
 
 export type CarouselTheme = 'editorial' | 'minimal' | 'bold' | 'dark' | 'warm'
 
@@ -112,16 +113,15 @@ export async function generateLinkedInCard(input: LinkedInCardInput): Promise<Bu
 
 /**
  * Generate Instagram Story (1080x1920).
- * TODO: migrate to Canvas + FLUX
  */
-export async function generateStory(_input: { title: string; subtitle?: string }): Promise<Buffer> {
-  const { createCanvas } = await import('@napi-rs/canvas')
-  const canvas = createCanvas(1080, 1920)
-  const ctx = canvas.getContext('2d')
-  ctx.fillStyle = '#0D0D0D'
-  ctx.fillRect(0, 0, 1080, 1920)
-  ctx.fillStyle = '#9FE870'
-  ctx.font = 'bold 64px sans-serif'
-  ctx.fillText('Story', 60, 960)
-  return Buffer.from(await canvas.encode('png'))
+export async function generateStory(input: {
+  title: string
+  subtitle?: string
+  cta?: string
+}): Promise<Buffer> {
+  return generateStoryBuffer({
+    title: input.title,
+    subtitle: input.subtitle,
+    cta: input.cta || 'deslize para cima',
+  })
 }
