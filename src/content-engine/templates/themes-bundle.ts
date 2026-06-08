@@ -1,5 +1,8 @@
 import type { SKRSContext2D } from '@napi-rs/canvas'
 import type { ThemeTemplate } from './themes/types'
+import { registerFonts } from './fonts'
+
+registerFonts()
 
 const BRAND_LIME = '#9FE870'
 
@@ -42,7 +45,7 @@ export const editorialTheme: ThemeTemplate = {
     ctx.fillRect(80, h - 340, 80, 6)
 
     ctx.fillStyle = EDITORIAL_WHITE
-    ctx.font = 'bold 68px sans-serif'
+    ctx.font = 'bold 68px Inter'
     ctx.shadowColor = 'rgba(0,0,0,0.8)'
     ctx.shadowBlur = 30
     ctx.shadowOffsetY = 4
@@ -55,7 +58,7 @@ export const editorialTheme: ThemeTemplate = {
     }
 
     if (data.subtitle) {
-      ctx.font = '400 36px sans-serif'
+      ctx.font = '400 36px Inter'
       ctx.fillStyle = 'rgba(255,255,255,0.75)'
       ctx.shadowBlur = 15
       const subLines = wrapText(ctx, data.subtitle, w - 160)
@@ -70,7 +73,7 @@ export const editorialTheme: ThemeTemplate = {
     ctx.shadowOffsetY = 0
 
     ctx.fillStyle = BRAND_LIME
-    ctx.font = 'bold 24px sans-serif'
+    ctx.font = 'bold 24px Inter'
     ctx.fillText('muuday', 80, h - 50)
   },
 
@@ -90,14 +93,14 @@ export const editorialTheme: ThemeTemplate = {
       ctx.arc(120, 140, 40, 0, Math.PI * 2)
       ctx.fill()
       ctx.fillStyle = EDITORIAL_DARK_BG
-      ctx.font = 'bold 48px sans-serif'
+      ctx.font = 'bold 48px Inter'
       ctx.textAlign = 'center'
       ctx.fillText(String(data.number), 120, 155)
       ctx.textAlign = 'left'
     }
 
     ctx.fillStyle = EDITORIAL_WHITE
-    ctx.font = 'bold 60px sans-serif'
+    ctx.font = 'bold 60px Inter'
     const titleLines = wrapText(ctx, data.title || '', w - 160)
     let y = 280
     for (const line of titleLines.slice(0, 3)) {
@@ -107,7 +110,7 @@ export const editorialTheme: ThemeTemplate = {
 
     if (data.description) {
       ctx.fillStyle = 'rgba(255,255,255,0.7)'
-      ctx.font = '400 38px sans-serif'
+      ctx.font = '400 38px Inter'
       const descLines = wrapText(ctx, data.description, w - 160)
       y += 30
       for (const line of descLines.slice(0, 4)) {
@@ -129,7 +132,7 @@ export const editorialTheme: ThemeTemplate = {
     ctx.fillRect(0, 0, w, h)
 
     ctx.fillStyle = EDITORIAL_DARK_BG
-    ctx.font = 'bold 72px sans-serif'
+    ctx.font = 'bold 72px Inter'
     ctx.textAlign = 'center'
     ctx.fillText('e aí, curtiu?', w / 2, h * 0.35)
 
@@ -139,12 +142,12 @@ export const editorialTheme: ThemeTemplate = {
     ctx.fill()
 
     ctx.fillStyle = BRAND_LIME
-    ctx.font = 'bold 42px sans-serif'
+    ctx.font = 'bold 42px Inter'
     ctx.fillText(data.cta || 'compartilha com quem precisa', w / 2, h * 0.5 + 65)
 
     if (data.hashtags?.length) {
       ctx.fillStyle = 'rgba(13,13,13,0.6)'
-      ctx.font = '400 32px sans-serif'
+      ctx.font = '400 32px Inter'
       const tags = data.hashtags.join(' ')
       ctx.fillText(tags, w / 2, h * 0.82)
     }
@@ -175,7 +178,7 @@ export const minimalTheme: ThemeTemplate = {
     ctx.fill()
 
     ctx.fillStyle = MINIMAL_DARK_TEXT
-    ctx.font = 'bold 64px sans-serif'
+    ctx.font = 'bold 64px Inter'
     const titleLines = wrapText(ctx, data.title || '', w - 200)
     let y = h - 260
     for (const line of titleLines.slice(0, 4)) {
@@ -184,7 +187,7 @@ export const minimalTheme: ThemeTemplate = {
     }
 
     if (data.subtitle) {
-      ctx.font = '400 34px sans-serif'
+      ctx.font = '400 34px Inter'
       ctx.fillStyle = MINIMAL_GRAY_TEXT
       const subLines = wrapText(ctx, data.subtitle, w - 200)
       y += 8
@@ -195,7 +198,7 @@ export const minimalTheme: ThemeTemplate = {
     }
 
     ctx.fillStyle = BRAND_LIME
-    ctx.font = 'bold 22px sans-serif'
+    ctx.font = 'bold 22px Inter'
     ctx.fillText('muuday', 100, h - 50)
   },
 
@@ -208,14 +211,14 @@ export const minimalTheme: ThemeTemplate = {
 
     if (data.number) {
       ctx.fillStyle = BRAND_LIME
-      ctx.font = 'bold 140px sans-serif'
+      ctx.font = 'bold 140px Inter'
       ctx.globalAlpha = 0.15
       ctx.fillText(String(data.number).padStart(2, '0'), 60, 200)
       ctx.globalAlpha = 1
     }
 
     ctx.fillStyle = MINIMAL_DARK_TEXT
-    ctx.font = 'bold 56px sans-serif'
+    ctx.font = 'bold 56px Inter'
     const titleLines = wrapText(ctx, data.title || '', w - 200)
     let y = 280
     for (const line of titleLines.slice(0, 3)) {
@@ -225,7 +228,7 @@ export const minimalTheme: ThemeTemplate = {
 
     if (data.description) {
       ctx.fillStyle = MINIMAL_GRAY_TEXT
-      ctx.font = '400 36px sans-serif'
+      ctx.font = '400 36px Inter'
       const descLines = wrapText(ctx, data.description, w - 200)
       y += 24
       for (const line of descLines.slice(0, 4)) {
@@ -248,17 +251,17 @@ export const minimalTheme: ThemeTemplate = {
     ctx.fill()
 
     ctx.fillStyle = MINIMAL_DARK_TEXT
-    ctx.font = 'bold 56px sans-serif'
+    ctx.font = 'bold 56px Inter'
     ctx.textAlign = 'center'
     ctx.fillText('curtiu esse conteúdo?', w / 2, 280)
 
     ctx.fillStyle = BRAND_LIME
-    ctx.font = 'bold 44px sans-serif'
+    ctx.font = 'bold 44px Inter'
     ctx.fillText(data.cta || 'salva pra depois', w / 2, 420)
 
     if (data.hashtags?.length) {
       ctx.fillStyle = MINIMAL_GRAY_TEXT
-      ctx.font = '400 30px sans-serif'
+      ctx.font = '400 30px Inter'
       const tags = data.hashtags.join(' ')
       ctx.fillText(tags, w / 2, h - 140)
     }
@@ -287,7 +290,7 @@ export const boldTheme: ThemeTemplate = {
     ctx.fillRect(60, h * 0.25, 10, h * 0.5)
 
     ctx.fillStyle = BOLD_WHITE
-    ctx.font = 'bold 84px sans-serif'
+    ctx.font = 'bold 84px Inter'
     ctx.shadowColor = 'rgba(0,0,0,0.6)'
     ctx.shadowBlur = 40
     const titleLines = wrapText(ctx, data.title || '', w - 180)
@@ -298,7 +301,7 @@ export const boldTheme: ThemeTemplate = {
     }
 
     if (data.subtitle) {
-      ctx.font = '400 40px sans-serif'
+      ctx.font = '400 40px Inter'
       ctx.fillStyle = 'rgba(255,255,255,0.65)'
       ctx.shadowBlur = 20
       const subLines = wrapText(ctx, data.subtitle, w - 180)
@@ -312,7 +315,7 @@ export const boldTheme: ThemeTemplate = {
     ctx.shadowBlur = 0
 
     ctx.fillStyle = BRAND_LIME
-    ctx.font = 'bold 28px sans-serif'
+    ctx.font = 'bold 28px Inter'
     ctx.textAlign = 'right'
     ctx.fillText('muuday', w - 80, h - 60)
     ctx.textAlign = 'left'
@@ -332,12 +335,12 @@ export const boldTheme: ThemeTemplate = {
 
     if (data.number) {
       ctx.fillStyle = BOLD_DARK
-      ctx.font = 'bold 64px sans-serif'
+      ctx.font = 'bold 64px Inter'
       ctx.fillText(String(data.number), 40, 100)
     }
 
     ctx.fillStyle = BOLD_WHITE
-    ctx.font = 'bold 64px sans-serif'
+    ctx.font = 'bold 64px Inter'
     const titleLines = wrapText(ctx, data.title || '', w - 180)
     let y = 280
     for (const line of titleLines.slice(0, 3)) {
@@ -347,7 +350,7 @@ export const boldTheme: ThemeTemplate = {
 
     if (data.description) {
       ctx.fillStyle = 'rgba(255,255,255,0.65)'
-      ctx.font = '400 36px sans-serif'
+      ctx.font = '400 36px Inter'
       const descLines = wrapText(ctx, data.description, w - 180)
       y += 24
       for (const line of descLines.slice(0, 4)) {
@@ -367,17 +370,17 @@ export const boldTheme: ThemeTemplate = {
     ctx.fillRect(0, h * 0.55, w, h * 0.45)
 
     ctx.fillStyle = BOLD_DARK
-    ctx.font = 'bold 68px sans-serif'
+    ctx.font = 'bold 68px Inter'
     ctx.textAlign = 'center'
     ctx.fillText('gostou?', w / 2, h * 0.3)
 
     ctx.fillStyle = BOLD_WHITE
-    ctx.font = 'bold 48px sans-serif'
+    ctx.font = 'bold 48px Inter'
     ctx.fillText(data.cta || 'salva e compartilha', w / 2, h * 0.72)
 
     if (data.hashtags?.length) {
       ctx.fillStyle = 'rgba(255,255,255,0.5)'
-      ctx.font = '400 28px sans-serif'
+      ctx.font = '400 28px Inter'
       const tags = data.hashtags.join(' ')
       ctx.fillText(tags, w / 2, h * 0.85)
     }
@@ -412,7 +415,7 @@ export const darkTheme: ThemeTemplate = {
     ctx.fillRect(60, h - 420, w - 120, 4)
 
     ctx.fillStyle = DARK_WHITE
-    ctx.font = 'bold 58px sans-serif'
+    ctx.font = 'bold 58px Inter'
     const titleLines = wrapText(ctx, data.title || '', w - 240)
     let y = h - 360
     for (const line of titleLines.slice(0, 3)) {
@@ -421,7 +424,7 @@ export const darkTheme: ThemeTemplate = {
     }
 
     if (data.subtitle) {
-      ctx.font = '400 32px sans-serif'
+      ctx.font = '400 32px Inter'
       ctx.fillStyle = 'rgba(232,232,232,0.6)'
       const subLines = wrapText(ctx, data.subtitle, w - 240)
       y += 8
@@ -432,7 +435,7 @@ export const darkTheme: ThemeTemplate = {
     }
 
     ctx.fillStyle = BRAND_LIME
-    ctx.font = 'bold 22px sans-serif'
+    ctx.font = 'bold 22px Inter'
     ctx.fillText('muuday', 100, h - 80)
   },
 
@@ -451,14 +454,14 @@ export const darkTheme: ThemeTemplate = {
       ctx.roundRect(100, 100, 80, 50, 25)
       ctx.fill()
       ctx.fillStyle = DARK_BG
-      ctx.font = 'bold 28px sans-serif'
+      ctx.font = 'bold 28px Inter'
       ctx.textAlign = 'center'
       ctx.fillText(String(data.number), 140, 135)
       ctx.textAlign = 'left'
     }
 
     ctx.fillStyle = DARK_WHITE
-    ctx.font = 'bold 52px sans-serif'
+    ctx.font = 'bold 52px Inter'
     const titleLines = wrapText(ctx, data.title || '', w - 280)
     let y = 220
     for (const line of titleLines.slice(0, 3)) {
@@ -468,7 +471,7 @@ export const darkTheme: ThemeTemplate = {
 
     if (data.description) {
       ctx.fillStyle = 'rgba(232,232,232,0.55)'
-      ctx.font = '400 34px sans-serif'
+      ctx.font = '400 34px Inter'
       const descLines = wrapText(ctx, data.description, w - 280)
       y += 20
       for (const line of descLines.slice(0, 4)) {
@@ -489,7 +492,7 @@ export const darkTheme: ThemeTemplate = {
     ctx.fillRect(0, 0, w, h)
 
     ctx.fillStyle = DARK_WHITE
-    ctx.font = 'bold 64px sans-serif'
+    ctx.font = 'bold 64px Inter'
     ctx.textAlign = 'center'
     ctx.fillText('curtiu?', w / 2, h * 0.35)
 
@@ -498,12 +501,12 @@ export const darkTheme: ThemeTemplate = {
     ctx.roundRect(w / 2 - 260, h * 0.48, 520, 90, 45)
     ctx.fill()
     ctx.fillStyle = DARK_BG
-    ctx.font = 'bold 38px sans-serif'
+    ctx.font = 'bold 38px Inter'
     ctx.fillText(data.cta || 'compartilha', w / 2, h * 0.48 + 58)
 
     if (data.hashtags?.length) {
       ctx.fillStyle = 'rgba(232,232,232,0.4)'
-      ctx.font = '400 28px sans-serif'
+      ctx.font = '400 28px Inter'
       const tags = data.hashtags.join(' ')
       ctx.fillText(tags, w / 2, h * 0.78)
     }
@@ -533,7 +536,7 @@ export const warmTheme: ThemeTemplate = {
     ctx.fillRect(80, h - 300, 6, 80)
 
     ctx.fillStyle = WARM_BROWN
-    ctx.font = 'bold 62px sans-serif'
+    ctx.font = 'bold 62px Inter'
     const titleLines = wrapText(ctx, data.title || '', w - 160)
     let y = h - 260
     for (const line of titleLines.slice(0, 4)) {
@@ -542,7 +545,7 @@ export const warmTheme: ThemeTemplate = {
     }
 
     if (data.subtitle) {
-      ctx.font = '400 34px sans-serif'
+      ctx.font = '400 34px Inter'
       ctx.fillStyle = '#6B5B4F'
       const subLines = wrapText(ctx, data.subtitle, w - 160)
       y += 8
@@ -553,7 +556,7 @@ export const warmTheme: ThemeTemplate = {
     }
 
     ctx.fillStyle = BRAND_LIME
-    ctx.font = 'bold 24px sans-serif'
+    ctx.font = 'bold 24px Inter'
     ctx.fillText('muuday', 120, h - 50)
   },
 
@@ -570,14 +573,14 @@ export const warmTheme: ThemeTemplate = {
       ctx.arc(110, 130, 36, 0, Math.PI * 2)
       ctx.fill()
       ctx.fillStyle = WARM_CREAM
-      ctx.font = 'bold 36px sans-serif'
+      ctx.font = 'bold 36px Inter'
       ctx.textAlign = 'center'
       ctx.fillText(String(data.number), 110, 142)
       ctx.textAlign = 'left'
     }
 
     ctx.fillStyle = WARM_BROWN
-    ctx.font = 'bold 56px sans-serif'
+    ctx.font = 'bold 56px Inter'
     const titleLines = wrapText(ctx, data.title || '', w - 180)
     let y = 260
     for (const line of titleLines.slice(0, 3)) {
@@ -587,7 +590,7 @@ export const warmTheme: ThemeTemplate = {
 
     if (data.description) {
       ctx.fillStyle = '#6B5B4F'
-      ctx.font = '400 36px sans-serif'
+      ctx.font = '400 36px Inter'
       const descLines = wrapText(ctx, data.description, w - 180)
       y += 24
       for (const line of descLines.slice(0, 4)) {
@@ -610,17 +613,17 @@ export const warmTheme: ThemeTemplate = {
     ctx.fill()
 
     ctx.fillStyle = WARM_BROWN
-    ctx.font = 'bold 56px sans-serif'
+    ctx.font = 'bold 56px Inter'
     ctx.textAlign = 'center'
     ctx.fillText('curtiu?', w / 2, 260)
 
     ctx.fillStyle = WARM_TERRACOTTA
-    ctx.font = 'bold 42px sans-serif'
+    ctx.font = 'bold 42px Inter'
     ctx.fillText(data.cta || 'compartilha com alguém', w / 2, 400)
 
     if (data.hashtags?.length) {
       ctx.fillStyle = '#6B5B4F'
-      ctx.font = '400 28px sans-serif'
+      ctx.font = '400 28px Inter'
       const tags = data.hashtags.join(' ')
       ctx.fillText(tags, w / 2, h - 140)
     }

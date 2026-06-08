@@ -1,6 +1,9 @@
 import { createCanvas, loadImage } from '@napi-rs/canvas'
 import type { ThemeTemplate, SlideData } from './themes'
 import { generateImage } from '@/shared/model-router'
+import { registerFonts } from './fonts'
+
+registerFonts()
 
 const WIDTH = 1080
 const HEIGHT = 1080

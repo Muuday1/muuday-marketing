@@ -1,4 +1,7 @@
 import { createCanvas, SKRSContext2D } from '@napi-rs/canvas'
+import { registerFonts } from './fonts'
+
+registerFonts()
 
 const WIDTH = 1200
 const HEIGHT = 627
@@ -49,7 +52,7 @@ export async function generateLinkedInCardBuffer(data: LinkedInCardData): Promis
 
   // 3. Headline
   ctx.fillStyle = WHITE
-  ctx.font = 'bold 52px sans-serif'
+  ctx.font = 'bold 52px Inter'
   ctx.shadowColor = 'rgba(0,0,0,0.5)'
   ctx.shadowBlur = 20
   ctx.shadowOffsetY = 4
@@ -71,7 +74,7 @@ export async function generateLinkedInCardBuffer(data: LinkedInCardData): Promis
   // 5. Insight / body
   if (data.insight) {
     ctx.fillStyle = 'rgba(255,255,255,0.8)'
-    ctx.font = '32px sans-serif'
+    ctx.font = '32px Inter'
     const insightLines = wrapText(ctx, data.insight, WIDTH - 160)
     for (const line of insightLines.slice(0, 5)) {
       ctx.fillText(line, 80, y)
@@ -86,13 +89,13 @@ export async function generateLinkedInCardBuffer(data: LinkedInCardData): Promis
   // Author tag
   if (data.author) {
     ctx.fillStyle = 'rgba(255,255,255,0.5)'
-    ctx.font = '24px sans-serif'
+    ctx.font = '24px Inter'
     ctx.fillText(data.author, 80, HEIGHT - 30)
   }
 
   // Brand mark
   ctx.fillStyle = BRAND_LIME
-  ctx.font = 'bold 28px sans-serif'
+  ctx.font = 'bold 28px Inter'
   const brandText = 'muuday'
   const brandMetrics = ctx.measureText(brandText)
   ctx.fillText(brandText, WIDTH - 80 - brandMetrics.width, HEIGHT - 30)

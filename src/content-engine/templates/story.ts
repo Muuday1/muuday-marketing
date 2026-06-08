@@ -1,4 +1,7 @@
 import { createCanvas, SKRSContext2D } from '@napi-rs/canvas'
+import { registerFonts } from './fonts'
+
+registerFonts()
 
 const WIDTH = 1080
 const HEIGHT = 1920
@@ -57,7 +60,7 @@ export async function generateStoryBuffer(data: StoryData): Promise<Buffer> {
 
   // 4. Title - large, centered vertically in upper half
   ctx.fillStyle = WHITE
-  ctx.font = 'bold 96px sans-serif'
+  ctx.font = 'bold 96px Inter'
   ctx.shadowColor = 'rgba(0,0,0,0.6)'
   ctx.shadowBlur = 30
   ctx.shadowOffsetY = 6
@@ -75,7 +78,7 @@ export async function generateStoryBuffer(data: StoryData): Promise<Buffer> {
   // 5. Subtitle
   if (data.subtitle) {
     ctx.fillStyle = 'rgba(255,255,255,0.75)'
-    ctx.font = '40px sans-serif'
+    ctx.font = '40px Inter'
     const subLines = wrapText(ctx, data.subtitle, WIDTH - 200)
     y += 40
     for (const line of subLines.slice(0, 3)) {
@@ -99,13 +102,13 @@ export async function generateStoryBuffer(data: StoryData): Promise<Buffer> {
 
     // CTA text
     ctx.fillStyle = '#0D0D0D'
-    ctx.font = 'bold 36px sans-serif'
+    ctx.font = 'bold 36px Inter'
     ctx.fillText(data.cta, WIDTH / 2, ctaY + 52)
   }
 
   // 7. Brand mark at bottom
   ctx.fillStyle = 'rgba(255,255,255,0.4)'
-  ctx.font = '28px sans-serif'
+  ctx.font = '28px Inter'
   ctx.fillText('muuday', WIDTH / 2, HEIGHT - 60)
 
   ctx.textAlign = 'left'
