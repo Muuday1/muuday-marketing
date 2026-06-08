@@ -1,30 +1,37 @@
 import { composeSlide, composeTipSlide, composeCTASlide, generateSlideBackground } from './composer'
-import { editorialTheme } from './themes/editorial'
-import { minimalTheme } from './themes/minimal'
-import { boldTheme } from './themes/bold'
-import { darkTheme } from './themes/dark'
-import { warmTheme } from './themes/warm'
 import type { ThemeTemplate } from './themes/types'
 
 export type CarouselTheme = 'editorial' | 'minimal' | 'bold' | 'dark' | 'warm'
 
-const THEME_MAP: Record<CarouselTheme, ThemeTemplate> = {
-  editorial: editorialTheme,
-  minimal: minimalTheme,
-  bold: boldTheme,
-  dark: darkTheme,
-  warm: warmTheme,
+export const CAROUSEL_THEMES: CarouselTheme[] = ['editorial', 'minimal', 'bold', 'dark', 'warm']
+
+async function loadThemes(): Promise<Record<CarouselTheme, ThemeTemplate>> {
+  const [{ editorialTheme }, { minimalTheme }, { boldTheme }, { darkTheme }, { warmTheme }] =
+    await Promise.all([
+      import('./themes/editorial'),
+      import('./themes/minimal'),
+      import('./themes/bold'),
+      import('./themes/dark'),
+      import('./themes/warm'),
+    ])
+  return {
+    editorial: editorialTheme,
+    minimal: minimalTheme,
+    bold: boldTheme,
+    dark: darkTheme,
+    warm: warmTheme,
+  }
 }
 
-export const CAROUSEL_THEMES = Object.keys(THEME_MAP) as CarouselTheme[]
+let cachedThemes: Record<CarouselTheme, ThemeTemplate> | null = null
 
-export function getCarouselTheme(name: CarouselTheme): ThemeTemplate {
-  const theme = THEME_MAP[name] || editorialTheme
+export async function getCarouselTheme(name: CarouselTheme): Promise<ThemeTemplate> {
+  if (!cachedThemes) {
+    cachedThemes = await loadThemes()
+  }
+  const theme = cachedThemes[name] || cachedThemes.editorial
   if (!theme) {
-    console.error(
-      `[THEME] Theme "${name}" not found and editorialTheme is undefined. Available:`,
-      Object.keys(THEME_MAP)
-    )
+    console.error(`[THEME] Theme "${name}" not found. Available:`, Object.keys(cachedThemes))
   }
   return theme
 }
@@ -54,7 +61,7 @@ export interface LinkedInCardInput {
  */
 export async function generateCarousel(input: CarouselInput): Promise<GeneratedSlide[]> {
   const themeName = input.theme || 'editorial'
-  const template = getCarouselTheme(themeName)
+  const template = await getCarouselTheme(themeName)
   const topic = input.topic || input.title
   const slides: GeneratedSlide[] = []
 
